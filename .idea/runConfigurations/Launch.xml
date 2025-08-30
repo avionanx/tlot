@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Launch" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="legend.game.Main" />
+    <module name="the-legend-of-tides.main" />
+    <option name="PROGRAM_PARAMETERS" value="-Xms1g" />
+    <option name="VM_PARAMETERS" value="-Dscdk=true -Xmx2g -ea -Djoml.fastmath -Djoml.sinLookup -Djoml.useMathFma" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
