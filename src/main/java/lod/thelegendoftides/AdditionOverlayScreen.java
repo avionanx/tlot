@@ -1,32 +1,41 @@
 package lod.thelegendoftides;
 
-import legend.core.Config;
 import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.core.opengl.Obj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.platform.input.InputAction;
-import legend.game.combat.effects.AdditionOverlaysBorder0e;
-import legend.game.combat.effects.AdditionOverlaysHit20;
+import legend.game.combat.Battle;
+import legend.game.combat.bent.PlayerBattleEntity;
+import legend.game.combat.types.AdditionHits80;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.types.TmdAnimationFile;
 import legend.game.types.Translucency;
 import org.joml.Math;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Random;
 
 import static legend.core.GameEngine.GPU;
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
+import static legend.game.Scus94491BpeSegment.loadDrgnDir;
+import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
+import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
+import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
+import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.renderButtonPressHudElement1;
 import static lod.thelegendoftides.Main.TIDES_INPUT_ACTION;
 import static lod.thelegendoftides.Main.TIDES_INPUT_FISH;
 
 public class AdditionOverlayScreen extends MenuScreen {
+  private final Battle battle;
+  private final PlayerBattleEntity player;
+  private final Random rand = new Random();
 
     private ArrayList<HitStruct> actionList = new ArrayList<>();
     private boolean isAwaitingPress = false;
@@ -37,8 +46,15 @@ public class AdditionOverlayScreen extends MenuScreen {
     private int FRAMES = 0;
     private int numFramesToRenderInnerSquare = 0;
     private AdditionLastHitSuccessStatus lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
-    public AdditionOverlayScreen() {
-        this.reticleBorderShadow = new QuadBuilder("Reticle background")
+
+    private int loadingAnimIndex = -1;
+    private AdditionHits80 activeAddition;
+    private int additionTicks;
+
+    public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
+      this.battle = battle;
+      this.player = player;
+      this.reticleBorderShadow = new QuadBuilder("Reticle background")
                 .translucency(Translucency.B_MINUS_F)
                 .monochrome(0, 0.0f)
                 .monochrome(1, 0.0f)
@@ -50,20 +66,67 @@ public class AdditionOverlayScreen extends MenuScreen {
     }
 
     private void addHit() {
-        final int frameBeginTime = this.FRAMES;
-        final HitStruct hit = new HitStruct(0.06f, frameBeginTime,  2, new ArrayList<>(14));
-        for(int i = 0; i < 14; i++) {
+      final int charId = this.player.charId_272;
+      final int additionCount = additionCounts_8004f5c0[charId];
+      final int randomAddition = this.rand.nextInt(additionCount);
+      final int fileIndex = 4031 + charId * 8 + randomAddition;
+
+      final int oldAddition = gameState_800babc8.charData_32c[charId].selectedAddition_19;
+      gameState_800babc8.charData_32c[charId].selectedAddition_19 = randomAddition;
+      loadAdditions();
+      gameState_800babc8.charData_32c[charId].selectedAddition_19 = oldAddition;
+
+      this.activeAddition = battlePreloadedEntities_1f8003f4.additionHits_38[0];
+      int hitCount = 0;
+
+      for(int i = 0; i < this.activeAddition.hits_00.length; i++) {
+        if(this.activeAddition.hits_00[i].flags_00 != 0) {
+          hitCount++;
+        }
+      }
+
+      this.loadingAnimIndex = 16 + this.rand.nextInt(hitCount);
+      this.additionTicks = this.activeAddition.hits_00[this.loadingAnimIndex - 16].totalFrames_01;
+
+      loadDrgnDir(0, fileIndex, files -> {
+        this.player.combatant_144.mrg_04 = null;
+        this.battle.attackAnimationsLoaded(files, this.player.combatant_144, false, this.player.combatant_144.charSlot_19c);
+        // Finish asset loading - some animations need to be decompressed
+        this.battle.FUN_800c9e10(this.player.combatant_144, this.loadingAnimIndex);
+      });
+    }
+
+    @Override
+    protected void render() {
+      if(this.loadingAnimIndex != -1) {
+        final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
+
+        if(asset != null) {
+          asset.loadIntoModel(this.player.model_148);
+          this.loadingAnimIndex = -1;
+
+          final int frameBeginTime = this.FRAMES;
+          final HitStruct hit = new HitStruct(0.06f, frameBeginTime, 2, new ArrayList<>(14));
+
+          for(int i = 0; i < 14; i++) {
             final float size = (2 + i) * 15.0f;
             final float angle = Math.toRadians(i * 11.25f);
             final int framesUntilRender = hit.frameBeginTime() + (hit.numSuccessFrames() - 1) / 2 + 14 - i;
             BorderStruct border = new BorderStruct(size, angle, new Vector3f(0.28f, 0.37f, 1.0f), false, framesUntilRender);
             hit.borders().addFirst(border);
-        }
-        this.actionList.add(hit);
-    }
+          }
 
-    @Override
-    protected void render() {
+          this.actionList.add(hit);
+        }
+      } else {
+        this.additionTicks--;
+
+        if(this.additionTicks == 0) {
+          this.player.model_148.animationState_9c = 2; // pause
+          this.addHit();
+        }
+      }
+
         this.tick();
         this.renderAdditionBorders();
         this.renderButtons();

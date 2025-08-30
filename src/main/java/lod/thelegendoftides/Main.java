@@ -7,6 +7,7 @@ import legend.game.EngineStateEnum;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.BattleEntity27c;
+import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.inventory.screens.MenuStack;
@@ -82,13 +83,16 @@ public class Main {
     this.isFishEncounter = false;
     scriptStatePtrArr_800bc1c0[6].pause();
     scriptStatePtrArr_800bc1c0[11].pause();
-    final BattleEntity27c player = (BattleEntity27c)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
+
+    final Battle battle = ((Battle)currentEngineState_8004dd04);
+    final PlayerBattleEntity player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
     final BattleEntity27c enemy = (BattleEntity27c)scriptStatePtrArr_800bc1c0[11].innerStruct_00;
+
     scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
 
     scriptStatePtrArr_800bc1c0[5].pause();
     BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
-    ((Battle)currentEngineState_8004dd04).battleInitialCameraMovementFinished_800c66a8 = true;
+    battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
     camera.setViewpoint(-8000.0f, -2000.0f, -15000.0f);
     camera.setRefpoint(0.0f, 0.0f, -5000.0f);
@@ -101,7 +105,7 @@ public class Main {
     player.model_148.coord2_14.coord.transfer.x = -2680;
     player.model_148.coord2_14.coord.transfer.y = 0;
     player.model_148.coord2_14.coord.transfer.z = -5200;
-    this.menuStack.pushScreen(new AdditionOverlayScreen());
+    this.menuStack.pushScreen(new AdditionOverlayScreen(battle, player));
   }
 /*
   @EventListener
