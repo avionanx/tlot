@@ -329,8 +329,6 @@ public class AdditionOverlayScreen extends MenuScreen {
   }
 
   private void renderRod() {
-    this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
-//    this.player.model_148.partInvisible_f4 = 0L;
     final MV lw = new MV();
     final GsCOORDINATE2 coord2 = this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04;
     coord2.flg = 0;
