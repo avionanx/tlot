@@ -56,10 +56,10 @@ public class AdditionOverlayScreen extends MenuScreen {
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
-  private final float[] stringStartX = new float[32];
-  private final float[] stringStartY = new float[32];
-  private final float[] stringEndX = new float[32];
-  private final float[] stringEndY = new float[32];
+  private final float[] stringX = new float[32];
+  private final float[] stringY = new float[32];
+  private final float[] stringTempX = new float[32];
+  private final float[] stringTempY = new float[32];
 
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
     this.battle = battle;
@@ -74,8 +74,27 @@ public class AdditionOverlayScreen extends MenuScreen {
       .size(1.0f, 1.0f)
       .build();
 
-    for(int i = 0; i < this.stringStartY.length; i++) {
-      this.stringStartX[i] = i;
+    // Seed string X values so the math doesn't NaN
+    for(int i = 0; i < this.stringX.length; i++) {
+      this.stringX[i] = i;
+    }
+
+    // Iterate once to set the start/end points
+    this.processString(1);
+
+    // Set the initial points to be a smooth line between the start and end
+    final float startX = this.stringX[0];
+    final float startY = this.stringY[0];
+    final float endX = this.stringX[this.stringX.length - 1];
+    final float endY = this.stringY[this.stringY.length - 1];
+    final float dx = endX - startX;
+    final float dy = endY - startY;
+    final float segmentX = dx / this.stringX.length;
+    final float segmentY = dy / this.stringY.length;
+
+    for(int i = 1; i < this.stringX.length - 1; i++) {
+      this.stringX[i] = this.stringX[i - 1] + segmentX;
+      this.stringY[i] = this.stringY[i - 1] + segmentY;
     }
   }
 
@@ -148,31 +167,36 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.renderString();
   }
 
-  private void renderString() {
-    final float segmentLength = 0.1f;
-    final float gravity = 0.1f;
-
-    for(int i = 1; i < this.stringStartX.length - 1; i++) {
-      final float dx1 = stringStartX[i - 1] - stringStartX[i];
-      final float dy1 = stringStartY[i - 1] - stringStartY[i];
+  private void iterateStringPhysics(final Vector2f startPos, final Vector2f endPos, final float segmentLength, final float gravity) {
+    for(int i = 1; i < this.stringX.length - 1; i++) {
+      final float dx1 = stringX[i - 1] - stringX[i];
+      final float dy1 = stringY[i - 1] - stringY[i];
       final float mag1 = (float)java.lang.Math.hypot(dx1, dy1);
       final float extension1 = mag1 - segmentLength;
 
-      final float dx2 = stringStartX[i < this.stringStartX.length - 1 ? i + 1 : this.stringStartX.length - 1] - stringStartX[i];
-      final float dy2 = stringStartY[i < this.stringStartX.length - 1 ? i + 1 : this.stringStartX.length - 1] - stringStartY[i];
+      final float dx2 = stringX[i + 1] - stringX[i];
+      final float dy2 = stringY[i + 1] - stringY[i];
       final float mag2 = (float)java.lang.Math.hypot(dx2, dy2);
       final float extension2 = mag2 - segmentLength;
 
       final float xv = dx1 / mag1 * extension1 + dx2 / mag2 * extension2;
       final float yv = dy1 / mag1 * extension1 + dy2 / mag2 * extension2 + gravity;
 
-      stringEndX[i] = stringStartX[i] + xv * 0.5f;
-      stringEndY[i] = stringStartY[i] + yv * 0.5f;
+      stringTempX[i] = stringX[i] + xv * 0.5f;
+      stringTempY[i] = stringY[i] + yv * 0.5f;
     }
 
-    System.arraycopy(this.stringEndX, 0, this.stringStartX, 0, this.stringEndX.length);
-    System.arraycopy(this.stringEndY, 0, this.stringStartY, 0, this.stringEndY.length);
+    System.arraycopy(this.stringTempX, 0, this.stringX, 0, this.stringTempX.length);
+    System.arraycopy(this.stringTempY, 0, this.stringY, 0, this.stringTempY.length);
 
+    // Set start and end points
+    this.stringX[0] = startPos.x + GPU.getOffsetX();
+    this.stringY[0] = startPos.y + GPU.getOffsetY();
+    this.stringX[31] = endPos.x;
+    this.stringY[31] = endPos.y;
+  }
+
+  private void processString(final int iterations) {
     final int weaponPart = this.player.getWeaponModelPart();
     final int weaponVertex = this.player.getWeaponTrailVertexComponent();
     final ModelPart10 sword = this.player.model_148.modelParts_00[weaponPart];
@@ -182,19 +206,24 @@ public class AdditionOverlayScreen extends MenuScreen {
 
     Transformations.toScreenspace(worldspacePos, weaponCoord2, viewspacePos);
 
-    // Set start and end points
-    this.stringStartX[0] = viewspacePos.x + GPU.getOffsetX();
-    this.stringStartY[0] = viewspacePos.y + GPU.getOffsetY();
-    this.stringStartX[31] = 240;
-    this.stringStartY[31] = 200;
+    final float segmentLength = 0.1f;
+    final float gravity = 0.1f;
+
+    for(int i = 0; i < iterations; i++) {
+      this.iterateStringPhysics(viewspacePos, new Vector2f(240.0f, 200.0f), segmentLength, gravity);
+    }
+  }
+
+  private void renderString() {
+    this.processString(3);
 
     final Matrix4f transforms = new Matrix4f();
     final Vector2f start = new Vector2f();
     final Vector2f end = new Vector2f();
 
-    for(int i = 0; i < this.stringStartX.length - 1; i++) {
-      start.set(this.stringStartX[i], this.stringStartY[i]);
-      end.set(this.stringStartX[i + 1], this.stringStartY[i + 1]);
+    for(int i = 0; i < this.stringX.length - 1; i++) {
+      start.set(this.stringX[i], this.stringY[i]);
+      end.set(this.stringX[i + 1], this.stringY[i + 1]);
       RENDERER.queueLine(transforms, 10.0f, start, end);
     }
   }
