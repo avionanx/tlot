@@ -2,7 +2,6 @@ package lod.thelegendoftides;
 
 import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
-import legend.core.QueuedModelTmd;
 import legend.core.Transformations;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
@@ -28,17 +27,13 @@ import java.util.Iterator;
 import java.util.Random;
 
 import static legend.core.GameEngine.GPU;
-import static legend.core.GameEngine.GTE;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.loadDrgnDir;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
-import static legend.game.Scus94491BpeSegment_8003.GsSetLightMatrix;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
-import static legend.game.Scus94491BpeSegment_800c.lightColourMatrix_800c3508;
-import static legend.game.Scus94491BpeSegment_800c.lightDirectionMatrix_800c34e8;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.renderButtonPressHudElement1;
 import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
@@ -59,7 +54,13 @@ public class AdditionOverlayScreen extends MenuScreen {
   private int numFramesToRenderInnerSquare = 0;
   private AdditionLastHitSuccessStatus lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
 
+  private FishingState state = FishingState.IDLE;
+  private FishingState animationLoadedState = FishingState.IDLE;
   private int loadingAnimIndex = -1;
+  private int animationFrames;
+
+  private int castingTicks;
+
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
@@ -143,6 +144,12 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.loadingAnimIndex = 16 + this.rand.nextInt(hitCount);
     this.additionTicks = this.activeAddition.hits_00[this.loadingAnimIndex - 16].totalFrames_01;
 
+    this.loadAnimations(fileIndex);
+    this.animationLoadedState = FishingState.START_REELING;
+    this.state = FishingState.LOADING_ANIMATION;
+  }
+
+  private void loadAnimations(final int fileIndex) {
     loadDrgnDir(0, fileIndex, files -> {
       this.player.combatant_144.mrg_04 = null;
       this.battle.attackAnimationsLoaded(files, this.player.combatant_144, false, this.player.combatant_144.charSlot_19c);
@@ -153,13 +160,32 @@ public class AdditionOverlayScreen extends MenuScreen {
 
   @Override
   protected void render() {
-    if(this.loadingAnimIndex != -1) {
-      final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
+    switch(this.state) {
+      case LOADING_ANIMATION -> {
+        final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
 
-      if(asset != null) {
-        asset.loadIntoModel(this.player.model_148);
-        this.loadingAnimIndex = -1;
+        if(asset != null) {
+          asset.loadIntoModel(this.player.model_148);
+          this.animationFrames = asset.totalFrames_0e;
+          this.loadingAnimIndex = -1;
+          this.state = this.animationLoadedState;
+        }
+      }
 
+      case CASTING -> {
+        this.castingTicks++;
+
+        if(this.castingTicks > this.animationFrames) {
+          final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, 0);
+          asset.loadIntoModel(this.player.model_148);
+        }
+
+        if(this.castingTicks > this.animationFrames * 2) {
+          this.addHit();
+        }
+      }
+
+      case START_REELING -> {
         final int frameBeginTime = this.FRAMES;
         final HitStruct hit = new HitStruct(0.06f, frameBeginTime, 2, new ArrayList<>(14));
 
@@ -172,13 +198,16 @@ public class AdditionOverlayScreen extends MenuScreen {
         }
 
         this.actionList.add(hit);
+        this.state = FishingState.REELING;
       }
-    } else {
-      this.additionTicks--;
 
-      if(this.additionTicks == 0) {
-        this.player.model_148.animationState_9c = 2; // pause
-        this.addHit();
+      case REELING -> {
+        this.additionTicks--;
+
+        if(this.additionTicks == 0) {
+          this.player.model_148.animationState_9c = 2; // pause
+          this.addHit();
+        }
       }
     }
 
@@ -187,7 +216,10 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.renderButtons();
     this.renderAdditionInnerSquare();
     this.renderRod();
-    this.renderString();
+
+    if(this.state.ordinal() >= FishingState.LOADING_ANIMATION.ordinal() && this.animationLoadedState != FishingState.CASTING) {
+      this.renderString();
+    }
   }
 
   private void iterateStringPhysics(final Vector2f startPos, final Vector2f endPos, final float segmentLength, final float gravity) {
@@ -409,11 +441,19 @@ public class AdditionOverlayScreen extends MenuScreen {
       }
       return InputPropagation.HANDLED;
     } else if(action == INPUT_ACTION_BTTL_COUNTER.get()) {
-      this.addHit();
+      this.cast();
       return InputPropagation.HANDLED;
     }
 
     return InputPropagation.PROPAGATE;
+  }
+
+  private void cast() {
+    this.loadAnimations(4031);
+    this.loadingAnimIndex = 7; // Throw attack item
+    this.castingTicks = 0;
+    this.animationLoadedState = FishingState.CASTING;
+    this.state = FishingState.LOADING_ANIMATION;
   }
 
   private void fadeAdditionBorders(final BorderStruct border, final float fadeStep) {
