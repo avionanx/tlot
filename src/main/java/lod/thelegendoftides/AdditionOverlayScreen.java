@@ -341,7 +341,7 @@ public class AdditionOverlayScreen extends MenuScreen {
   }
 
   private void cast() {
-    this.loadAnimations(4031);
+    this.loadAnimations(4031 + this.player.charId_272 * 8);
     this.loadingAnimIndex = 7; // Throw attack item
     this.castingTicks = 0;
     this.state = FishingState.CASTING;
