@@ -27,18 +27,18 @@ public class FishListScreen extends MenuScreen {
     private final ArrayList<String> fishNames = new ArrayList<>();
     private final MeshObj bgQuad;
 
-    private final int collisionPrimitiveIndex;
+    private final FishLocationData locationData;
     final MV bgTransforms;
     final Texture bgTexture;
 
     public boolean battleTransitionFinished = true;
 
-    public FishListScreen(final FishMeta meta, final FishLocationData data) {
+    public FishListScreen(final FishMeta meta, final FishLocationData locationData) {
         this.meta = meta;
 
-        this.collisionPrimitiveIndex = data.collisionPrimitive();
+        this.locationData = locationData;
 
-        for(var fishWeightPair : data.fishWeightRegistries()) {
+        for(var fishWeightPair : locationData.fishWeightRegistries()) {
             final Path texturePath = Path.of("mods", "tlot", "fish", "%s.png".formatted(fishWeightPair.first()));
             this.fishSprites.add(Texture.png(texturePath));
             this.fishNames.add(this.meta.getFish(fishWeightPair.first()).displayName());
@@ -58,7 +58,7 @@ public class FishListScreen extends MenuScreen {
     }
     @Override
     protected void render() {
-        if(!isOnFishingPrimitive(this.collisionPrimitiveIndex) && currentEngineState_8004dd04 instanceof SMap || !battleTransitionFinished) return;
+        if(!isOnFishingPrimitive(this.locationData) && currentEngineState_8004dd04 instanceof SMap || !battleTransitionFinished) return;
         for(int i = 0; i < this.fishSprites.size(); i++) {
             final float x = 2.0f + 230.0f;
             final float y = i * 16.0f + 22.0f;

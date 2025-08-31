@@ -100,7 +100,7 @@ public class Main {
   @EventListener
   public void inputReleased(final InputReleasedEvent event) {
     if(event.action == INPUT_ACTION_SMAP_INTERACT.get()
-            && isOnFishingPrimitive(this.currentCutFishingData.collisionPrimitive())
+            && isOnFishingPrimitive(this.currentCutFishingData)
             && !gameState_800babc8.indicatorsDisabled_4e3) {
 
       this.isFishEncounter = true;
@@ -113,20 +113,26 @@ public class Main {
 
   private void handleBaitSelected(final String bait, final Runnable unloadBaitSelectionScreen) {
     unloadBaitSelectionScreen.run();
-    menuStack.popScreen();
-    this.fishListScreen.unload();
 
     if(bait == null) {
       postBattleAction_800bc974 = 5;
       return;
     }
     final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
-    this.menuStack.pushScreen(new AdditionOverlayScreen(((Battle)currentEngineState_8004dd04), (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00)/*new WaitingScreen(this.meta, fish)*/);
+    this.menuStack.pushScreen(new WaitingBiteScreen(this::handleQTESuccessful, this::handleQTEFail));
   }
 
-  public static boolean isOnFishingPrimitive(final int collisionPrimitive) {
+  private void handleQTESuccessful() {
+    this.menuStack.pushScreen(new AdditionOverlayScreen(((Battle)currentEngineState_8004dd04), (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00));
+  }
+
+  private void handleQTEFail() {
+    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+  }
+
+  public static boolean isOnFishingPrimitive(final FishLocationData locationData) {
     try {
-      return ((SubmapObject210)scriptStatePtrArr_800bc1c0[10].innerStruct_00).collidedPrimitiveIndex_16c == collisionPrimitive;
+      return ((SubmapObject210)scriptStatePtrArr_800bc1c0[10].innerStruct_00).collidedPrimitiveIndex_16c == locationData.collisionPrimitive();
     }catch(final Exception e) {
       return false;
     }
