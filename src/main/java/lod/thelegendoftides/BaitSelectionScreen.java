@@ -6,29 +6,21 @@ import legend.core.gte.MV;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
-import legend.core.platform.input.InputAction;
-import legend.game.inventory.screens.Control;
-import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
-import legend.game.inventory.screens.controls.Checkbox;
-import legend.game.inventory.screens.controls.ListBox;
 import legend.game.types.Translucency;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
+import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
 import static lod.thelegendoftides.Main.MOD_ID;
-import static lod.thelegendoftides.Main.TIDES_INPUT_CANCEL;
-import static legend.game.Scus94491BpeSegment.playSound;
 public class BaitSelectionScreen extends MenuScreen {
-
     private final MeshObj bgQuad;
     private final Texture bgTexture;
     private final MV bgTransforms;
@@ -43,7 +35,7 @@ public class BaitSelectionScreen extends MenuScreen {
             });
         }
         this.setFocus(this.menuButtons.getFirst());
-        this.addHotkey("Cancel", TIDES_INPUT_CANCEL, () -> {
+        this.addHotkey("Cancel", INPUT_ACTION_MENU_BACK, () -> {
             playMenuSound(3);
             this.deferAction(() -> callback.accept(null, this::unload));
         });

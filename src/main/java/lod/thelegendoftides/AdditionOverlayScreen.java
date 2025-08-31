@@ -34,8 +34,8 @@ import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.renderButtonPressHudElement1;
-import static lod.thelegendoftides.Main.TIDES_INPUT_ACTION;
-import static lod.thelegendoftides.Main.TIDES_INPUT_FISH;
+import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
+import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_COUNTER;
 
 public class AdditionOverlayScreen extends MenuScreen {
   private final Battle battle;
@@ -355,7 +355,7 @@ public class AdditionOverlayScreen extends MenuScreen {
 
   @Override
   protected InputPropagation inputActionPressed(InputAction action, boolean repeat) {
-    if(action == TIDES_INPUT_ACTION.get()) {
+    if(action == INPUT_ACTION_BTTL_ATTACK.get()) {
       if(this.isAwaitingPress) {
         this.isAwaitingPress = false;
         this.lastHitStatus = AdditionLastHitSuccessStatus.SUCCESS;
@@ -366,7 +366,7 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.actionList.removeFirst();
       }
       return InputPropagation.HANDLED;
-    } else if(action == TIDES_INPUT_FISH.get()) {
+    } else if(action == INPUT_ACTION_BTTL_COUNTER.get()) {
       this.addHit();
       return InputPropagation.HANDLED;
     }

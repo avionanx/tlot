@@ -13,8 +13,8 @@ import legend.game.inventory.screens.MenuScreen;
 import java.nio.file.Path;
 
 import static legend.core.GameEngine.RENDERER;
+import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
 import static lod.thelegendoftides.Main.MOD_ID;
-import static lod.thelegendoftides.Main.TIDES_INPUT_ACTION;
 
 public class QTEScreen extends MenuScreen {
 
@@ -40,7 +40,7 @@ public class QTEScreen extends MenuScreen {
 
     @Override
     protected InputPropagation inputActionPressed(InputAction action, boolean repeat) {
-        if(action != TIDES_INPUT_ACTION.get() && !repeat) { return InputPropagation.PROPAGATE; }
+        if(action != INPUT_ACTION_BTTL_ATTACK.get() && !repeat) { return InputPropagation.PROPAGATE; }
         this.canProgress = !canProgress;
         return InputPropagation.HANDLED;
     }

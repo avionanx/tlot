@@ -8,7 +8,7 @@ import legend.game.inventory.screens.MenuStack;
 import static legend.game.Scus94491BpeSegment.playSound;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
-import static lod.thelegendoftides.Main.TIDES_INPUT_ACTION;
+import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 
 public class WaitingScreen extends MenuScreen {
 
@@ -30,7 +30,7 @@ public class WaitingScreen extends MenuScreen {
 
     @Override
     protected InputPropagation inputActionPressed(InputAction action, boolean repeat) {
-        if(action != TIDES_INPUT_ACTION.get() && !repeat) { return InputPropagation.PROPAGATE; }
+        if(action != INPUT_ACTION_MENU_CONFIRM.get() && !repeat) { return InputPropagation.PROPAGATE; }
         if(frames <= 60) {
             playSound(0x8, 0x10, 0, 0);
             this.deferAction(this::startReeling);

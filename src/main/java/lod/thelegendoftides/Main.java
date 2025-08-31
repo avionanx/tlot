@@ -1,11 +1,7 @@
 package lod.thelegendoftides;
-import legend.core.platform.input.InputAction;
-import legend.core.platform.input.InputActionRegistryEvent;
-import legend.core.platform.input.InputKey;
-import legend.core.platform.input.ScancodeInputActivation;
+
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
-import legend.game.combat.bent.BattleEntity27c;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
@@ -14,7 +10,6 @@ import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
-import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
@@ -22,23 +17,17 @@ import legend.game.submap.SubmapState;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
-import org.legendofdragoon.modloader.registries.Registrar;
-import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
-import static legend.core.GameEngine.*;
+import static legend.core.GameEngine.EVENTS;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static legend.game.Scus94491BpeSegment_800b.*;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
+import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
 @Mod(id = Main.MOD_ID, version = "3.0.0")
 public class Main {
   public static final String MOD_ID = "thelegendoftides";
-  public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
-  public static final RegistryDelegate<InputAction> TIDES_INPUT_ACTION = TIDES_INPUT_REGISTRAR.register("tides_action", InputAction::editable);
-  public static final RegistryDelegate<InputAction> TIDES_INPUT_CANCEL = TIDES_INPUT_REGISTRAR.register("tides_cancel", InputAction::editable);
-  public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH = TIDES_INPUT_REGISTRAR.register("tides_fish", InputAction::editable);
-
   private FishMeta meta;
   private FishLocationData currentCutFishingData;
   private boolean isFishEncounter = false;
@@ -104,26 +93,13 @@ public class Main {
   }
 
   @EventListener
-  public void registerInputActions(final InputActionRegistryEvent event) {
-    TIDES_INPUT_REGISTRAR.registryEvent(event);
-  }
-
-  @EventListener
-  public void registerInput(final RegisterDefaultInputBindingsEvent event) {
-    event.add(TIDES_INPUT_ACTION.get(), new ScancodeInputActivation(InputKey.SPACE));
-    event.add(TIDES_INPUT_FISH.get(), new ScancodeInputActivation(InputKey.F));
-    event.add(TIDES_INPUT_CANCEL.get(), new ScancodeInputActivation(InputKey.ESCAPE));
-  }
-
-  @EventListener
   public void renderLoop(final RenderEvent event) {
     this.menuStack.render();
-
   }
 
   @EventListener
   public void inputReleased(final InputReleasedEvent event) {
-    if(event.action == TIDES_INPUT_FISH.get()
+    if(event.action == INPUT_ACTION_SMAP_INTERACT.get()
             && isOnFishingPrimitive(this.currentCutFishingData.collisionPrimitive())
             && !gameState_800babc8.indicatorsDisabled_4e3) {
 
