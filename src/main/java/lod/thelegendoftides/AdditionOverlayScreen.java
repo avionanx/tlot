@@ -73,6 +73,7 @@ public class AdditionOverlayScreen extends MenuScreen {
 
   private final GsCOORDINATE2 bobberCoord2 = new GsCOORDINATE2();
   private final MV bobberTransforms = new MV();
+  private float bobberVerticalAcceleration;
 
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
     this.battle = battle;
@@ -171,11 +172,6 @@ public class AdditionOverlayScreen extends MenuScreen {
       }
     } else {
       switch(this.state) {
-        case START_CASTING -> {
-          this.bobberCoord2.set(this.player.model_148.coord2_14);
-          this.state = FishingState.CASTING;
-        }
-
         case CASTING -> {
           this.castingTicks++;
 
@@ -184,7 +180,18 @@ public class AdditionOverlayScreen extends MenuScreen {
             asset.loadIntoModel(this.player.model_148);
           }
 
-          if(this.castingTicks > this.animationFrames * 2) {
+          if(this.castingTicks <= 17) {
+            this.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
+            this.bobberVerticalAcceleration = 100.0f;
+          } else if(this.castingTicks < 32) {
+            final MV lw = new MV();
+            GsGetLw(this.player.model_148.coord2_14, lw);
+            this.bobberCoord2.coord.transfer.add(new Vector3f(0.0f, -this.bobberVerticalAcceleration, -450.0f).mul(lw));
+            this.bobberCoord2.flg = 0;
+            this.bobberVerticalAcceleration -= 30.0f;
+          }
+
+          if(this.castingTicks > 45) {
             this.addHit();
           }
         }
@@ -477,7 +484,7 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.loadAnimations(4031);
     this.loadingAnimIndex = 7; // Throw attack item
     this.castingTicks = 0;
-    this.state = FishingState.START_CASTING;
+    this.state = FishingState.CASTING;
   }
 
   private void fadeAdditionBorders(final BorderStruct border, final float fadeStep) {
