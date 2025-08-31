@@ -42,12 +42,12 @@ public class AdditionOverlayScreen extends MenuScreen {
   private final PlayerBattleEntity player;
   private final Random rand = new Random();
 
-  private ArrayList<HitStruct> actionList = new ArrayList<>();
+  private final ArrayList<HitStruct> actionList = new ArrayList<>();
   private boolean isAwaitingPress = false;
   private final MV transforms = new MV();
   public Obj reticleBorderShadow;
 
-  private int FRAMES_UNTIL_SUCCESS = 15;
+  private final int FRAMES_UNTIL_SUCCESS = 15;
   private int FRAMES = 0;
   private int numFramesToRenderInnerSquare = 0;
   private AdditionLastHitSuccessStatus lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
@@ -56,10 +56,10 @@ public class AdditionOverlayScreen extends MenuScreen {
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
-  private final double[] String1_X = new double[32];
-  private final double[] String1_Y = new double[32];
-  private final double[] String2_X = new double[32];
-  private final double[] String2_Y = new double[32];
+  private final float[] stringStartX = new float[32];
+  private final float[] stringStartY = new float[32];
+  private final float[] stringEndX = new float[32];
+  private final float[] stringEndY = new float[32];
 
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
     this.battle = battle;
@@ -74,8 +74,8 @@ public class AdditionOverlayScreen extends MenuScreen {
       .size(1.0f, 1.0f)
       .build();
 
-    for(int i = 0; i < this.String1_Y.length; i++) {
-      this.String1_X[i] = i;
+    for(int i = 0; i < this.stringStartY.length; i++) {
+      this.stringStartX[i] = i;
     }
   }
 
@@ -149,29 +149,29 @@ public class AdditionOverlayScreen extends MenuScreen {
   }
 
   private void renderString() {
-    final double Normal_Length = 0.1d;
-    final double Gravity = 0.1d;
+    final float segmentLength = 0.1f;
+    final float gravity = 0.1f;
 
-    for(int i = 1; i < this.String1_X.length - 1; i++) {
-      final double X_Vector1 = String1_X[i > 0 ? i - 1 : 0] - String1_X[i];
-      final double Y_Vector1 = String1_Y[i > 0 ? i - 1 : 0] - String1_Y[i];
-      final double Magnitude1 = java.lang.Math.hypot(X_Vector1, Y_Vector1);
-      final double Extension1 = Magnitude1 - Normal_Length;
+    for(int i = 1; i < this.stringStartX.length - 1; i++) {
+      final float dx1 = stringStartX[i - 1] - stringStartX[i];
+      final float dy1 = stringStartY[i - 1] - stringStartY[i];
+      final float mag1 = (float)java.lang.Math.hypot(dx1, dy1);
+      final float extension1 = mag1 - segmentLength;
 
-      final double X_Vector2 = String1_X[i < this.String1_X.length - 1 ? i + 1 : this.String1_X.length - 1] - String1_X[i];
-      final double Y_Vector2 = String1_Y[i < this.String1_X.length - 1 ? i + 1 : this.String1_X.length - 1] - String1_Y[i];
-      final double Magnitude2 = java.lang.Math.hypot(X_Vector2, Y_Vector2);
-      final double Extension2 = Magnitude2 - Normal_Length;
+      final float dx2 = stringStartX[i < this.stringStartX.length - 1 ? i + 1 : this.stringStartX.length - 1] - stringStartX[i];
+      final float dy2 = stringStartY[i < this.stringStartX.length - 1 ? i + 1 : this.stringStartX.length - 1] - stringStartY[i];
+      final float mag2 = (float)java.lang.Math.hypot(dx2, dy2);
+      final float extension2 = mag2 - segmentLength;
 
-      final double xv = (X_Vector1 / Magnitude1 * Extension1) + (X_Vector2 / Magnitude2 * Extension2);
-      final double yv = (Y_Vector1 / Magnitude1 * Extension1) + (Y_Vector2 / Magnitude2 * Extension2) + Gravity;
+      final float xv = dx1 / mag1 * extension1 + dx2 / mag2 * extension2;
+      final float yv = dy1 / mag1 * extension1 + dy2 / mag2 * extension2 + gravity;
 
-      String2_X[i] = String1_X[i] + (xv * 0.5d);
-      String2_Y[i] = String1_Y[i] + (yv * 0.5d);
+      stringEndX[i] = stringStartX[i] + xv * 0.5f;
+      stringEndY[i] = stringStartY[i] + yv * 0.5f;
     }
 
-    System.arraycopy(this.String2_X, 0, this.String1_X, 0, this.String2_X.length);
-    System.arraycopy(this.String2_Y, 0, this.String1_Y, 0, this.String2_Y.length);
+    System.arraycopy(this.stringEndX, 0, this.stringStartX, 0, this.stringEndX.length);
+    System.arraycopy(this.stringEndY, 0, this.stringStartY, 0, this.stringEndY.length);
 
     final int weaponPart = this.player.getWeaponModelPart();
     final int weaponVertex = this.player.getWeaponTrailVertexComponent();
@@ -182,20 +182,25 @@ public class AdditionOverlayScreen extends MenuScreen {
 
     Transformations.toScreenspace(worldspacePos, weaponCoord2, viewspacePos);
 
-    this.String1_X[0] = viewspacePos.x + GPU.getOffsetX();
-    this.String1_Y[0] = viewspacePos.y + GPU.getOffsetY();
-    this.String1_X[31] = 240;
-    this.String1_Y[31] = 200;
+    // Set start and end points
+    this.stringStartX[0] = viewspacePos.x + GPU.getOffsetX();
+    this.stringStartY[0] = viewspacePos.y + GPU.getOffsetY();
+    this.stringStartX[31] = 240;
+    this.stringStartY[31] = 200;
 
     final Matrix4f transforms = new Matrix4f();
+    final Vector2f start = new Vector2f();
+    final Vector2f end = new Vector2f();
 
-    for(int i = 0; i < this.String1_X.length - 1; i++) {
-      RENDERER.queueLine(transforms, 10.0f, new Vector2f((float)this.String1_X[i], (float)this.String1_Y[i]), new Vector2f((float)this.String1_X[i + 1], (float)this.String1_Y[i + 1]));
+    for(int i = 0; i < this.stringStartX.length - 1; i++) {
+      start.set(this.stringStartX[i], this.stringStartY[i]);
+      end.set(this.stringStartX[i + 1], this.stringStartY[i + 1]);
+      RENDERER.queueLine(transforms, 10.0f, start, end);
     }
   }
 
   private void renderButtons() {
-    if(this.numFramesToRenderInnerSquare != 0 && (this.lastHitStatus != AdditionLastHitSuccessStatus.EARLY)) {
+    if(this.numFramesToRenderInnerSquare != 0 && this.lastHitStatus != AdditionLastHitSuccessStatus.EARLY) {
       renderButtonPressHudElement1(0x24, 120, 51, Translucency.B_PLUS_F, 0x80);
       renderButtonPressHudElement1(33, 115, 48, Translucency.B_PLUS_F, 0x80);
       renderButtonPressHudElement1(0x25, 115, 50, Translucency.B_PLUS_F, 0x80);
