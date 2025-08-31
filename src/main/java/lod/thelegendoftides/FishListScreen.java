@@ -8,14 +8,15 @@ import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
 import legend.game.Scus94491BpeSegment_8002;
 import legend.game.inventory.screens.FontOptions;
-import legend.game.inventory.screens.HorizontalAlign;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.submap.SMap;
 import legend.game.types.Translucency;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static lod.thelegendoftides.Main.MOD_ID;
 import static lod.thelegendoftides.Main.isOnFishingPrimitive;
 
@@ -29,6 +30,9 @@ public class FishListScreen extends MenuScreen {
     private final int collisionPrimitiveIndex;
     final MV bgTransforms;
     final Texture bgTexture;
+
+    public boolean battleTransitionFinished = true;
+
     public FishListScreen(final FishMeta meta, final FishLocationData data) {
         this.meta = meta;
 
@@ -54,7 +58,7 @@ public class FishListScreen extends MenuScreen {
     }
     @Override
     protected void render() {
-        if(!isOnFishingPrimitive(this.collisionPrimitiveIndex)) return;
+        if(!isOnFishingPrimitive(this.collisionPrimitiveIndex) && currentEngineState_8004dd04 instanceof SMap || !battleTransitionFinished) return;
         for(int i = 0; i < this.fishSprites.size(); i++) {
             final float x = 2.0f + 230.0f;
             final float y = i * 16.0f + 22.0f;

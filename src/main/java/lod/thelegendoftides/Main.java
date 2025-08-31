@@ -3,7 +3,6 @@ import legend.core.platform.input.InputAction;
 import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
-import legend.game.EngineStateEnum;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.BattleEntity27c;
@@ -12,7 +11,6 @@ import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.events.RenderEvent;
-import legend.game.modding.events.battle.BattleMusicEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
@@ -29,13 +27,10 @@ import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import static legend.core.GameEngine.*;
-import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
-import static legend.game.Scus94491BpeSegment_8004.engineStateOnceLoaded_8004dd24;
-import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
-import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
+import static legend.game.Scus94491BpeSegment_800b.*;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
-import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
+
 @Mod(id = Main.MOD_ID, version = "3.0.0")
 public class Main {
   public static final String MOD_ID = "thelegendoftides";
@@ -49,6 +44,7 @@ public class Main {
   private boolean isFishEncounter = false;
 
   private final MenuStack menuStack = new MenuStack();
+  private FishListScreen fishListScreen;
 
   public Main() {
     EVENTS.register(this);
@@ -63,17 +59,14 @@ public class Main {
     this.meta = new FishMeta();
   }
 
-  // Could not think of another way to not leak memory, lol
-  private Runnable fishListScreenUnloader = null;
   @EventListener
   public void checkFishingMap(final SubmapEnvironmentTextureEvent event) {
-    if(fishListScreenUnloader != null) { fishListScreenUnloader.run(); }
+    if(this.fishListScreen != null) { this.fishListScreen.unload(); }
     this.menuStack.reset();
     this.currentCutFishingData = this.meta.getCutFish(event.submapCut);
     if(this.currentCutFishingData != null) {
-      final FishListScreen screen = new FishListScreen(this.meta, this.currentCutFishingData);
-      this.fishListScreenUnloader = screen::unload;
-      this.menuStack.pushScreen(screen);
+      this.fishListScreen = new FishListScreen(this.meta, this.currentCutFishingData);
+      this.menuStack.pushScreen(this.fishListScreen);
     }
   }
 
@@ -81,17 +74,16 @@ public class Main {
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
     if(!this.isFishEncounter) return;
     this.isFishEncounter = false;
+
+    scriptStatePtrArr_800bc1c0[5].pause();
     scriptStatePtrArr_800bc1c0[6].pause();
     scriptStatePtrArr_800bc1c0[11].pause();
+    scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
 
     final Battle battle = ((Battle)currentEngineState_8004dd04);
     final PlayerBattleEntity player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
-    final BattleEntity27c enemy = (BattleEntity27c)scriptStatePtrArr_800bc1c0[11].innerStruct_00;
-
-    scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
-
-    scriptStatePtrArr_800bc1c0[5].pause();
     BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
+
     battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
     camera.setViewpoint(-8000.0f, -2000.0f, -15000.0f);
@@ -106,7 +98,9 @@ public class Main {
     player.model_148.coord2_14.coord.transfer.y = 0;
     player.model_148.coord2_14.coord.transfer.z = -5200;
     player.model_148.coord2_14.transforms.rotate.y = 0;
-    this.menuStack.pushScreen(new AdditionOverlayScreen(battle, player));
+
+    this.fishListScreen.battleTransitionFinished = true;
+    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
   }
 
   @EventListener
@@ -132,25 +126,26 @@ public class Main {
     if(event.action == TIDES_INPUT_FISH.get()
             && isOnFishingPrimitive(this.currentCutFishingData.collisionPrimitive())
             && !gameState_800babc8.indicatorsDisabled_4e3) {
+
       this.isFishEncounter = true;
-      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, new Encounter.Monster(1, new Vector3f())), 13);
+      this.fishListScreen.battleTransitionFinished = false;
+
+      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, 133, 6, new Encounter.Monster(1, new Vector3f())), 13);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
-      //this.meta.getRandomFishForBait(this.currentCutFishingData, "bait");
-      //scriptStatePtrArr_800bc1c0[10].pause();
-      //gameState_800babc8.indicatorsDisabled_4e3 = true;
-      //playMenuSound(2);
-      //this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
     }
   }
+
   private void handleBaitSelected(final String bait, final Runnable unloadBaitSelectionScreen) {
     unloadBaitSelectionScreen.run();
+    menuStack.popScreen();
+    this.fishListScreen.unload();
+
     if(bait == null) {
-      scriptStatePtrArr_800bc1c0[10].resume();
-      gameState_800babc8.indicatorsDisabled_4e3 = false;
+      postBattleAction_800bc974 = 5;
       return;
     }
     final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
-    this.menuStack.pushScreen(new WaitingScreen(this.meta, fish));
+    this.menuStack.pushScreen(new AdditionOverlayScreen(((Battle)currentEngineState_8004dd04), (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00)/*new WaitingScreen(this.meta, fish)*/);
   }
 
   public static boolean isOnFishingPrimitive(final int collisionPrimitive) {
