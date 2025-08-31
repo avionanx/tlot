@@ -55,7 +55,6 @@ public class AdditionOverlayScreen extends MenuScreen {
   private AdditionLastHitSuccessStatus lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
 
   private FishingState state = FishingState.IDLE;
-  private FishingState animationLoadedState = FishingState.IDLE;
   private int loadingAnimIndex = -1;
   private int animationFrames;
 
@@ -71,6 +70,9 @@ public class AdditionOverlayScreen extends MenuScreen {
 
   private final Obj rod;
   private final Obj bobber;
+
+  private final GsCOORDINATE2 bobberCoord2 = new GsCOORDINATE2();
+  private final MV bobberTransforms = new MV();
 
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
     this.battle = battle;
@@ -145,8 +147,7 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.additionTicks = this.activeAddition.hits_00[this.loadingAnimIndex - 16].totalFrames_01;
 
     this.loadAnimations(fileIndex);
-    this.animationLoadedState = FishingState.START_REELING;
-    this.state = FishingState.LOADING_ANIMATION;
+    this.state = FishingState.START_REELING;
   }
 
   private void loadAnimations(final int fileIndex) {
@@ -160,53 +161,57 @@ public class AdditionOverlayScreen extends MenuScreen {
 
   @Override
   protected void render() {
-    switch(this.state) {
-      case LOADING_ANIMATION -> {
-        final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
+    if(this.loadingAnimIndex != -1) {
+      final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
 
-        if(asset != null) {
-          asset.loadIntoModel(this.player.model_148);
-          this.animationFrames = asset.totalFrames_0e;
-          this.loadingAnimIndex = -1;
-          this.state = this.animationLoadedState;
-        }
+      if(asset != null) {
+        asset.loadIntoModel(this.player.model_148);
+        this.animationFrames = asset.totalFrames_0e;
+        this.loadingAnimIndex = -1;
       }
-
-      case CASTING -> {
-        this.castingTicks++;
-
-        if(this.castingTicks > this.animationFrames) {
-          final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, 0);
-          asset.loadIntoModel(this.player.model_148);
+    } else {
+      switch(this.state) {
+        case START_CASTING -> {
+          this.bobberCoord2.set(this.player.model_148.coord2_14);
+          this.state = FishingState.CASTING;
         }
 
-        if(this.castingTicks > this.animationFrames * 2) {
-          this.addHit();
-        }
-      }
+        case CASTING -> {
+          this.castingTicks++;
 
-      case START_REELING -> {
-        final int frameBeginTime = this.FRAMES;
-        final HitStruct hit = new HitStruct(0.06f, frameBeginTime, 2, new ArrayList<>(14));
+          if(this.castingTicks > this.animationFrames) {
+            final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, 0);
+            asset.loadIntoModel(this.player.model_148);
+          }
 
-        for(int i = 0; i < 14; i++) {
-          final float size = (2 + i) * 15.0f;
-          final float angle = Math.toRadians(i * 11.25f);
-          final int framesUntilRender = hit.frameBeginTime() + (hit.numSuccessFrames() - 1) / 2 + 14 - i;
-          BorderStruct border = new BorderStruct(size, angle, new Vector3f(0.28f, 0.37f, 1.0f), false, framesUntilRender);
-          hit.borders().addFirst(border);
+          if(this.castingTicks > this.animationFrames * 2) {
+            this.addHit();
+          }
         }
 
-        this.actionList.add(hit);
-        this.state = FishingState.REELING;
-      }
+        case START_REELING -> {
+          final int frameBeginTime = this.FRAMES;
+          final HitStruct hit = new HitStruct(0.06f, frameBeginTime, 2, new ArrayList<>(14));
 
-      case REELING -> {
-        this.additionTicks--;
+          for(int i = 0; i < 14; i++) {
+            final float size = (2 + i) * 15.0f;
+            final float angle = Math.toRadians(i * 11.25f);
+            final int framesUntilRender = hit.frameBeginTime() + (hit.numSuccessFrames() - 1) / 2 + 14 - i;
+            BorderStruct border = new BorderStruct(size, angle, new Vector3f(0.28f, 0.37f, 1.0f), false, framesUntilRender);
+            hit.borders().addFirst(border);
+          }
 
-        if(this.additionTicks == 0) {
-          this.player.model_148.animationState_9c = 2; // pause
-          this.addHit();
+          this.actionList.add(hit);
+          this.state = FishingState.REELING;
+        }
+
+        case REELING -> {
+          this.additionTicks--;
+
+          if(this.additionTicks == 0) {
+            this.player.model_148.animationState_9c = 2; // pause
+            this.addHit();
+          }
         }
       }
     }
@@ -217,7 +222,11 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.renderAdditionInnerSquare();
     this.renderRod();
 
-    if(this.state.ordinal() >= FishingState.LOADING_ANIMATION.ordinal() && this.animationLoadedState != FishingState.CASTING) {
+    if(this.state.ordinal() >= FishingState.CASTING.ordinal()) {
+      this.renderBobber();
+    }
+
+    if(this.state.ordinal() > FishingState.IDLE.ordinal()) {
       this.renderString();
     }
   }
@@ -245,8 +254,8 @@ public class AdditionOverlayScreen extends MenuScreen {
     System.arraycopy(this.stringTempY, 0, this.stringY, 0, this.stringTempY.length);
 
     // Set start and end points
-    this.stringX[0] = startPos.x + GPU.getOffsetX();
-    this.stringY[0] = startPos.y + GPU.getOffsetY();
+    this.stringX[0] = startPos.x;
+    this.stringY[0] = startPos.y;
     this.stringX[31] = endPos.x;
     this.stringY[31] = endPos.y;
   }
@@ -256,16 +265,20 @@ public class AdditionOverlayScreen extends MenuScreen {
     final int weaponVertex = this.player.getWeaponTrailVertexComponent();
     final ModelPart10 sword = this.player.model_148.modelParts_00[weaponPart];
     final GsCOORDINATE2 weaponCoord2 = sword.coord2_04;
-    final Vector3f worldspacePos = sword.tmd_08.vert_top_00[weaponVertex].add(1300.0f, 0.0f, 0.0f, new Vector3f());
-    final Vector2f viewspacePos = new Vector2f();
 
-    Transformations.toScreenspace(worldspacePos, weaponCoord2, viewspacePos);
+    final Vector3f rodWorldPos = sword.tmd_08.vert_top_00[weaponVertex].add(1300.0f, 0.0f, 0.0f, new Vector3f());
+    final Vector2f rodViewPos = new Vector2f();
+    Transformations.toScreenspace(rodWorldPos, weaponCoord2, rodViewPos);
+
+    final Vector3f bobberWorldPos = new Vector3f();
+    final Vector2f bobberViewPos = new Vector2f();
+    Transformations.toScreenspace(bobberWorldPos, this.bobberCoord2, bobberViewPos);
 
     final float segmentLength = 0.1f;
     final float gravity = 0.1f;
 
     for(int i = 0; i < iterations; i++) {
-      this.iterateStringPhysics(viewspacePos, new Vector2f(240.0f, 200.0f), segmentLength, gravity);
+      this.iterateStringPhysics(rodViewPos, bobberViewPos, segmentLength, gravity);
     }
   }
 
@@ -279,7 +292,8 @@ public class AdditionOverlayScreen extends MenuScreen {
     for(int i = 0; i < this.stringX.length - 1; i++) {
       start.set(this.stringX[i], this.stringY[i]);
       end.set(this.stringX[i + 1], this.stringY[i + 1]);
-      RENDERER.queueLine(transforms, 10.0f, start, end);
+      RENDERER.queueLine(transforms, 10.0f, start, end)
+        .screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY());
     }
   }
 
@@ -379,6 +393,17 @@ public class AdditionOverlayScreen extends MenuScreen {
     ;
   }
 
+  private void renderBobber() {
+    this.bobberCoord2.flg = 0;
+    GsGetLw(this.bobberCoord2, this.bobberTransforms);
+
+    this.bobberTransforms
+      .scale(800.0f)
+    ;
+
+    RENDERER.queueModel(this.bobber, this.bobberTransforms, QueuedModelStandard.class);
+  }
+
   private void tick() {
     final Iterator<HitStruct> hitStructIterator = this.actionList.iterator();
     while(hitStructIterator.hasNext()) {
@@ -452,8 +477,7 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.loadAnimations(4031);
     this.loadingAnimIndex = 7; // Throw attack item
     this.castingTicks = 0;
-    this.animationLoadedState = FishingState.CASTING;
-    this.state = FishingState.LOADING_ANIMATION;
+    this.state = FishingState.START_CASTING;
   }
 
   private void fadeAdditionBorders(final BorderStruct border, final float fadeStep) {
