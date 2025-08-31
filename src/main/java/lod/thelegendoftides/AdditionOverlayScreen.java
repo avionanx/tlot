@@ -285,7 +285,6 @@ public class AdditionOverlayScreen extends MenuScreen {
       } else if(hit.frameBeginTime() + this.FRAMES_UNTIL_SUCCESS + hit.numSuccessFrames() == this.FRAMES && this.isAwaitingPress) {
         this.lastHitStatus = AdditionLastHitSuccessStatus.LATE;
         this.numFramesToRenderInnerSquare = 2;
-        System.out.println("Late");
         this.isAwaitingPress = false;
         continue;
       } else if(hit.frameBeginTime() + this.FRAMES_UNTIL_SUCCESS + hit.numSuccessFrames() + 2 < this.FRAMES) {
@@ -332,12 +331,10 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.isAwaitingPress = false;
         this.lastHitStatus = AdditionLastHitSuccessStatus.SUCCESS;
         this.numFramesToRenderInnerSquare = 2;
-        System.out.println("Success");
       } else if(!this.actionList.isEmpty()) {
         this.lastHitStatus = AdditionLastHitSuccessStatus.EARLY;
         this.numFramesToRenderInnerSquare = 2;
         this.actionList.removeFirst();
-        System.out.println("Early");
       }
       return InputPropagation.HANDLED;
     } else if(action == TIDES_INPUT_FISH.get()) {

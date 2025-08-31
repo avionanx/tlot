@@ -105,16 +105,10 @@ public class Main {
     player.model_148.coord2_14.coord.transfer.x = -2680;
     player.model_148.coord2_14.coord.transfer.y = 0;
     player.model_148.coord2_14.coord.transfer.z = -5200;
+    player.model_148.coord2_14.transforms.rotate.y = 0;
     this.menuStack.pushScreen(new AdditionOverlayScreen(battle, player));
   }
-/*
-  @EventListener
-  public void handleEntranceCamera(final BattleEncounterStageDataEvent event) {
-    event.stageData.monsterOpeningCamera_14 = -1;
-    event.stageData.playerOpeningCamera_10 = -1;
-    ((Battle)currentEngineState_8004dd04).battleInitialCameraMovementFinished_800c66a8 = true;
-  }
- */
+
   @EventListener
   public void registerInputActions(final InputActionRegistryEvent event) {
     TIDES_INPUT_REGISTRAR.registryEvent(event);
