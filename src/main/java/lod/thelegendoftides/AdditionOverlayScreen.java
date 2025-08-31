@@ -170,7 +170,7 @@ public class AdditionOverlayScreen extends MenuScreen {
         case REELING -> {
           this.additionTicks--;
 
-          if(this.additionTicks == 0) {
+          if(this.additionTicks <= 0) {
             this.player.model_148.animationState_9c = 2; // pause
             this.addHit();
           }
