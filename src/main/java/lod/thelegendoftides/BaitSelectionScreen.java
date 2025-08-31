@@ -6,6 +6,7 @@ import legend.core.gte.MV;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
+import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
@@ -18,7 +19,7 @@ import java.util.function.BiConsumer;
 
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
-import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
+import static legend.game.modding.coremod.CoreMod.*;
 import static lod.thelegendoftides.Main.MOD_ID;
 public class BaitSelectionScreen extends MenuScreen {
     private final MeshObj bgQuad;
@@ -77,9 +78,8 @@ public class BaitSelectionScreen extends MenuScreen {
 
         button.onPressed(onClick::run);
         this.menuButtons.add(button);
-        button.onKeyPress((key, scancode, mods, repeat) -> {
-            switch(key) {
-                case S -> {
+        button.onInputActionPressed((action, repeat) -> {
+                if(action == INPUT_ACTION_MENU_DOWN.get()) {
                     for(int i = 1; i < this.menuButtons.size(); i++) {
                         final Button otherButton = this.menuButtons.get(Math.floorMod(index + i, this.menuButtons.size()));
 
@@ -89,8 +89,9 @@ public class BaitSelectionScreen extends MenuScreen {
                             break;
                         }
                     }
+                    return InputPropagation.HANDLED;
                 }
-                case W -> {
+                else if(action == INPUT_ACTION_MENU_UP.get()) {
                     for(int i = 1; i < this.menuButtons.size(); i++) {
                         final Button otherButton = this.menuButtons.get(Math.floorMod(index - i, this.menuButtons.size()));
 
@@ -100,10 +101,9 @@ public class BaitSelectionScreen extends MenuScreen {
                             break;
                         }
                     }
+                    return InputPropagation.HANDLED;
                 }
-            }
-
-            return null;
+            return InputPropagation.PROPAGATE;
         });
     }
 
