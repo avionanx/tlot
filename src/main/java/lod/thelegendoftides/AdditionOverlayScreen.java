@@ -2,6 +2,7 @@ package lod.thelegendoftides;
 
 import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
+import legend.core.QueuedModelTmd;
 import legend.core.Transformations;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
@@ -21,17 +22,23 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
 import static legend.core.GameEngine.GPU;
+import static legend.core.GameEngine.GTE;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.loadDrgnDir;
+import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
+import static legend.game.Scus94491BpeSegment_8003.GsSetLightMatrix;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
+import static legend.game.Scus94491BpeSegment_800c.lightColourMatrix_800c3508;
+import static legend.game.Scus94491BpeSegment_800c.lightDirectionMatrix_800c34e8;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.renderButtonPressHudElement1;
 import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
@@ -61,6 +68,9 @@ public class AdditionOverlayScreen extends MenuScreen {
   private final float[] stringTempX = new float[32];
   private final float[] stringTempY = new float[32];
 
+  private final Obj rod;
+  private final Obj bobber;
+
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
     this.battle = battle;
     this.player = player;
@@ -74,6 +84,18 @@ public class AdditionOverlayScreen extends MenuScreen {
       .size(1.0f, 1.0f)
       .build();
 
+    // Initialize string
+    this.initString();
+
+    // Load rod/bobber models
+    this.rod = new GlbLoader("rod", Path.of("rod.glb")).build();
+    this.bobber = new GlbLoader("bobber", Path.of("bobber.glb")).build();
+
+    // Hide player's weapon
+    this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
+  }
+
+  private void initString() {
     // Seed string X values so the math doesn't NaN
     for(int i = 0; i < this.stringX.length; i++) {
       this.stringX[i] = i;
@@ -164,6 +186,7 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.renderAdditionBorders();
     this.renderButtons();
     this.renderAdditionInnerSquare();
+    this.renderRod();
     this.renderString();
   }
 
@@ -201,7 +224,7 @@ public class AdditionOverlayScreen extends MenuScreen {
     final int weaponVertex = this.player.getWeaponTrailVertexComponent();
     final ModelPart10 sword = this.player.model_148.modelParts_00[weaponPart];
     final GsCOORDINATE2 weaponCoord2 = sword.coord2_04;
-    final Vector3f worldspacePos = sword.tmd_08.vert_top_00[weaponVertex];
+    final Vector3f worldspacePos = sword.tmd_08.vert_top_00[weaponVertex].add(1300.0f, 0.0f, 0.0f, new Vector3f());
     final Vector2f viewspacePos = new Vector2f();
 
     Transformations.toScreenspace(worldspacePos, weaponCoord2, viewspacePos);
@@ -303,6 +326,27 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
       }
     }
+  }
+
+  private void renderRod() {
+    this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
+//    this.player.model_148.partInvisible_f4 = 0L;
+    final MV lw = new MV();
+    final GsCOORDINATE2 coord2 = this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04;
+    coord2.flg = 0;
+    GsGetLw(coord2, lw);
+//    GsSetLightMatrix(lw);
+    lw
+      .rotateY(-MathHelper.HALF_PI)
+      .scale(800.0f)
+    ;
+
+    RENDERER.queueModel(this.rod, lw, QueuedModelStandard.class)
+      .depthOffset(this.player.model_148.zOffset_a0 * 4)
+//      .lightDirection(lightDirectionMatrix_800c34e8)
+//      .lightColour(lightColourMatrix_800c3508)
+//      .backgroundColour(GTE.backgroundColour)
+    ;
   }
 
   private void tick() {
