@@ -2,10 +2,7 @@ package lod.thelegendoftides;
 
 import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
-import legend.core.Transformations;
-import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
-import legend.core.gte.ModelPart10;
 import legend.core.opengl.Obj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.platform.input.InputAction;
@@ -17,11 +14,8 @@ import legend.game.inventory.screens.MenuScreen;
 import legend.game.types.TmdAnimationFile;
 import legend.game.types.Translucency;
 import org.joml.Math;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -63,16 +57,7 @@ public class AdditionOverlayScreen extends MenuScreen {
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
-  private final float[] stringX = new float[32];
-  private final float[] stringY = new float[32];
-  private final float[] stringTempX = new float[32];
-  private final float[] stringTempY = new float[32];
-
-  private final Obj rod;
-  private final Obj bobber;
-
-  private final GsCOORDINATE2 bobberCoord2 = new GsCOORDINATE2();
-  private final MV bobberTransforms = new MV();
+  private final FishingRod fishingRod;
   private float bobberVerticalAcceleration;
 
   public AdditionOverlayScreen(Battle battle, PlayerBattleEntity player) {
@@ -88,40 +73,10 @@ public class AdditionOverlayScreen extends MenuScreen {
       .size(1.0f, 1.0f)
       .build();
 
-    // Initialize string
-    this.initString();
-
-    // Load rod/bobber models
-    this.rod = new GlbLoader("rod", Path.of("rod.glb")).build();
-    this.bobber = new GlbLoader("bobber", Path.of("bobber.glb")).build();
+    this.fishingRod = new FishingRod(this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04);
 
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
-  }
-
-  private void initString() {
-    // Seed string X values so the math doesn't NaN
-    for(int i = 0; i < this.stringX.length; i++) {
-      this.stringX[i] = i;
-    }
-
-    // Iterate once to set the start/end points
-    this.processString(1);
-
-    // Set the initial points to be a smooth line between the start and end
-    final float startX = this.stringX[0];
-    final float startY = this.stringY[0];
-    final float endX = this.stringX[this.stringX.length - 1];
-    final float endY = this.stringY[this.stringY.length - 1];
-    final float dx = endX - startX;
-    final float dy = endY - startY;
-    final float segmentX = dx / this.stringX.length;
-    final float segmentY = dy / this.stringY.length;
-
-    for(int i = 1; i < this.stringX.length - 1; i++) {
-      this.stringX[i] = this.stringX[i - 1] + segmentX;
-      this.stringY[i] = this.stringY[i - 1] + segmentY;
-    }
   }
 
   private void addHit() {
@@ -180,14 +135,14 @@ public class AdditionOverlayScreen extends MenuScreen {
             asset.loadIntoModel(this.player.model_148);
           }
 
-          if(this.castingTicks <= 17) {
-            this.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
+          if(this.castingTicks < 18) {
+            this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
             this.bobberVerticalAcceleration = 100.0f;
           } else if(this.castingTicks < 32) {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
-            this.bobberCoord2.coord.transfer.add(new Vector3f(0.0f, -this.bobberVerticalAcceleration, -450.0f).mul(lw));
-            this.bobberCoord2.flg = 0;
+            this.fishingRod.bobberCoord2.coord.transfer.add(new Vector3f(0.0f, -this.bobberVerticalAcceleration, -450.0f).mul(lw));
+            this.fishingRod.bobberCoord2.flg = 0;
             this.bobberVerticalAcceleration -= 30.0f;
           }
 
@@ -227,80 +182,15 @@ public class AdditionOverlayScreen extends MenuScreen {
     this.renderAdditionBorders();
     this.renderButtons();
     this.renderAdditionInnerSquare();
-    this.renderRod();
+    this.fishingRod.renderRod(this.player.model_148.zOffset_a0 * 4);
 
     if(this.state.ordinal() >= FishingState.CASTING.ordinal()) {
-      this.renderBobber();
+      this.fishingRod.renderBobber();
     }
 
     if(this.state.ordinal() > FishingState.IDLE.ordinal()) {
-      this.renderString();
-    }
-  }
-
-  private void iterateStringPhysics(final Vector2f startPos, final Vector2f endPos, final float segmentLength, final float gravity) {
-    for(int i = 1; i < this.stringX.length - 1; i++) {
-      final float dx1 = stringX[i - 1] - stringX[i];
-      final float dy1 = stringY[i - 1] - stringY[i];
-      final float mag1 = (float)java.lang.Math.hypot(dx1, dy1);
-      final float extension1 = mag1 - segmentLength;
-
-      final float dx2 = stringX[i + 1] - stringX[i];
-      final float dy2 = stringY[i + 1] - stringY[i];
-      final float mag2 = (float)java.lang.Math.hypot(dx2, dy2);
-      final float extension2 = mag2 - segmentLength;
-
-      final float xv = dx1 / mag1 * extension1 + dx2 / mag2 * extension2;
-      final float yv = dy1 / mag1 * extension1 + dy2 / mag2 * extension2 + gravity;
-
-      stringTempX[i] = stringX[i] + xv * 0.5f;
-      stringTempY[i] = stringY[i] + yv * 0.5f;
-    }
-
-    System.arraycopy(this.stringTempX, 0, this.stringX, 0, this.stringTempX.length);
-    System.arraycopy(this.stringTempY, 0, this.stringY, 0, this.stringTempY.length);
-
-    // Set start and end points
-    this.stringX[0] = startPos.x;
-    this.stringY[0] = startPos.y;
-    this.stringX[31] = endPos.x;
-    this.stringY[31] = endPos.y;
-  }
-
-  private void processString(final int iterations) {
-    final int weaponPart = this.player.getWeaponModelPart();
-    final int weaponVertex = this.player.getWeaponTrailVertexComponent();
-    final ModelPart10 sword = this.player.model_148.modelParts_00[weaponPart];
-    final GsCOORDINATE2 weaponCoord2 = sword.coord2_04;
-
-    final Vector3f rodWorldPos = sword.tmd_08.vert_top_00[weaponVertex].add(1300.0f, 0.0f, 0.0f, new Vector3f());
-    final Vector2f rodViewPos = new Vector2f();
-    Transformations.toScreenspace(rodWorldPos, weaponCoord2, rodViewPos);
-
-    final Vector3f bobberWorldPos = new Vector3f();
-    final Vector2f bobberViewPos = new Vector2f();
-    Transformations.toScreenspace(bobberWorldPos, this.bobberCoord2, bobberViewPos);
-
-    final float segmentLength = 0.1f;
-    final float gravity = 0.1f;
-
-    for(int i = 0; i < iterations; i++) {
-      this.iterateStringPhysics(rodViewPos, bobberViewPos, segmentLength, gravity);
-    }
-  }
-
-  private void renderString() {
-    this.processString(3);
-
-    final Matrix4f transforms = new Matrix4f();
-    final Vector2f start = new Vector2f();
-    final Vector2f end = new Vector2f();
-
-    for(int i = 0; i < this.stringX.length - 1; i++) {
-      start.set(this.stringX[i], this.stringY[i]);
-      end.set(this.stringX[i + 1], this.stringY[i + 1]);
-      RENDERER.queueLine(transforms, 10.0f, start, end)
-        .screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY());
+      this.fishingRod.processString(3);
+      this.fishingRod.renderString();
     }
   }
 
@@ -379,36 +269,6 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
       }
     }
-  }
-
-  private void renderRod() {
-    final MV lw = new MV();
-    final GsCOORDINATE2 coord2 = this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04;
-    coord2.flg = 0;
-    GsGetLw(coord2, lw);
-//    GsSetLightMatrix(lw);
-    lw
-      .rotateY(-MathHelper.HALF_PI)
-      .scale(800.0f)
-    ;
-
-    RENDERER.queueModel(this.rod, lw, QueuedModelStandard.class)
-      .depthOffset(this.player.model_148.zOffset_a0 * 4)
-//      .lightDirection(lightDirectionMatrix_800c34e8)
-//      .lightColour(lightColourMatrix_800c3508)
-//      .backgroundColour(GTE.backgroundColour)
-    ;
-  }
-
-  private void renderBobber() {
-    this.bobberCoord2.flg = 0;
-    GsGetLw(this.bobberCoord2, this.bobberTransforms);
-
-    this.bobberTransforms
-      .scale(800.0f)
-    ;
-
-    RENDERER.queueModel(this.bobber, this.bobberTransforms, QueuedModelStandard.class);
   }
 
   private void tick() {
