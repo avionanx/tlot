@@ -76,11 +76,12 @@ public class Main {
   private long nextBobInterval;
   private int bobCount;
 
+  private FishReelingHandler fishReelingHandler;
   private AdditionOverlayScreen additionScreen;
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
-  private FishReelingHandler fishReelingHandler;
+  private int fishLostTicks;
 
   public Main() {
     EVENTS.register(this);
@@ -138,14 +139,12 @@ public class Main {
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
 
-    this.fishListScreen.isFishListScreenDisabled = false;
-
     if(this.fishingRod != null) {
       throw new IllegalStateException("Need to clean up after fishing");
     }
 
     this.fishingRod = new FishingRod(this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04);
-    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    this.showBaitScreen();
     this.state = FishingState.IDLE;
   }
 
@@ -174,8 +173,7 @@ public class Main {
           this.castingTicks++;
 
           if(this.castingTicks > this.animationFrames) {
-            final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, 0);
-            asset.loadIntoModel(this.player.model_148);
+            this.setIdleAnimation();
           }
 
           if(this.castingTicks < 18) {
@@ -223,6 +221,19 @@ public class Main {
             this.loadRandomAdditionHit();
           }
         }
+
+        case FISH_LOST -> {
+          this.fishLostTicks++;
+
+          if(this.fishLostTicks > this.animationFrames) {
+            this.setIdleAnimation();
+          }
+
+          if(this.fishLostTicks > this.animationFrames * 2) {
+            this.showBaitScreen();
+            this.state = FishingState.IDLE;
+          }
+        }
       }
     }
 
@@ -232,7 +243,7 @@ public class Main {
       this.fishingRod.renderBobber();
     }
 
-    if(this.state.ordinal() > FishingState.IDLE.ordinal()) {
+    if(this.state.ordinal() > FishingState.IDLE.ordinal() && this.state.ordinal() < FishingState.FISH_LOST.ordinal()) {
       this.fishingRod.processString(3);
       this.fishingRod.renderString();
     }
@@ -287,6 +298,23 @@ public class Main {
     });
   }
 
+  private void setIdleAnimation() {
+    this.loadingAnimIndex = 0;
+  }
+
+  private void setHurtAnimation() {
+    this.loadingAnimIndex = 1;
+  }
+
+  private void setThrowAnimation() {
+    this.loadingAnimIndex = 7;
+  }
+
+  private void showBaitScreen() {
+    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    this.fishListScreen.isFishListScreenDisabled = false;
+  }
+
   private void handleBaitSelected(final String bait, final Runnable unloadBaitSelectionScreen) {
     unloadBaitSelectionScreen.run();
     this.fishListScreen.isFishListScreenDisabled = true;
@@ -305,7 +333,7 @@ public class Main {
     this.fishingRod.initString();
     playSound(0x0, 0x15, 0x10, 0);
     this.loadAnimations(4031 + this.player.charId_272 * 8);
-    this.loadingAnimIndex = 7; // Throw attack item
+    this.setThrowAnimation();
     this.castingTicks = 0;
     this.state = FishingState.CASTING;
   }
@@ -328,8 +356,7 @@ public class Main {
   }
 
   private void onFishEscaped() {
-    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
-    this.fishListScreen.isFishListScreenDisabled = false;
+    this.showBaitScreen();
     this.state = FishingState.IDLE;
   }
 
@@ -369,11 +396,21 @@ public class Main {
   }
 
   private void fishCapturedCallback() {
-    System.out.println();
+    //TODO fish caught
+
+    this.menuStack.popScreen();
+    this.showBaitScreen();
+    this.setIdleAnimation();
+    this.state = FishingState.IDLE;
   }
 
   private void fishLostCallback() {
-    System.out.println();
+    //TODO fish lost
+
+    this.menuStack.popScreen();
+    this.setHurtAnimation();
+    this.fishLostTicks = 0;
+    this.state = FishingState.FISH_LOST;
   }
 
   //TODO use this
