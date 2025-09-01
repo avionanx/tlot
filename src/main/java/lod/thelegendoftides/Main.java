@@ -271,6 +271,7 @@ public class Main {
   }
 
   private void cast() {
+    this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
     this.fishingRod.initString();
     this.loadAnimations(4031 + this.player.charId_272 * 8);
     this.loadingAnimIndex = 7; // Throw attack item
@@ -296,6 +297,7 @@ public class Main {
 
   private void onFishEscaped() {
     this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    this.state = FishingState.IDLE;
   }
 
   private void loadRandomAdditionHit() {
