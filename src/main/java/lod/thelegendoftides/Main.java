@@ -25,8 +25,7 @@ import org.legendofdragoon.modloader.registries.RegistryId;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
-import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
-import static legend.game.Scus94491BpeSegment.loadDrgnDir;
+import static legend.game.Scus94491BpeSegment.*;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
@@ -123,7 +122,7 @@ public class Main {
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
 
-    this.fishListScreen.battleTransitionFinished = true;
+    this.fishListScreen.isFishListScreenDisabled = false;
 
     if(this.fishingRod != null) {
       throw new IllegalStateException("Need to clean up after fishing");
@@ -212,7 +211,7 @@ public class Main {
             && !gameState_800babc8.indicatorsDisabled_4e3) {
 
       this.isFishEncounter = true;
-      this.fishListScreen.battleTransitionFinished = false;
+      this.fishListScreen.isFishListScreenDisabled = true;
 
       SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, 133, 6, new Encounter.Monster(1, new Vector3f())), 13);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
@@ -230,6 +229,7 @@ public class Main {
 
   private void handleBaitSelected(final String bait, final Runnable unloadBaitSelectionScreen) {
     unloadBaitSelectionScreen.run();
+    this.fishListScreen.isFishListScreenDisabled = true;
 
     if(bait == null) {
       postBattleAction_800bc974 = 5;
@@ -242,6 +242,7 @@ public class Main {
 
   private void cast() {
     this.fishingRod.initString();
+    playSound(0x0, 0x15, 0x10, 0);
     this.loadAnimations(4031 + this.player.charId_272 * 8);
     this.loadingAnimIndex = 7; // Throw attack item
     this.castingTicks = 0;
@@ -257,6 +258,7 @@ public class Main {
 
   private void handleQTEFail() {
     this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    this.fishListScreen.isFishListScreenDisabled = false;
   }
 
   private void loadRandomAdditionHit() {

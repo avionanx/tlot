@@ -31,7 +31,7 @@ public class FishListScreen extends MenuScreen {
     final MV bgTransforms;
     final Texture bgTexture;
 
-    public boolean battleTransitionFinished = true;
+    public boolean isFishListScreenDisabled = false;
 
     public FishListScreen(final FishMeta meta, final FishLocationData locationData) {
         this.meta = meta;
@@ -58,7 +58,7 @@ public class FishListScreen extends MenuScreen {
     }
     @Override
     protected void render() {
-        if(!isOnFishingPrimitive(this.locationData) && currentEngineState_8004dd04 instanceof SMap || !battleTransitionFinished) return;
+        if(!isOnFishingPrimitive(this.locationData) && currentEngineState_8004dd04 instanceof SMap || isFishListScreenDisabled) return;
         for(int i = 0; i < this.fishSprites.size(); i++) {
             final float x = 2.0f + 230.0f;
             final float y = i * 16.0f + 22.0f;
