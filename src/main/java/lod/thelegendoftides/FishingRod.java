@@ -43,6 +43,11 @@ public class FishingRod {
     this.bobber = new GlbLoader("bobber", Path.of("bobber.glb")).build();
   }
 
+  public void delete() {
+    this.rod.delete();
+    this.bobber.delete();
+  }
+
   public void setSegmentLength(final float segmentLength) {
     this.segmentLength = segmentLength;
   }
@@ -51,7 +56,7 @@ public class FishingRod {
     this.gravity = gravity;
   }
 
-  private void initString() {
+  public void initString() {
     // Seed string X values so the math doesn't NaN
     for(int i = 0; i < this.stringX.length; i++) {
       this.stringX[i] = i;
