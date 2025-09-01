@@ -10,7 +10,9 @@ import legend.game.combat.deff.Cmb;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
+import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
+import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
@@ -91,6 +93,7 @@ public class Main {
   private FishReelingHandler fishReelingHandler;
   private AdditionOverlayScreen additionScreen;
   private AdditionHits80 activeAddition;
+  private AdditionHitProperties10 activeAdditionHit;
   private int additionTicks;
 
   private int fishCaughtTicks;
@@ -237,12 +240,23 @@ public class Main {
           this.fishingRod.bobberCoord2.flg = 0;
         }
 
+        case START_REELING -> {
+          this.additionTicks--;
+
+          for(final AdditionSound sound : this.activeAdditionHit.sounds) {
+            playSound(1, sound.soundIndex, sound.initialDelay, 0);
+          }
+
+          this.state = FishingState.REELING;
+        }
+
         case REELING -> {
           this.additionTicks--;
 
           if(this.additionTicks <= 0) {
             this.player.model_148.animationState_9c = 2; // pause
             this.loadRandomAdditionHit();
+            this.state = FishingState.START_REELING;
           }
         }
 
@@ -407,7 +421,7 @@ public class Main {
     this.additionScreen = new AdditionOverlayScreen(fishReelingHandler::additionSuccessHandler, fishReelingHandler::additionFailCallback);
     this.menuStack.pushScreen(this.additionScreen);
     this.loadRandomAdditionHit();
-    this.state = FishingState.REELING;
+    this.state = FishingState.START_REELING;
   }
 
   private void onFishEscaped() {
@@ -436,7 +450,9 @@ public class Main {
     }
 
     this.loadingAnimIndex = 16 + this.rand.nextInt(hitCount);
-    this.additionTicks = this.activeAddition.hits_00[this.loadingAnimIndex - 16].totalFrames_01;
+
+    this.activeAdditionHit = this.activeAddition.hits_00[this.loadingAnimIndex - 16];
+    this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
     this.loadAnimations(fileIndex);
     this.additionScreen.addHit();
