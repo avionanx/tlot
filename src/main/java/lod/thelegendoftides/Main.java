@@ -63,6 +63,18 @@ public class Main {
   private float bobberVerticalAcceleration;
   private int castingTicks;
 
+  /** The length of each bob */
+  private static final long BOB_TIME = 250_000_000L;
+  /** The interval between groups of bobs (a +-10% random factor is also applied */
+  private static final long BOB_INTERVAL = 1000_000_000L;
+  /** The number of bobs in each interval */
+  private static final int BOB_COUNT = 2;
+  private final Vector3f nibbleStartPos = new Vector3f();
+  private final Vector3f nibbleEndPos = new Vector3f();
+  private long nextBobTime;
+  private long nextBobInterval;
+  private int bobCount;
+
   private AdditionOverlayScreen additionScreen;
   private AdditionHits80 activeAddition;
   private int additionTicks;
@@ -177,9 +189,27 @@ public class Main {
           if(this.castingTicks > 45) {
             //TODO use fish
             final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
-            this.menuStack.pushScreen(new WaitingBiteScreen(this::handleQTESuccessful, this::handleQTEFail));
+            this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
             this.state = FishingState.WAITING_FOR_BITE;
           }
+        }
+
+        case NIBBLING -> {
+          final long time = System.nanoTime();
+
+          if(this.nextBobTime < time && this.bobCount < BOB_COUNT) {
+            this.nextBobTime = time + BOB_TIME;
+            this.bobCount++;
+          }
+
+          if(this.nextBobInterval < time) {
+            this.nextBobInterval = time + (long)(BOB_INTERVAL * (0.8f + this.rand.nextFloat() * 0.4f));
+            this.bobCount = 0;
+          }
+
+          final float t = Math.clamp((this.nextBobTime - time) / (float)BOB_TIME, 0.0f, 1.0f);
+          this.nibbleEndPos.lerp(this.nibbleStartPos, t, this.fishingRod.bobberCoord2.coord.transfer);
+          this.fishingRod.bobberCoord2.flg = 0;
         }
 
         case REELING -> {
@@ -248,14 +278,23 @@ public class Main {
     this.state = FishingState.CASTING;
   }
 
-  private void handleQTESuccessful() {
+  private void onFishNibbling() {
+    this.nibbleEndPos.set(this.fishingRod.bobberCoord2.coord.transfer);
+    this.nibbleStartPos.set(this.nibbleEndPos).add(0.0f, 100.0f, 0.0f);
+    this.nextBobTime = 0; // Bob immediately
+    this.nextBobInterval = System.nanoTime() + BOB_INTERVAL;
+    this.bobCount = 0;
+    this.state = FishingState.NIBBLING;
+  }
+
+  private void onFishHooked() {
     this.additionScreen = new AdditionOverlayScreen();
     this.menuStack.pushScreen(this.additionScreen);
     this.loadRandomAdditionHit();
     this.state = FishingState.REELING;
   }
 
-  private void handleQTEFail() {
+  private void onFishEscaped() {
     this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
   }
 

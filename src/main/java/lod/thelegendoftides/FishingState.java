@@ -5,6 +5,6 @@ public enum FishingState {
   IDLE,
   CASTING,
   WAITING_FOR_BITE,
-  START_REELING,
+  NIBBLING,
   REELING,
 }
