@@ -375,6 +375,7 @@ public class Main {
     this.fishListScreen.isFishListScreenDisabled = true;
 
     if(bait == null) {
+      this.stopFishing();
       postBattleAction_800bc974 = 5;
       return;
     }
@@ -469,7 +470,6 @@ public class Main {
     this.state = FishingState.FISH_LOST;
   }
 
-  //TODO use this
   private void stopFishing() {
     this.fishingRod.delete();
     this.fishingRod = null;
