@@ -284,7 +284,7 @@ public class Main {
 
     this.fishingRod.renderRod(this.player.model_148.zOffset_a0 * 4);
 
-    if(this.state.ordinal() >= FishingState.CASTING.ordinal()) {
+    if(this.state.ordinal() >= FishingState.CASTING.ordinal() && this.state.ordinal() < FishingState.FISH_CAUGHT.ordinal()) {
       this.fishingRod.renderBobber();
     }
 
