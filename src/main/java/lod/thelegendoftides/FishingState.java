@@ -7,5 +7,7 @@ public enum FishingState {
   WAITING_FOR_BITE,
   NIBBLING,
   REELING,
+  FISH_CAUGHT,
+  HOLDING_UP_FISH,
   FISH_LOST,
 }

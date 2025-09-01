@@ -5,6 +5,9 @@ import legend.core.gte.MV;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.PlayerBattleEntity;
+import legend.game.combat.deff.Anim;
+import legend.game.combat.deff.Cmb;
+import legend.game.combat.deff.DeffPart;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.types.AdditionHits80;
@@ -17,12 +20,17 @@ import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
+import legend.game.types.Model124;
 import legend.game.types.TmdAnimationFile;
+import legend.game.unpacker.FileData;
+import legend.game.unpacker.Loader;
+import legend.game.unpacker.Unpacker;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
+import java.util.List;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
@@ -59,6 +67,9 @@ public class Main {
   private PlayerBattleEntity player;
   private String bait;
 
+  private TmdAnimationFile victoryAnimation;
+  private boolean usingVictoryAnimation;
+
   private int loadingAnimIndex = -1;
   private int animationFrames;
 
@@ -82,7 +93,9 @@ public class Main {
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
+  private int fishCaughtTicks;
   private int fishLostTicks;
+  private int holdingUpFishTicks;
 
   public Main() {
     EVENTS.register(this);
@@ -140,6 +153,9 @@ public class Main {
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
 
+    // Load animation of Dart holding up divine dragoon spirit during transformation
+    loadDrgnFileSync(0, "4232/0/1", data -> this.victoryAnimation = (TmdAnimationFile)((DeffPart.AnimatedTmdType)DeffPart.getDeffPart(List.of(data), 0)).anim_14);
+
     if(this.fishingRod != null) {
       throw new IllegalStateException("Need to clean up after fishing");
     }
@@ -153,6 +169,13 @@ public class Main {
   public void renderLoop(final RenderEvent event) {
     if(this.state != FishingState.NOT_FISHING) {
       this.renderFishing();
+    }
+
+    // We're using a DEFF animation for the victory animation so we have to pause normal animation and run the animation code ourself
+    if(this.usingVictoryAnimation) {
+      this.player.model_148.animationState_9c = 1;
+      this.player.model_148.anim_08.apply(this.fishCaughtTicks);
+      this.player.model_148.animationState_9c = 2;
     }
 
     this.menuStack.render();
@@ -223,6 +246,27 @@ public class Main {
           }
         }
 
+        case FISH_CAUGHT -> {
+          this.fishCaughtTicks++;
+
+          if(this.fishCaughtTicks >= this.victoryAnimation.totalFrames_0e * 2 - 1) {
+            this.holdingUpFishTicks = 0;
+            this.usingVictoryAnimation = false;
+            this.state = FishingState.HOLDING_UP_FISH;
+          }
+        }
+
+        case HOLDING_UP_FISH -> {
+          this.holdingUpFishTicks++;
+
+          if(this.holdingUpFishTicks > 20) {
+            this.setIdleAnimation();
+            this.player.model_148.animationState_9c = 0;
+            this.showBaitScreen();
+            this.state = FishingState.IDLE;
+          }
+        }
+
         case FISH_LOST -> {
           this.fishLostTicks++;
 
@@ -230,7 +274,7 @@ public class Main {
             this.setIdleAnimation();
           }
 
-          if(this.fishLostTicks > this.animationFrames * 2) {
+          if(this.fishLostTicks > this.animationFrames + 20) {
             this.showBaitScreen();
             this.state = FishingState.IDLE;
           }
@@ -244,7 +288,7 @@ public class Main {
       this.fishingRod.renderBobber();
     }
 
-    if(this.state.ordinal() > FishingState.IDLE.ordinal() && this.state.ordinal() < FishingState.FISH_LOST.ordinal()) {
+    if(this.state.ordinal() > FishingState.IDLE.ordinal() && this.state.ordinal() < FishingState.FISH_CAUGHT.ordinal()) {
       this.fishingRod.processString(3);
       this.fishingRod.renderString();
     }
@@ -299,6 +343,10 @@ public class Main {
     });
   }
 
+  private void loadStandardAnimations() {
+    this.loadAnimations(4031 * this.player.charId_272 * 8);
+  }
+
   private void setIdleAnimation() {
     this.loadingAnimIndex = 0;
   }
@@ -309,6 +357,12 @@ public class Main {
 
   private void setThrowAnimation() {
     this.loadingAnimIndex = 7;
+  }
+
+  private void setVictoryAnimation() {
+    this.usingVictoryAnimation = true;
+    this.victoryAnimation.loadIntoModel(this.player.model_148);
+    this.player.model_148.animationState_9c = 2;
   }
 
   private void showBaitScreen() {
@@ -400,9 +454,9 @@ public class Main {
     //TODO fish caught
 
     this.menuStack.popScreen();
-    this.showBaitScreen();
-    this.setIdleAnimation();
-    this.state = FishingState.IDLE;
+    this.setVictoryAnimation();
+    this.fishCaughtTicks = 0;
+    this.state = FishingState.FISH_CAUGHT;
   }
 
   private void fishLostCallback() {
