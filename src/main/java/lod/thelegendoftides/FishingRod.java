@@ -132,7 +132,7 @@ public class FishingRod {
     for(int i = 0; i < this.stringX.length - 1; i++) {
       start.set(this.stringX[i], this.stringY[i]);
       end.set(this.stringX[i + 1], this.stringY[i + 1]);
-      RENDERER.queueLine(transforms, 10.0f, start, end)
+      RENDERER.queueLine(transforms, 200.0f, start, end)
         .screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY());
     }
   }

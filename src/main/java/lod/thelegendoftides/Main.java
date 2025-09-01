@@ -1,5 +1,6 @@
 package lod.thelegendoftides;
 
+import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
@@ -25,6 +26,7 @@ import org.legendofdragoon.modloader.registries.RegistryId;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
+import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment.*;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
@@ -233,6 +235,32 @@ public class Main {
     if(this.state.ordinal() > FishingState.IDLE.ordinal()) {
       this.fishingRod.processString(3);
       this.fishingRod.renderString();
+    }
+
+    if(this.state == FishingState.REELING) {
+      this.renderStamina();
+    }
+  }
+
+  private void renderStamina() {
+    final float stamina = this.fishReelingHandler.getStaminaFraction();
+
+    final MV transforms = new MV();
+    transforms.scaling(8.0f, 40.0f, 1.0f);
+    transforms.transfer.set(190.0f, 150.0f, 11.0f);
+    RENDERER.queueOrthoModel(RENDERER.centredQuadBMinusF, transforms, QueuedModelStandard.class)
+      .colour(0.3f, 0.3f, 0.3f);
+
+    transforms.scaling(8.0f, 40.0f * (1.0f - stamina), 1.0f);
+    transforms.transfer.z = 10.0f;
+    final QueuedModelStandard model = RENDERER.queueOrthoModel(RENDERER.centredQuadOpaque, transforms, QueuedModelStandard.class);
+
+    if(stamina < 0.333f) {
+      model.colour(0.0f, 0.8f, 0.0f);
+    } else if(stamina < 0.6667f) {
+      model.colour(0.8f, 0.8f, 0.0f);
+    } else {
+      model.colour(0.8f, 0.0f, 0.0f);
     }
   }
 

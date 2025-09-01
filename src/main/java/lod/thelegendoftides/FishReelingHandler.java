@@ -36,4 +36,8 @@ public class FishReelingHandler {
             this.fishLost.run();
         }
     }
+
+    public float getStaminaFraction() {
+      return Math.clamp(this.stamina / this.MAX_STAMINA, 0.0f, 1.0f);
+    }
 }
