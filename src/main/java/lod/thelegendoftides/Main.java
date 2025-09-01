@@ -259,9 +259,8 @@ public class Main {
         case HOLDING_UP_FISH -> {
           this.holdingUpFishTicks++;
 
-          if(this.holdingUpFishTicks > 20) {
+          if(this.holdingUpFishTicks > 50) {
             this.setIdleAnimation();
-            this.player.model_148.animationState_9c = 0;
             this.showBaitScreen();
             this.state = FishingState.IDLE;
           }
