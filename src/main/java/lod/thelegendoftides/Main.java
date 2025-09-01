@@ -65,8 +65,8 @@ public class Main {
 
   /** The length of each bob */
   private static final long BOB_TIME = 250_000_000L;
-  /** The interval between groups of bobs (a +-10% random factor is also applied */
-  private static final long BOB_INTERVAL = 1000_000_000L;
+  /** The interval between groups of bobs (a +-20% random factor is also applied */
+  private static final long BOB_INTERVAL = 1_000_000_000L;
   /** The number of bobs in each interval */
   private static final int BOB_COUNT = 2;
   private final Vector3f nibbleStartPos = new Vector3f();
