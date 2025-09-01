@@ -30,8 +30,10 @@ public class AdditionOverlayScreen extends MenuScreen {
   private int FRAMES = 0;
   private int numFramesToRenderInnerSquare = 0;
   private AdditionLastHitSuccessStatus lastHitStatus = AdditionLastHitSuccessStatus.WAITING;
+  private final Runnable onAdditionSuccess;
+  private final Runnable onAdditionFail;
 
-  public AdditionOverlayScreen() {
+  public AdditionOverlayScreen(final Runnable onAdditionSuccess, final Runnable onAdditionFail) {
     this.reticleBorderShadow = new QuadBuilder("Reticle background")
       .translucency(Translucency.B_MINUS_F)
       .monochrome(0, 0.0f)
@@ -41,6 +43,8 @@ public class AdditionOverlayScreen extends MenuScreen {
       .pos(-1.0f, -0.5f, 0.0f)
       .size(1.0f, 1.0f)
       .build();
+    this.onAdditionSuccess = onAdditionSuccess;
+    this.onAdditionFail = onAdditionFail;
   }
 
   @Override
@@ -138,6 +142,7 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.lastHitStatus = AdditionLastHitSuccessStatus.LATE;
         this.numFramesToRenderInnerSquare = 2;
         this.isAwaitingPress = false;
+        this.onAdditionFail.run();
         continue;
       } else if(hit.frameBeginTime() + this.FRAMES_UNTIL_SUCCESS + hit.numSuccessFrames() + 2 < this.FRAMES) {
         hitStructIterator.remove();
@@ -200,10 +205,12 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.isAwaitingPress = false;
         this.lastHitStatus = AdditionLastHitSuccessStatus.SUCCESS;
         this.numFramesToRenderInnerSquare = 2;
+        this.onAdditionSuccess.run();
       } else if(!this.actionList.isEmpty()) {
         this.lastHitStatus = AdditionLastHitSuccessStatus.EARLY;
         this.numFramesToRenderInnerSquare = 2;
         this.actionList.removeFirst();
+        this.onAdditionFail.run();
       }
       return InputPropagation.HANDLED;
     }

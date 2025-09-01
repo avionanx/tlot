@@ -78,6 +78,8 @@ public class Main {
   private AdditionHits80 activeAddition;
   private int additionTicks;
 
+  private FishReelingHandler fishReelingHandler;
+
   public Main() {
     EVENTS.register(this);
   }
@@ -290,7 +292,8 @@ public class Main {
   }
 
   private void onFishHooked() {
-    this.additionScreen = new AdditionOverlayScreen();
+    this.fishReelingHandler = new FishReelingHandler(this::fishCapturedCallback, this::fishLostCallback);
+    this.additionScreen = new AdditionOverlayScreen(fishReelingHandler::additionSuccessHandler, fishReelingHandler::additionFailCallback);
     this.menuStack.pushScreen(this.additionScreen);
     this.loadRandomAdditionHit();
     this.state = FishingState.REELING;
@@ -335,6 +338,14 @@ public class Main {
     }catch(final Exception e) {
       return false;
     }
+  }
+
+  private void fishCapturedCallback() {
+    System.out.println();
+  }
+
+  private void fishLostCallback() {
+    System.out.println();
   }
 
   //TODO use this
