@@ -5,8 +5,6 @@ import legend.core.gte.MV;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.PlayerBattleEntity;
-import legend.game.combat.deff.Anim;
-import legend.game.combat.deff.Cmb;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
@@ -22,17 +20,14 @@ import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
-import legend.game.types.Model124;
 import legend.game.types.TmdAnimationFile;
-import legend.game.unpacker.FileData;
-import legend.game.unpacker.Loader;
-import legend.game.unpacker.Unpacker;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
@@ -41,11 +36,12 @@ import static legend.game.Scus94491BpeSegment.*;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
+import static legend.game.Scus94491BpeSegment_8005.collidedPrimitiveIndex_80052c38;
+import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
-import static legend.game.Scus94491BpeSegment_800b.tickCount_800bb0fc;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
@@ -134,24 +130,27 @@ public class Main {
     scriptStatePtrArr_800bc1c0[11].pause();
     scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
 
+    final FishingStageData stageData = this.fishingStageData.get(submapCut_80052c30);
+
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
     BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
-    camera.setViewpoint(-8000.0f, -2000.0f, -15000.0f);
-    camera.setRefpoint(0.0f, 0.0f, -5000.0f);
+    final Vector3f viewPoint = stageData.cameraViewpoint();
+    final Vector3f refPoint = stageData.cameraRefpoint();
+    camera.setViewpoint(viewPoint.x, viewPoint.y, viewPoint.z);
+    camera.setRefpoint(refPoint.x, refPoint.y, refPoint.z);
     camera.flags_11c = 3;
     camera.refpointBobj_80 = player;
+
     this.player.model_148.shadowType_cc = 3;
     this.player.model_148.modelPartWithShadowIndex_cd = 8;
     this.player.model_148.shadowSize_10c.x = 0x1800 / (float)0x1000;
     this.player.model_148.shadowSize_10c.z = 0x1800 / (float)0x1000;
-    this.player.model_148.coord2_14.coord.transfer.x = -2680;
-    this.player.model_148.coord2_14.coord.transfer.y = 0;
-    this.player.model_148.coord2_14.coord.transfer.z = -5200;
-    this.player.model_148.coord2_14.transforms.rotate.y = 0;
+    this.player.model_148.coord2_14.coord.transfer.set(stageData.playerPosition());
+    this.player.model_148.coord2_14.transforms.rotate.y = stageData.playerRotation();
 
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
@@ -256,7 +255,9 @@ public class Main {
           if(this.additionTicks <= 0) {
             this.player.model_148.animationState_9c = 2; // pause
             this.loadRandomAdditionHit();
-            this.state = FishingState.START_REELING;
+            for(final AdditionSound sound : this.activeAdditionHit.sounds) {
+              playSound(1, sound.soundIndex, sound.initialDelay, 0);
+            }
           }
         }
 
@@ -342,7 +343,7 @@ public class Main {
       this.isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, 133, 6, new Encounter.Monster(1, new Vector3f())), 13);
+      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.fishingStageData.get(submapCut_80052c30).stageId());
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
     }
   }
@@ -496,4 +497,10 @@ public class Main {
 
     this.state = FishingState.NOT_FISHING;
   }
+
+  // TODO dont use cut, maybe submapId?
+  private final Map<Integer, FishingStageData> fishingStageData = Map.<Integer, FishingStageData>ofEntries(
+          Map.entry(-1, new FishingStageData(13, new Vector3f(-2680, 0, -5200), 0, new Vector3f(-8000.0f, -2000.0f, -15000.0f), new Vector3f(0.0f, 0.0f, -5000.0f))),
+          Map.entry(133, new FishingStageData(7, new Vector3f(1000, 0, -4800), 0, new Vector3f(10000.0f, -1200.0f, -8000.0f), new Vector3f(-3500.0f, 0.0f, -7500.0f)))
+  );
 }
