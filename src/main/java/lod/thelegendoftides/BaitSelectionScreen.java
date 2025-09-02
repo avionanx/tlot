@@ -6,6 +6,7 @@ import legend.core.gte.MV;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
+import legend.game.i18n.I18n;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
@@ -21,6 +22,8 @@ import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
 import static legend.game.modding.coremod.CoreMod.*;
 import static lod.thelegendoftides.Main.MOD_ID;
+import static lod.thelegendoftides.Main.getTranslationKey;
+
 public class BaitSelectionScreen extends MenuScreen {
     private final MeshObj bgQuad;
     private final Texture bgTexture;
@@ -36,7 +39,7 @@ public class BaitSelectionScreen extends MenuScreen {
             });
         }
         this.setFocus(this.menuButtons.getFirst());
-        this.addHotkey("Cancel", INPUT_ACTION_MENU_BACK, () -> {
+        this.addHotkey(I18n.translate(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
             playMenuSound(3);
             this.deferAction(() -> callback.accept(null, this::unload));
         });

@@ -1,2 +1,5 @@
 # Global config
 thelegendoftides.name=The Legend of Tides
+thelegendoftides.message_bait_lost=Bait lost...
+thelegendoftides.message_fish_escaped=Fish has escaped!
+thelegendoftides.hotkey_bait_cancel=Stop fishing

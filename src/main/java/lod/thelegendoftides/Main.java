@@ -427,6 +427,7 @@ public class Main {
 
   private void onFishEscaped() {
     this.showBaitScreen();
+    this.menuStack.pushScreen(new MessageScreen("message_bait_lost"));
     this.state = FishingState.IDLE;
   }
 
@@ -484,6 +485,7 @@ public class Main {
     playSound(1, 6, 0, 0); // hurt
     this.fishLostTicks = 0;
     this.state = FishingState.FISH_LOST;
+    this.menuStack.pushScreen(new TimedMessageScreen("message_fish_escaped", this.animationFrames + 20));
   }
 
   private void stopFishing() {
@@ -503,4 +505,8 @@ public class Main {
           Map.entry(-1, new FishingStageData(13, new Vector3f(-2680, 0, -5200), 0, new Vector3f(-8000.0f, -2000.0f, -15000.0f), new Vector3f(0.0f, 0.0f, -5000.0f))),
           Map.entry(133, new FishingStageData(7, new Vector3f(1000, 0, -4800), 0, new Vector3f(10000.0f, -1200.0f, -8000.0f), new Vector3f(-3500.0f, 0.0f, -7500.0f)))
   );
+
+  public static String getTranslationKey(String... args) {
+    return MOD_ID + "." + String.join(".", args);
+  }
 }
