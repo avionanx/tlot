@@ -6,7 +6,7 @@ import legend.core.gte.MV;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
-import legend.game.Scus94491BpeSegment_8002;
+import legend.game.combat.ui.UiBox;
 import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.submap.SMap;
@@ -16,10 +16,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.SItem.UI_WHITE;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static lod.thelegendoftides.Main.MOD_ID;
 import static lod.thelegendoftides.Main.isOnFishingPrimitive;
-
+import static legend.game.Scus94491BpeSegment_8002.renderText;
 public class FishListScreen extends MenuScreen {
 
     private final FishMeta meta;
@@ -27,10 +28,11 @@ public class FishListScreen extends MenuScreen {
     private final ArrayList<String> fishNames = new ArrayList<>();
     private final MeshObj bgQuad;
 
+    private final UiBox headerBox;
+    private final UiBox contentBox;
+
     private final FishLocationData locationData;
     final MV bgTransforms;
-    final Texture bgTexture;
-
     public boolean isFishListScreenDisabled = true;
 
     public FishListScreen(final FishMeta meta, final FishLocationData locationData) {
@@ -54,23 +56,31 @@ public class FishListScreen extends MenuScreen {
         this.bgTransforms = new MV();
         this.bgTransforms.scaling(120.0f, 36.0f, 0.0f);
         this.bgTransforms.transfer.set(230.0f, 20.0f, 80.0f);
-        this.bgTexture = Texture.png(Path.of("mods", "tlot", "bg", "pixel.png"));
+
+        this.headerBox = new UiBox("Fish List Header", 230, 18, 120, 14);
+        this.contentBox = new UiBox("Fish List Content", 230, 40, 120, this.fishNames.size() * 14);
     }
+
     @Override
     protected void render() {
         if(!isOnFishingPrimitive(this.locationData) && isFishListScreenDisabled) return;
         for(int i = 0; i < this.fishSprites.size(); i++) {
             final float x = 2.0f + 230.0f;
-            final float y = i * 16.0f + 22.0f;
+            final float y = i * 14.0f + 40.0f;
             final MV transforms = new MV();
-            transforms.scaling(16.0f);
+            transforms.scaling(14.0f);
             transforms.transfer.set(x, y, 0.0f);
             RENDERER.queueOrthoModel(this.bgQuad, transforms, QueuedModelStandard.class).texture(this.fishSprites.get(i));
-            Scus94491BpeSegment_8002.renderText(this.fishNames.get(i), x + 20.0f, y + 2.0f, new FontOptions());
+            renderText(this.fishNames.get(i), x + 20.0f, y, UI_WHITE);
         }
-        RENDERER.queueOrthoModel(this.bgQuad, this.bgTransforms, QueuedModelStandard.class).texture(this.bgTexture).colour(0.0f, 0.0f, 0.0f).alpha(0.66f).translucency(Translucency.HALF_B_PLUS_HALF_F);
+        this.headerBox.render();
+        this.contentBox.render();
+        renderText("Fish List", 260.0f, 20.0f, UI_WHITE);
     }
+
     public void unload() {
         this.fishSprites.forEach(Texture::delete);
+        this.headerBox.delete();
+        this.contentBox.delete();
     }
 }

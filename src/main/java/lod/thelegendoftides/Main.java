@@ -2,6 +2,7 @@ package lod.thelegendoftides;
 
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
+import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.PlayerBattleEntity;
@@ -12,6 +13,7 @@ import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.screens.MenuStack;
+import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
@@ -30,8 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static legend.core.GameEngine.EVENTS;
-import static legend.core.GameEngine.RENDERER;
+import static legend.core.GameEngine.*;
 import static legend.game.Scus94491BpeSegment.*;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
@@ -506,6 +507,17 @@ public class Main {
           Map.entry(133, new FishingStageData(7, new Vector3f(1000, 0, -4800), 0, new Vector3f(10000.0f, -1200.0f, -8000.0f), new Vector3f(-3500.0f, 0.0f, -7500.0f)))
   );
 
+  public static float getExtraWidth() {
+    final boolean widescreen = RENDERER.getRenderMode() == EngineState.RenderMode.PERSPECTIVE && CONFIG.getConfig(CoreMod.ALLOW_WIDESCREEN_CONFIG.get());
+    final float fullWidth;
+    if(widescreen) {
+      fullWidth = Math.max(displayWidth_1f8003e0, RENDERER.window().getWidth() / (float)RENDERER.window().getHeight() * displayHeight_1f8003e4);
+    } else {
+      fullWidth = displayWidth_1f8003e0;
+    }
+
+    return fullWidth - displayWidth_1f8003e0;
+  }
   public static String getTranslationKey(String... args) {
     return MOD_ID + "." + String.join(".", args);
   }
