@@ -6,6 +6,7 @@ import legend.core.Transformations;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
 import legend.core.opengl.Obj;
+import legend.game.types.Translucency;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -133,6 +134,8 @@ public class FishingRod {
       start.set(this.stringX[i], this.stringY[i]);
       end.set(this.stringX[i + 1], this.stringY[i + 1]);
       RENDERER.queueLine(transforms, 200.0f, start, end)
+        .translucency(Translucency.B_PLUS_F)
+        .colour(0.3f, 0.3f, 0.3f)
         .screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY());
     }
   }
