@@ -1,13 +1,16 @@
 package lod.thelegendoftides;
 
+import legend.core.IoHelper;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
+import legend.core.gte.TmdObjTable1c;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
+import legend.game.combat.environment.BattleStage;
 import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
@@ -32,7 +35,10 @@ import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
 import static legend.core.GameEngine.RENDERER;
-import static legend.game.Scus94491BpeSegment.*;
+import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
+import static legend.game.Scus94491BpeSegment.loadDrgnDir;
+import static legend.game.Scus94491BpeSegment.loadDrgnFileSync;
+import static legend.game.Scus94491BpeSegment.playSound;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
@@ -71,6 +77,7 @@ public class Main {
   private int loadingAnimIndex = -1;
   private int animationFrames;
 
+  private float bobberHorizontalAcceleration;
   private float bobberVerticalAcceleration;
   private int castingTicks;
 
@@ -204,13 +211,87 @@ public class Main {
 
           if(this.castingTicks < 18) {
             this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
+            this.bobberHorizontalAcceleration = 450.0f;
             this.bobberVerticalAcceleration = 100.0f;
-          } else if(this.castingTicks < 32) {
+          } else {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
-            this.fishingRod.bobberCoord2.coord.transfer.add(new Vector3f(0.0f, -this.bobberVerticalAcceleration, -450.0f).mul(lw));
-            this.fishingRod.bobberCoord2.flg = 0;
-            this.bobberVerticalAcceleration -= 30.0f;
+            final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw);
+            boolean update = true;
+
+            final BattleStage stage = battlePreloadedEntities_1f8003f4.stage_963c;
+
+            final MV stageTransforms = new MV();
+            final Vector3f[] vertices = new Vector3f[4];
+
+            for(int objIndex = 0; objIndex < stage.dobj2s_00.length; objIndex++) {
+              final TmdObjTable1c part = stage.dobj2s_00[objIndex].tmd_08;
+              GsGetLw(stage.dobj2s_00[objIndex].coord2_04, stageTransforms);
+
+              for(int primitiveIndex = 0; primitiveIndex < part.primitives_10.length; primitiveIndex++) {
+                final TmdObjTable1c.Primitive primitive = part.primitives_10[primitiveIndex];
+
+                final int command = primitive.header() & 0xff04_0000;
+                final int primitiveId = command >>> 24;
+
+                final boolean shaded = (command & 0x4_0000) != 0;
+                final boolean gourad = (primitiveId & 0b1_0000) != 0;
+                final boolean quad = (primitiveId & 0b1000) != 0;
+                final boolean textured = (primitiveId & 0b100) != 0;
+                final boolean lit = (primitiveId & 0b1) == 0;
+
+                final int vertexCount = quad ? 4 : 3;
+
+                for(int i = 0; i < primitive.data().length; i++) {
+                  final byte[] data = primitive.data()[i];
+                  int primitivesOffset = 0;
+
+                  if(textured) {
+                    for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
+                      primitivesOffset += 4;
+                    }
+                  }
+
+                  if(shaded || !lit) {
+                    for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
+                      primitivesOffset += 4;
+                    }
+                  } else if(!textured) {
+                    primitivesOffset += 4;
+                  }
+
+                  for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
+                    if(lit) {
+                      if(gourad || tmdVertexIndex == 0) {
+                        primitivesOffset += 2;
+                      }
+                    }
+
+                    final int vertexIndex = IoHelper.readUShort(data, primitivesOffset);
+                    primitivesOffset += 2;
+
+                    vertices[tmdVertexIndex] = part.vert_top_00[vertexIndex].mul(stageTransforms).add(stageTransforms.transfer);
+                  }
+
+                  if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[0], vertices[1], vertices[2], 0.0f)) {
+                    update = false;
+                  }
+
+                  if(quad) {
+                    if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[1], vertices[2], vertices[3], 0.0f)) {
+                      update = false;
+                    }
+                  }
+                }
+              }
+            }
+
+            if(update) {
+              this.fishingRod.bobberCoord2.coord.transfer.add(movement);
+              this.fishingRod.bobberCoord2.flg = 0;
+              this.bobberHorizontalAcceleration -= 30.0f;
+              this.bobberVerticalAcceleration -= 30.0f;
+            }
           }
 
           if(this.castingTicks > 45) {
