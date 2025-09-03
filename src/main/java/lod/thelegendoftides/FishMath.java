@@ -26,7 +26,7 @@ public class FishMath {
     t = -(N.dot(orig) + d) / NdotRayDirection;
 
     // Check if the triangle is behind the ray
-    if(t < 0) {
+    if(t < 0 || t > 1) {
       return false; // The triangle is behind
     }
 

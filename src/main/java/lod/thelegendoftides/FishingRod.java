@@ -30,7 +30,7 @@ public class FishingRod {
 
   private final GsCOORDINATE2 parent;
   public final GsCOORDINATE2 bobberCoord2 = new GsCOORDINATE2();
-  private final MV bobberTransforms = new MV();
+  public final MV bobberTransforms = new MV();
 
   public FishingRod(final GsCOORDINATE2 parent) {
     this.parent = parent;

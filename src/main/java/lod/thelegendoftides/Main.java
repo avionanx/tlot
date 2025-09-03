@@ -1,17 +1,13 @@
 package lod.thelegendoftides;
 
-import legend.core.IoHelper;
 import legend.core.QueuedModelStandard;
-import legend.core.Transformations;
 import legend.core.gte.MV;
-import legend.core.gte.TmdObjTable1c;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
-import legend.game.combat.environment.BattleStage;
 import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
@@ -25,20 +21,17 @@ import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.TmdAnimationFile;
-import legend.game.types.Translucency;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
-import static legend.core.GameEngine.GPU;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.loadDrgnDir;
@@ -69,6 +62,8 @@ public class Main {
 
   private final MenuStack menuStack = new MenuStack();
   private FishListScreen fishListScreen;
+
+  private CollisionMesh[] stageCollision;
 
   private FishingState state = FishingState.NOT_FISHING;
   private FishingRod fishingRod;
@@ -146,6 +141,8 @@ public class Main {
 
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
+    this.stageCollision = new CollisionMesh[battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00.length];
+    Arrays.setAll(this.stageCollision, i -> new CollisionMesh(battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00[i]));
     BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
@@ -210,11 +207,9 @@ public class Main {
         case CASTING -> {
           this.castingTicks++;
 
-/*
           if(this.castingTicks > this.animationFrames) {
             this.setIdleAnimation();
           }
-*/
 
           if(this.castingTicks < 18) {
             this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
@@ -224,120 +219,30 @@ public class Main {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
             final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw);
-            boolean update = true;
 
-            final BattleStage stage = battlePreloadedEntities_1f8003f4.stage_963c;
-
-            final MV stageTransforms = new MV();
-            final Vector3f[] vertices = new Vector3f[4];
-
-            for(int objIndex = 0; objIndex < stage.dobj2s_00.length; objIndex++) {
-              final TmdObjTable1c part = stage.dobj2s_00[objIndex].tmd_08;
-              GsGetLw(stage.dobj2s_00[objIndex].coord2_04, stageTransforms);
-
-              for(int primitiveIndex = 0; primitiveIndex < part.primitives_10.length; primitiveIndex++) {
-                final TmdObjTable1c.Primitive primitive = part.primitives_10[primitiveIndex];
-
-                final int command = primitive.header() & 0xff04_0000;
-                final int primitiveId = command >>> 24;
-
-                final boolean shaded = (command & 0x4_0000) != 0;
-                final boolean gourad = (primitiveId & 0b1_0000) != 0;
-                final boolean quad = (primitiveId & 0b1000) != 0;
-                final boolean textured = (primitiveId & 0b100) != 0;
-                final boolean lit = (primitiveId & 0b1) == 0;
-
-                final int vertexCount = quad ? 4 : 3;
-
-                for(int i = 0; i < primitive.data().length; i++) {
-                  final byte[] data = primitive.data()[i];
-                  int primitivesOffset = 0;
-
-                  if(textured) {
-                    for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
-                      primitivesOffset += 4;
-                    }
-                  }
-
-                  if(shaded || !lit) {
-                    for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
-                      primitivesOffset += 4;
-                    }
-                  } else if(!textured) {
-                    primitivesOffset += 4;
-                  }
-
-                  for(int tmdVertexIndex = 0; tmdVertexIndex < vertexCount; tmdVertexIndex++) {
-                    if(lit) {
-                      if(gourad || tmdVertexIndex == 0) {
-                        primitivesOffset += 2;
-                      }
-                    }
-
-                    final int vertexIndex = IoHelper.readUShort(data, primitivesOffset);
-                    primitivesOffset += 2;
-
-                    vertices[tmdVertexIndex] = new Vector3f(part.vert_top_00[vertexIndex]).mul(stageTransforms).add(stageTransforms.transfer);
-                  }
-
-                  final MV transforms = new MV();
-                  final Vector2f v0 = new Vector2f();
-                  final Vector2f v1 = new Vector2f();
-                  final Vector2f v2 = new Vector2f();
-                  Transformations.toScreenspace(vertices[0], transforms, v0);
-                  Transformations.toScreenspace(vertices[1], transforms, v1);
-                  Transformations.toScreenspace(vertices[2], transforms, v2);
-
-                  if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[0], vertices[1], vertices[2], 0.0f)) {
-                    RENDERER.queueLine(new Matrix4f(), 10, v0, v1).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-                    RENDERER.queueLine(new Matrix4f(), 10, v1, v2).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-                    RENDERER.queueLine(new Matrix4f(), 10, v2, v0).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-
-                    final Vector3f bobberWorldPos = new Vector3f();
-                    final Vector2f bobberViewPos = new Vector2f();
-                    Transformations.toScreenspace(bobberWorldPos, this.fishingRod.bobberCoord2, bobberViewPos);
-
-                    RENDERER.queueLine(new Matrix4f(), 10, bobberViewPos, bobberViewPos.add(0, -10.0f, new Vector2f())).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).colour(1, 0, 1);
-                    update = false;
-                  }
-
-                  if(quad) {
-                    final Vector2f v3 = new Vector2f();
-                    Transformations.toScreenspace(vertices[3], transforms, v3);
-
-                    if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[1], vertices[2], vertices[3], 0.0f)) {
-                      RENDERER.queueLine(new Matrix4f(), 10, v1, v2).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-                      RENDERER.queueLine(new Matrix4f(), 10, v2, v3).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-                      RENDERER.queueLine(new Matrix4f(), 10, v3, v1).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
-
-                      final Vector3f bobberWorldPos = new Vector3f();
-                      final Vector2f bobberViewPos = new Vector2f();
-                      Transformations.toScreenspace(bobberWorldPos, this.fishingRod.bobberCoord2, bobberViewPos);
-
-                      RENDERER.queueLine(new Matrix4f(), 10, bobberViewPos, bobberViewPos.add(0, -10.0f, new Vector2f())).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).colour(1, 0, 1);
-                      update = false;
-                    }
-                  }
-                }
+            boolean collided = false;
+            for(final CollisionMesh collisionMesh : this.stageCollision) {
+              if(collisionMesh.checkCollision(this.fishingRod.bobberTransforms.transfer, movement)) {
+                collided = true;
+                break;
               }
             }
 
-            if(update) {
+            if(collided) {
+              //TODO use fish
+              final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
+              this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
+              this.state = FishingState.WAITING_FOR_BITE;
+            } else {
               this.fishingRod.bobberCoord2.coord.transfer.add(movement);
               this.fishingRod.bobberCoord2.flg = 0;
               this.bobberHorizontalAcceleration -= 30.0f;
               this.bobberVerticalAcceleration -= 30.0f;
+
+              // Prevent it from starting to move back towards caster
+              this.bobberHorizontalAcceleration = Math.max(this.bobberHorizontalAcceleration, 0.0f);
             }
           }
-
-/*
-          if(this.castingTicks > 45) {
-            //TODO use fish
-            final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
-            this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
-            this.state = FishingState.WAITING_FOR_BITE;
-          }
-*/
         }
 
         case NIBBLING -> {
