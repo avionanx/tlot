@@ -5,8 +5,13 @@ import legend.core.gte.MV;
 import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
+import legend.game.combat.SEffe;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPart;
+import legend.game.combat.effects.AdditionSparksEffect08;
+import legend.game.combat.effects.EffectManagerData6c;
+import legend.game.combat.effects.EffectManagerParams;
+import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.types.AdditionHitProperties10;
@@ -19,6 +24,7 @@ import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
+import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
@@ -28,6 +34,7 @@ import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -44,6 +51,7 @@ import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
 import static legend.game.combat.SBtld.loadAdditions;
+import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
@@ -60,6 +68,8 @@ public class Main {
   private final MenuStack menuStack = new MenuStack();
   private FishListScreen fishListScreen;
 
+  private CollisionMesh[] stageCollision;
+
   private FishingState state = FishingState.NOT_FISHING;
   private FishingRod fishingRod;
   private Battle battle;
@@ -72,6 +82,7 @@ public class Main {
   private int loadingAnimIndex = -1;
   private int animationFrames;
 
+  private float bobberHorizontalAcceleration;
   private float bobberVerticalAcceleration;
   private int castingTicks;
 
@@ -135,6 +146,8 @@ public class Main {
 
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
+    this.stageCollision = new CollisionMesh[battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00.length];
+    Arrays.setAll(this.stageCollision, i -> new CollisionMesh(battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00[i]));
     BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
@@ -205,20 +218,35 @@ public class Main {
 
           if(this.castingTicks < 18) {
             this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
+            this.bobberHorizontalAcceleration = 450.0f;
             this.bobberVerticalAcceleration = 100.0f;
-          } else if(this.castingTicks < 32) {
+          } else {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
-            this.fishingRod.bobberCoord2.coord.transfer.add(new Vector3f(0.0f, -this.bobberVerticalAcceleration, -450.0f).mul(lw));
-            this.fishingRod.bobberCoord2.flg = 0;
-            this.bobberVerticalAcceleration -= 30.0f;
-          }
+            final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw);
 
-          if(this.castingTicks > 45) {
-            //TODO use fish
-            final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
-            this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
-            this.state = FishingState.WAITING_FOR_BITE;
+            boolean collided = false;
+            for(final CollisionMesh collisionMesh : this.stageCollision) {
+              if(collisionMesh.checkCollision(this.fishingRod.bobberTransforms.transfer, movement)) {
+                collided = true;
+                break;
+              }
+            }
+
+            if(collided) {
+              //TODO use fish
+              final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
+              this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
+              this.state = FishingState.WAITING_FOR_BITE;
+            } else {
+              this.fishingRod.bobberCoord2.coord.transfer.add(movement);
+              this.fishingRod.bobberCoord2.flg = 0;
+              this.bobberHorizontalAcceleration -= 30.0f;
+              this.bobberVerticalAcceleration -= 30.0f;
+
+              // Prevent it from starting to move back towards caster
+              this.bobberHorizontalAcceleration = Math.max(this.bobberHorizontalAcceleration, 0.0f);
+            }
           }
         }
 
@@ -226,6 +254,14 @@ public class Main {
           final long time = System.nanoTime();
 
           if(this.nextBobTime < time && this.bobCount < BOB_COUNT) {
+            final AdditionSparksEffect08 effect = new AdditionSparksEffect08(8, 0x200, 4, 0x20, 0x40, 0xff);
+            final ScriptState<EffectManagerData6c<EffectManagerParams.VoidType>> state = allocateEffectManager("AdditionSparksEffect08", null, effect);
+
+            state.innerStruct_00.getPosition().set(this.fishingRod.bobberTransforms.transfer);
+
+            final GenericAttachment1c attachment = state.innerStruct_00.addAttachment(0, 0, SEffe::tickLifespanAttachment, new GenericAttachment1c());
+            attachment.ticksRemaining_1a = 8;
+
             this.nextBobTime = time + BOB_TIME;
             this.bobCount++;
           }
