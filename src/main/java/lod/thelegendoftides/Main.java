@@ -2,6 +2,7 @@ package lod.thelegendoftides;
 
 import legend.core.IoHelper;
 import legend.core.QueuedModelStandard;
+import legend.core.Transformations;
 import legend.core.gte.MV;
 import legend.core.gte.TmdObjTable1c;
 import legend.game.combat.Battle;
@@ -24,6 +25,9 @@ import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.TmdAnimationFile;
+import legend.game.types.Translucency;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
@@ -34,6 +38,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static legend.core.GameEngine.EVENTS;
+import static legend.core.GameEngine.GPU;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.loadDrgnDir;
@@ -205,9 +210,11 @@ public class Main {
         case CASTING -> {
           this.castingTicks++;
 
+/*
           if(this.castingTicks > this.animationFrames) {
             this.setIdleAnimation();
           }
+*/
 
           if(this.castingTicks < 18) {
             this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
@@ -270,15 +277,44 @@ public class Main {
                     final int vertexIndex = IoHelper.readUShort(data, primitivesOffset);
                     primitivesOffset += 2;
 
-                    vertices[tmdVertexIndex] = part.vert_top_00[vertexIndex].mul(stageTransforms).add(stageTransforms.transfer);
+                    vertices[tmdVertexIndex] = new Vector3f(part.vert_top_00[vertexIndex]).mul(stageTransforms).add(stageTransforms.transfer);
                   }
 
+                  final MV transforms = new MV();
+                  final Vector2f v0 = new Vector2f();
+                  final Vector2f v1 = new Vector2f();
+                  final Vector2f v2 = new Vector2f();
+                  Transformations.toScreenspace(vertices[0], transforms, v0);
+                  Transformations.toScreenspace(vertices[1], transforms, v1);
+                  Transformations.toScreenspace(vertices[2], transforms, v2);
+
                   if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[0], vertices[1], vertices[2], 0.0f)) {
+                    RENDERER.queueLine(new Matrix4f(), 10, v0, v1).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+                    RENDERER.queueLine(new Matrix4f(), 10, v1, v2).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+                    RENDERER.queueLine(new Matrix4f(), 10, v2, v0).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+
+                    final Vector3f bobberWorldPos = new Vector3f();
+                    final Vector2f bobberViewPos = new Vector2f();
+                    Transformations.toScreenspace(bobberWorldPos, this.fishingRod.bobberCoord2, bobberViewPos);
+
+                    RENDERER.queueLine(new Matrix4f(), 10, bobberViewPos, bobberViewPos.add(0, -10.0f, new Vector2f())).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).colour(1, 0, 1);
                     update = false;
                   }
 
                   if(quad) {
+                    final Vector2f v3 = new Vector2f();
+                    Transformations.toScreenspace(vertices[3], transforms, v3);
+
                     if(FishMath.rayTriangleIntersect(this.fishingRod.bobberCoord2.coord.transfer, movement, vertices[1], vertices[2], vertices[3], 0.0f)) {
+                      RENDERER.queueLine(new Matrix4f(), 10, v1, v2).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+                      RENDERER.queueLine(new Matrix4f(), 10, v2, v3).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+                      RENDERER.queueLine(new Matrix4f(), 10, v3, v1).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).translucency(Translucency.B_PLUS_F).colour(0.25f, 0.25f, 0.25f);
+
+                      final Vector3f bobberWorldPos = new Vector3f();
+                      final Vector2f bobberViewPos = new Vector2f();
+                      Transformations.toScreenspace(bobberWorldPos, this.fishingRod.bobberCoord2, bobberViewPos);
+
+                      RENDERER.queueLine(new Matrix4f(), 10, bobberViewPos, bobberViewPos.add(0, -10.0f, new Vector2f())).screenspaceOffset(GPU.getOffsetX(), GPU.getOffsetY()).colour(1, 0, 1);
                       update = false;
                     }
                   }
@@ -294,12 +330,14 @@ public class Main {
             }
           }
 
+/*
           if(this.castingTicks > 45) {
             //TODO use fish
             final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
             this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
             this.state = FishingState.WAITING_FOR_BITE;
           }
+*/
         }
 
         case NIBBLING -> {
