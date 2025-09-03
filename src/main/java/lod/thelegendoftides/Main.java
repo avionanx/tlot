@@ -4,8 +4,13 @@ import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
+import legend.game.combat.SEffe;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPart;
+import legend.game.combat.effects.AdditionSparksEffect08;
+import legend.game.combat.effects.EffectManagerData6c;
+import legend.game.combat.effects.EffectManagerParams;
+import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.types.AdditionHitProperties10;
@@ -17,6 +22,7 @@ import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
+import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
@@ -47,6 +53,7 @@ import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
 import static legend.game.combat.SBtld.loadAdditions;
+import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
@@ -249,6 +256,14 @@ public class Main {
           final long time = System.nanoTime();
 
           if(this.nextBobTime < time && this.bobCount < BOB_COUNT) {
+            final AdditionSparksEffect08 effect = new AdditionSparksEffect08(8, 0x200, 4, 0x20, 0x40, 0xff);
+            final ScriptState<EffectManagerData6c<EffectManagerParams.VoidType>> state = allocateEffectManager("AdditionSparksEffect08", null, effect);
+
+            state.innerStruct_00.getPosition().set(this.fishingRod.bobberTransforms.transfer);
+
+            final GenericAttachment1c attachment = state.innerStruct_00.addAttachment(0, 0, SEffe::tickLifespanAttachment, new GenericAttachment1c());
+            attachment.ticksRemaining_1a = 8;
+
             this.nextBobTime = time + BOB_TIME;
             this.bobCount++;
           }
