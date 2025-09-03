@@ -554,6 +554,7 @@ public class Main {
 
     return fullWidth - displayWidth_1f8003e0;
   }
+
   public static String getTranslationKey(String... args) {
     return MOD_ID + "." + String.join(".", args);
   }
