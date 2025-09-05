@@ -88,13 +88,14 @@ public class FishListScreen extends MenuScreen {
     }
 
     private void updateDimensions() {
-        this.ratio = (float)RENDERER.getRenderWidth() / RENDERER.getRenderHeight();
 
         final boolean widescreen = RENDERER.getRenderMode() == EngineState.RenderMode.PERSPECTIVE && CONFIG.getConfig(CoreMod.ALLOW_WIDESCREEN_CONFIG.get());
         if(widescreen) {
+            this.ratio = (float)RENDERER.getRenderWidth() / RENDERER.getRenderHeight();
             this.fullWidth = Math.max(RENDERER.getNativeWidth(), this.ratio * displayHeight_1f8003e4);
         } else {
-            this.fullWidth = displayWidth_1f8003e0;
+            this.ratio = 1;
+            this.fullWidth = displayWidth_1f8003e0 - 50;
         }
     }
 
