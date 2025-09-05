@@ -2,6 +2,7 @@ package lod.thelegendoftides;
 
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
+import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
@@ -418,6 +419,8 @@ public class Main {
 
   private void showBaitScreen() {
     this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    // yeah
+    this.fishListScreen.onResized(null, 0, 0);
     this.fishListScreen.isFishListScreenDisabled = false;
   }
 

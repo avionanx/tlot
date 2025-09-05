@@ -6,21 +6,27 @@ import legend.core.gte.MV;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
+import legend.core.platform.Window;
+import legend.game.EngineState;
 import legend.game.combat.ui.UiBox;
 import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.modding.coremod.CoreMod;
 import legend.game.submap.SMap;
 import legend.game.types.Translucency;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
+import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
+import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
-import static lod.thelegendoftides.Main.MOD_ID;
-import static lod.thelegendoftides.Main.isOnFishingPrimitive;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static lod.thelegendoftides.Main.*;
+
 public class FishListScreen extends MenuScreen {
 
     private final FishMeta meta;
@@ -28,15 +34,20 @@ public class FishListScreen extends MenuScreen {
     private final ArrayList<String> fishNames = new ArrayList<>();
     private final MeshObj bgQuad;
 
-    private final UiBox headerBox;
-    private final UiBox contentBox;
+    private UiBox headerBox;
+    private UiBox contentBox;
 
     private final FishLocationData locationData;
-    final MV bgTransforms;
+
+    private float fullWidth;
+    private int extraWidth;
+    private float ratio;
     public boolean isFishListScreenDisabled = true;
 
     public FishListScreen(final FishMeta meta, final FishLocationData locationData) {
         this.meta = meta;
+        this.extraWidth = (int)getExtraWidth();
+        this.updateDimensions();
 
         this.locationData = locationData;
 
@@ -53,19 +64,17 @@ public class FishListScreen extends MenuScreen {
                 .rgb(1.0f, 1.0f, 1.0f)
                 .build();
 
-        this.bgTransforms = new MV();
-        this.bgTransforms.scaling(120.0f, 36.0f, 0.0f);
-        this.bgTransforms.transfer.set(230.0f, 20.0f, 80.0f);
+        this.headerBox = new UiBox("Fish List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
+        this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fishNames.size() * 14);
 
-        this.headerBox = new UiBox("Fish List Header", 230, 18, 120, 14);
-        this.contentBox = new UiBox("Fish List Content", 230, 40, 120, this.fishNames.size() * 14);
+        RENDERER.events().onResize(this::onResized);
     }
 
     @Override
     protected void render() {
         if(!isOnFishingPrimitive(this.locationData) && isFishListScreenDisabled) return;
         for(int i = 0; i < this.fishSprites.size(); i++) {
-            final float x = 2.0f + 230.0f;
+            final float x = this.fullWidth - 110.0f * this.ratio;
             final float y = i * 14.0f + 40.0f;
             final MV transforms = new MV();
             transforms.scaling(14.0f);
@@ -75,12 +84,36 @@ public class FishListScreen extends MenuScreen {
         }
         this.headerBox.render();
         this.contentBox.render();
-        renderText("Fish List", 260.0f, 20.0f, UI_WHITE);
+        renderText("Fish List", this.fullWidth - 95.0f * this.ratio, 20.0f, UI_WHITE);
+    }
+
+    private void updateDimensions() {
+        this.ratio = (float)RENDERER.getRenderWidth() / RENDERER.getRenderHeight();
+
+        final boolean widescreen = RENDERER.getRenderMode() == EngineState.RenderMode.PERSPECTIVE && CONFIG.getConfig(CoreMod.ALLOW_WIDESCREEN_CONFIG.get());
+        if(widescreen) {
+            this.fullWidth = Math.max(RENDERER.getNativeWidth(), this.ratio * displayHeight_1f8003e4);
+        } else {
+            this.fullWidth = displayWidth_1f8003e0;
+        }
+    }
+
+    public void onResized(Window window, int a, int b) {
+        this.headerBox.delete();
+        this.contentBox.delete();
+
+        this.extraWidth = (int)getExtraWidth();
+        this.updateDimensions();
+
+        this.headerBox = new UiBox("Bait List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
+        this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fishNames.size() * 14);
     }
 
     public void unload() {
         this.fishSprites.forEach(Texture::delete);
         this.headerBox.delete();
         this.contentBox.delete();
+
+        RENDERER.events().removeOnResize(this::onResized);
     }
 }
