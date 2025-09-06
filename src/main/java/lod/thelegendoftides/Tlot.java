@@ -349,6 +349,7 @@ public class Tlot {
         }
 
         case REELING -> {
+          this.fishReelingHandler.tick();
           this.additionTicks--;
 
           if(this.additionTicks <= 0) {
@@ -524,7 +525,7 @@ public class Tlot {
   }
 
   private void onFishHooked() {
-    this.fishReelingHandler = new FishReelingHandler(this::fishCapturedCallback, this::fishLostCallback);
+    this.fishReelingHandler = new FishReelingHandler(this.capturingFish, this::fishCapturedCallback, this::fishLostCallback);
     this.additionScreen = new AdditionOverlayScreen(this.fishReelingHandler::additionSuccessHandler, this.fishReelingHandler::additionFailCallback);
     this.menuStack.pushScreen(this.additionScreen);
     this.loadRandomAdditionHit();
