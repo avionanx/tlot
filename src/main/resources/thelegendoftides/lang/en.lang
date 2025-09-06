@@ -7,6 +7,10 @@ thelegendoftides.hotkey_bait_cancel=Stop fishing
 # Items
 thelegendoftides.items.bait_box.name=Bait Box
 thelegendoftides.items.bait_box.description=Holds 20.
+thelegendoftides.items.carp.name=Carp
+thelegendoftides.items.carp.description=Yeah it's a fish
+thelegendoftides.items.rainbow_trout.name=Rainbow Trout
+thelegendoftides.items.rainbow_trout.description=Yeah it's a fish
 
 # Bait
 thelegendoftides.bait.regular.name=Regular

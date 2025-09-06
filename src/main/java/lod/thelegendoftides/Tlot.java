@@ -30,6 +30,7 @@ import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.TmdAnimationFile;
+import lod.thelegendoftides.icons.FishIconUiType;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
@@ -45,6 +46,7 @@ import java.util.Random;
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.EVENTS;
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.SItem.buildUiRenderable;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
 import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
@@ -223,6 +225,10 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
+    if(FishIconUiType.FISH_ICONS.obj == null) {
+      FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
+    }
+
     if(this.state != FishingState.NOT_FISHING) {
       this.renderFishing();
     } else if(!isFishEncounter && !this.currentCutFishingHoles.isEmpty()) {
