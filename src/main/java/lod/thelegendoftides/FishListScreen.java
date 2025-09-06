@@ -29,7 +29,6 @@ import static lod.thelegendoftides.Tlot.isOnFishingPrimitive;
 
 public class FishListScreen extends MenuScreen {
 
-  private final FishMeta meta;
   private final ArrayList<Texture> fishSprites = new ArrayList<>();
   private final ArrayList<String> fishNames = new ArrayList<>();
   private final MeshObj bgQuad;
@@ -44,8 +43,7 @@ public class FishListScreen extends MenuScreen {
   private float ratio;
   public boolean isFishListScreenDisabled = true;
 
-  public FishListScreen(final FishMeta meta, final FishLocationData locationData) {
-    this.meta = meta;
+  public FishListScreen(final FishLocationData locationData) {
     this.extraWidth = (int)getExtraWidth();
     this.updateDimensions();
 

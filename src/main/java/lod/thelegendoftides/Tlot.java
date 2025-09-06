@@ -71,6 +71,7 @@ public class Tlot {
 
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
+  public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
 
   private final Random rand = new Random();
 
@@ -139,6 +140,7 @@ public class Tlot {
   public void registerRegistries(final AddRegistryEvent event) {
     event.addRegistry(BAIT_REGISTRY, RegisterBaitEvent::new);
     event.addRegistry(FISH_REGISTRY, RegisterFishEvent::new);
+    event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
   }
 
   @EventListener
@@ -157,12 +159,17 @@ public class Tlot {
   }
 
   @EventListener
+  public void registerFishBaitWeights(final RegisterFishBaitWeightEvent event) {
+    TlotFishBaitWeight.register(event);
+  }
+
+  @EventListener
   public void checkFishingMap(final SubmapEnvironmentTextureEvent event) {
     if(this.fishListScreen != null) { this.fishListScreen.unload(); }
     this.menuStack.reset();
     this.currentCutFishingData = this.meta.getCutFish(event.submapCut);
     if(this.currentCutFishingData != null) {
-      this.fishListScreen = new FishListScreen(this.meta, this.currentCutFishingData);
+      this.fishListScreen = new FishListScreen(this.currentCutFishingData);
       this.menuStack.pushScreen(this.fishListScreen);
     }
   }
