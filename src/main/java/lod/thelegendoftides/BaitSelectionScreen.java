@@ -76,7 +76,7 @@ public class BaitSelectionScreen extends MenuScreen {
     this.headerBox.render();
     this.contentBox.render();
     this.hotkeyBox.render();
-    renderText("Bait List", 40 - this.extraWidth / 2, 20, UI_WHITE);
+    renderText((I18n.translate(getTranslationKey("bait_list"))), 40 - this.extraWidth / 2, 20, UI_WHITE);
   }
 
   private void unload() {

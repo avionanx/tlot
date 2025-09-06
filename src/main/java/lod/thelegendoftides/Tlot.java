@@ -46,6 +46,7 @@ import java.util.Random;
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.EVENTS;
 import static legend.core.GameEngine.RENDERER;
+import static legend.core.GameEngine.SCRIPTS;
 import static legend.game.SItem.buildUiRenderable;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
 import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
@@ -114,6 +115,7 @@ public class Tlot {
   private long nextBobInterval;
   private int bobCount;
 
+  private Fish capturingFish;
   private FishReelingHandler fishReelingHandler;
   private AdditionOverlayScreen additionScreen;
   private AdditionHits80 activeAddition;
@@ -123,6 +125,7 @@ public class Tlot {
   private int fishCaughtTicks;
   private int fishLostTicks;
   private int holdingUpFishTicks;
+  private boolean acquiredFishScreenCleared;
 
   public Tlot() {
     isFishEncounter = false;
@@ -225,6 +228,10 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
+    if(SCRIPTS.isPaused()) {
+      return;
+    }
+
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
     }
@@ -290,9 +297,8 @@ public class Tlot {
             }
 
             if(collided) {
-              //TODO use fish
-              final Fish fish = this.fishListScreen.fishingHole.getFishForBait(this.bait);
-              this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
+              this.capturingFish = this.fishListScreen.fishingHole.getFishForBait(this.bait);
+              this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this.capturingFish, this::onFishHooked, this::onNoFishBiting, this::onFishEscaped));
               this.state = FishingState.WAITING_FOR_BITE;
             } else {
               this.fishingRod.bobberCoord2.coord.transfer.add(movement);
@@ -367,7 +373,8 @@ public class Tlot {
         case HOLDING_UP_FISH -> {
           this.holdingUpFishTicks++;
 
-          if(this.holdingUpFishTicks > 50) {
+          if(this.holdingUpFishTicks > 50 && this.acquiredFishScreenCleared) {
+            this.acquiredFishScreenCleared = false;
             this.setIdleAnimation();
             this.showBaitScreen();
             this.state = FishingState.IDLE;
@@ -429,6 +436,8 @@ public class Tlot {
 
   @EventListener
   public void inputReleased(final InputReleasedEvent event) {
+    if(SCRIPTS.isPaused()) return;
+
     if(
       event.action == INPUT_ACTION_SMAP_INTERACT.get() &&
       currentEngineState_8004dd04 instanceof SMap &&
@@ -522,6 +531,12 @@ public class Tlot {
     this.state = FishingState.START_REELING;
   }
 
+  private void onNoFishBiting() {
+    this.showBaitScreen();
+    this.menuStack.pushScreen(new MessageScreen("message_no_bites"));
+    this.state = FishingState.IDLE;
+  }
+
   private void onFishEscaped() {
     this.showBaitScreen();
     this.menuStack.pushScreen(new MessageScreen("message_bait_lost"));
@@ -575,6 +590,8 @@ public class Tlot {
     //TODO fish caught
 
     this.menuStack.popScreen();
+    this.menuStack.pushScreen(new FishAcquiredScreen(this.capturingFish, () -> this.acquiredFishScreenCleared = true));
+
     this.setVictoryAnimation();
     this.fishCaughtTicks = 0;
     this.state = FishingState.FISH_CAUGHT;
