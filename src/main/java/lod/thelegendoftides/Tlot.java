@@ -23,7 +23,6 @@ import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
-import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.scripting.ScriptState;
@@ -37,6 +36,7 @@ import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -72,11 +72,11 @@ public class Tlot {
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
   public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
+  public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
 
   private final Random rand = new Random();
 
-  private FishMeta meta;
-  private FishLocationData currentCutFishingData;
+  private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
   public static boolean isFishEncounter;
 
   private final MenuStack menuStack = new MenuStack();
@@ -132,15 +132,11 @@ public class Tlot {
   }
 
   @EventListener
-  public void init(final GameLoadedEvent event) {
-    this.meta = new FishMeta();
-  }
-
-  @EventListener
   public void registerRegistries(final AddRegistryEvent event) {
     event.addRegistry(BAIT_REGISTRY, RegisterBaitEvent::new);
     event.addRegistry(FISH_REGISTRY, RegisterFishEvent::new);
     event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
+    event.addRegistry(FISHING_HOLE_REGISTRY, RegisterFishingHoleEvent::new);
   }
 
   @EventListener
@@ -160,18 +156,20 @@ public class Tlot {
 
   @EventListener
   public void registerFishBaitWeights(final RegisterFishBaitWeightEvent event) {
-    TlotFishBaitWeight.register(event);
+    TlotFishBaitWeights.register(event);
+  }
+
+  @EventListener
+  public void registerFishingHoles(final RegisterFishingHoleEvent event) {
+    TlotFishingHoles.register(event);
   }
 
   @EventListener
   public void checkFishingMap(final SubmapEnvironmentTextureEvent event) {
     if(this.fishListScreen != null) { this.fishListScreen.unload(); }
     this.menuStack.reset();
-    this.currentCutFishingData = this.meta.getCutFish(event.submapCut);
-    if(this.currentCutFishingData != null) {
-      this.fishListScreen = new FishListScreen(this.currentCutFishingData);
-      this.menuStack.pushScreen(this.fishListScreen);
-    }
+
+    this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut);
   }
 
   @EventListener
@@ -190,7 +188,7 @@ public class Tlot {
     this.player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
     this.stageCollision = new CollisionMesh[battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00.length];
     Arrays.setAll(this.stageCollision, i -> new CollisionMesh(battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00[i]));
-    BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
+    final BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
@@ -199,7 +197,7 @@ public class Tlot {
     camera.setViewpoint(viewPoint.x, viewPoint.y, viewPoint.z);
     camera.setRefpoint(refPoint.x, refPoint.y, refPoint.z);
     camera.flags_11c = 3;
-    camera.refpointBobj_80 = player;
+    camera.refpointBobj_80 = this.player;
 
     this.player.model_148.shadowType_cc = 3;
     this.player.model_148.modelPartWithShadowIndex_cd = 8;
@@ -227,6 +225,16 @@ public class Tlot {
   public void renderLoop(final RenderEvent event) {
     if(this.state != FishingState.NOT_FISHING) {
       this.renderFishing();
+    } else if(!isFishEncounter && !this.currentCutFishingHoles.isEmpty()) {
+      final FishingHole fishingHole = isAtFishingHole(this.currentCutFishingHoles);
+
+      if(this.fishListScreen == null && fishingHole != null) {
+        this.fishListScreen = new FishListScreen(fishingHole);
+        this.menuStack.pushScreen(this.fishListScreen);
+      } else if(this.fishListScreen != null && fishingHole == null) {
+        this.fishListScreen = null;
+        this.menuStack.popScreen();
+      }
     }
 
     // We're using a DEFF animation for the victory animation so we have to pause normal animation and run the animation code ourself
@@ -277,7 +285,7 @@ public class Tlot {
 
             if(collided) {
               //TODO use fish
-              final Fish fish = this.meta.getRandomFishForBait(this.currentCutFishingData, bait);
+              final Fish fish = this.fishListScreen.fishingHole.getFishForBait(this.bait);
               this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this::onFishHooked, this::onFishEscaped));
               this.state = FishingState.WAITING_FOR_BITE;
             } else {
@@ -415,10 +423,12 @@ public class Tlot {
 
   @EventListener
   public void inputReleased(final InputReleasedEvent event) {
-    if(event.action == INPUT_ACTION_SMAP_INTERACT.get()
-            && isOnFishingPrimitive(this.currentCutFishingData)
-            && !gameState_800babc8.indicatorsDisabled_4e3) {
-
+    if(
+      event.action == INPUT_ACTION_SMAP_INTERACT.get() &&
+      currentEngineState_8004dd04 instanceof SMap &&
+      !gameState_800babc8.indicatorsDisabled_4e3 &&
+      this.fishListScreen != null
+    ) {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
@@ -500,7 +510,7 @@ public class Tlot {
 
   private void onFishHooked() {
     this.fishReelingHandler = new FishReelingHandler(this::fishCapturedCallback, this::fishLostCallback);
-    this.additionScreen = new AdditionOverlayScreen(fishReelingHandler::additionSuccessHandler, fishReelingHandler::additionFailCallback);
+    this.additionScreen = new AdditionOverlayScreen(this.fishReelingHandler::additionSuccessHandler, this.fishReelingHandler::additionFailCallback);
     this.menuStack.pushScreen(this.additionScreen);
     this.loadRandomAdditionHit();
     this.state = FishingState.START_REELING;
@@ -541,12 +551,18 @@ public class Tlot {
     this.additionScreen.addHit();
   }
 
-  public static boolean isOnFishingPrimitive(final FishLocationData locationData) {
-    try {
-      return ((SubmapObject210)scriptStatePtrArr_800bc1c0[10].innerStruct_00).collidedPrimitiveIndex_16c == locationData.collisionPrimitive();
-    }catch(final Exception e) {
-      return false;
+  public static FishingHole isAtFishingHole(final List<FishingHole> fishingHoles) {
+    if(scriptStatePtrArr_800bc1c0[10] != null && scriptStatePtrArr_800bc1c0[10].innerStruct_00 instanceof final SubmapObject210 player) {
+      for(int i = 0; i < fishingHoles.size(); i++) {
+        final FishingHole fishingHole = fishingHoles.get(i);
+
+        if(fishingHole.collisionPrimitive == player.collidedPrimitiveIndex_16c) {
+          return fishingHole;
+        }
+      }
     }
+
+    return null;
   }
 
   private void fishCapturedCallback() {
@@ -599,7 +615,7 @@ public class Tlot {
     return fullWidth - displayWidth_1f8003e0;
   }
 
-  public static String getTranslationKey(String... args) {
-    return MOD_ID + "." + String.join(".", args);
+  public static String getTranslationKey(final String... args) {
+    return MOD_ID + '.' + String.join(".", args);
   }
 }

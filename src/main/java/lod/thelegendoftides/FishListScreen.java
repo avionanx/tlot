@@ -1,6 +1,5 @@
 package lod.thelegendoftides;
 
-import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import legend.core.QueuedModelStandard;
 import legend.core.gpu.Bpp;
 import legend.core.gte.MV;
@@ -25,7 +24,6 @@ import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
 import static lod.thelegendoftides.Tlot.MOD_ID;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
-import static lod.thelegendoftides.Tlot.isOnFishingPrimitive;
 
 public class FishListScreen extends MenuScreen {
 
@@ -36,23 +34,23 @@ public class FishListScreen extends MenuScreen {
   private UiBox headerBox;
   private UiBox contentBox;
 
-  private final FishLocationData locationData;
+  public final FishingHole fishingHole;
 
   private float fullWidth;
   private int extraWidth;
   private float ratio;
-  public boolean isFishListScreenDisabled = true;
+  public boolean isFishListScreenDisabled = false;
 
-  public FishListScreen(final FishLocationData locationData) {
+  public FishListScreen(final FishingHole fishingHole) {
     this.extraWidth = (int)getExtraWidth();
     this.updateDimensions();
 
-    this.locationData = locationData;
+    this.fishingHole = fishingHole;
 
-    for(final ObjectIntPair<Fish> fishWeightPair : locationData.fishWeightRegistries()) {
-      final Path texturePath = Path.of("mods", "tlot", "fish", fishWeightPair.first().icon);
+    for(final FishingHole.FishWeight fishWeight : fishingHole.fish) {
+      final Path texturePath = Path.of("mods", "tlot", "fish", fishWeight.fish.get().icon);
       this.fishSprites.add(Texture.png(texturePath));
-      this.fishNames.add(I18n.translate(fishWeightPair.first()));
+      this.fishNames.add(I18n.translate(fishWeight.fish.get()));
     }
 
     this.bgQuad = new QuadBuilder(MOD_ID)
@@ -70,7 +68,7 @@ public class FishListScreen extends MenuScreen {
 
   @Override
   protected void render() {
-    if(!isOnFishingPrimitive(this.locationData) && this.isFishListScreenDisabled) {
+    if(this.isFishListScreenDisabled) {
       return;
     }
 

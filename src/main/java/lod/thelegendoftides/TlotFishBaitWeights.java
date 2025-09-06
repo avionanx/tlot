@@ -4,8 +4,8 @@ import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
-public final class TlotFishBaitWeight {
-  private TlotFishBaitWeight() { }
+public final class TlotFishBaitWeights {
+  private TlotFishBaitWeights() { }
 
   private static final Registrar<FishBaitWeight, RegisterFishBaitWeightEvent> REGISTRAR = new Registrar<>(Tlot.FISH_BAIT_WEIGHT_REGISTRY, Tlot.MOD_ID);
 
