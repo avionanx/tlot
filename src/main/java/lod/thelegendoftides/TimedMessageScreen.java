@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
-import static lod.thelegendoftides.Main.getTranslationKey;
+import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class TimedMessageScreen extends MenuScreen {
     private final String message;

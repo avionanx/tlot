@@ -1,8 +1,8 @@
 package lod.thelegendoftides;
 
+import legend.core.AddRegistryEvent;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
-import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
@@ -18,6 +18,7 @@ import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
+import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
@@ -33,6 +34,7 @@ import legend.game.types.TmdAnimationFile;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
+import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.Arrays;
@@ -40,8 +42,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static legend.core.GameEngine.*;
-import static legend.game.Scus94491BpeSegment.*;
+import static legend.core.GameEngine.CONFIG;
+import static legend.core.GameEngine.EVENTS;
+import static legend.core.GameEngine.RENDERER;
+import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
+import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
+import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
+import static legend.game.Scus94491BpeSegment.loadDrgnDir;
+import static legend.game.Scus94491BpeSegment.loadDrgnFileSync;
+import static legend.game.Scus94491BpeSegment.playSound;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
 import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
@@ -56,15 +65,17 @@ import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
-@Mod(id = Main.MOD_ID, version = "3.0.0")
-public class Main {
+@Mod(id = Tlot.MOD_ID, version = "3.0.0")
+public class Tlot {
   public static final String MOD_ID = "thelegendoftides";
+
+  public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
 
   private final Random rand = new Random();
 
   private FishMeta meta;
   private FishLocationData currentCutFishingData;
-  private boolean isFishEncounter = false;
+  public static boolean isFishEncounter;
 
   private final MenuStack menuStack = new MenuStack();
   private FishListScreen fishListScreen;
@@ -75,7 +86,7 @@ public class Main {
   private FishingRod fishingRod;
   private Battle battle;
   private PlayerBattleEntity player;
-  private String bait;
+  private Bait bait;
 
   private TmdAnimationFile victoryAnimation;
   private boolean usingVictoryAnimation;
@@ -109,7 +120,8 @@ public class Main {
   private int fishLostTicks;
   private int holdingUpFishTicks;
 
-  public Main() {
+  public Tlot() {
+    isFishEncounter = false;
     EVENTS.register(this);
   }
 
@@ -120,6 +132,21 @@ public class Main {
   @EventListener
   public void init(final GameLoadedEvent event) {
     this.meta = new FishMeta();
+  }
+
+  @EventListener
+  public void registerRegistries(final AddRegistryEvent event) {
+    event.addRegistry(BAIT_REGISTRY, RegisterBaitEvent::new);
+  }
+
+  @EventListener
+  public void registerItems(final ItemRegistryEvent event) {
+    TlotItems.register(event);
+  }
+
+  @EventListener
+  public void registerBait(final RegisterBaitEvent event) {
+    TlotBait.register(event);
   }
 
   @EventListener
@@ -135,8 +162,8 @@ public class Main {
 
   @EventListener
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
-    if(!this.isFishEncounter) return;
-    this.isFishEncounter = false;
+    if(!isFishEncounter) return;
+    isFishEncounter = false;
 
     scriptStatePtrArr_800bc1c0[5].pause();
     scriptStatePtrArr_800bc1c0[6].pause();
@@ -378,7 +405,7 @@ public class Main {
             && isOnFishingPrimitive(this.currentCutFishingData)
             && !gameState_800babc8.indicatorsDisabled_4e3) {
 
-      this.isFishEncounter = true;
+      isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
       SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.fishingStageData.get(submapCut_80052c30).stageId());
@@ -418,13 +445,13 @@ public class Main {
   }
 
   private void showBaitScreen() {
-    this.menuStack.pushScreen(new BaitSelectionScreen(this.meta, this::handleBaitSelected));
+    this.menuStack.pushScreen(new BaitSelectionScreen(this::handleBaitSelected));
     // yeah
     this.fishListScreen.onResized(null, 0, 0);
     this.fishListScreen.isFishListScreenDisabled = false;
   }
 
-  private void handleBaitSelected(final String bait, final Runnable unloadBaitSelectionScreen) {
+  private void handleBaitSelected(final Bait bait, final Runnable unloadBaitSelectionScreen) {
     unloadBaitSelectionScreen.run();
     this.fishListScreen.isFishListScreenDisabled = true;
 
@@ -541,7 +568,7 @@ public class Main {
   }
 
   // TODO dont use cut, maybe submapId?
-  private final Map<Integer, FishingStageData> fishingStageData = Map.<Integer, FishingStageData>ofEntries(
+  private final Map<Integer, FishingStageData> fishingStageData = Map.ofEntries(
           Map.entry(-1, new FishingStageData(13, new Vector3f(-2680, 0, -5200), 0, new Vector3f(-8000.0f, -2000.0f, -15000.0f), new Vector3f(0.0f, 0.0f, -5000.0f))),
           Map.entry(133, new FishingStageData(7, new Vector3f(1000, 0, -4800), 0, new Vector3f(10000.0f, -1200.0f, -8000.0f), new Vector3f(-3500.0f, 0.0f, -7500.0f)))
   );

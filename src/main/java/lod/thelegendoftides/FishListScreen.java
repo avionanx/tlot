@@ -9,11 +9,8 @@ import legend.core.opengl.Texture;
 import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.combat.ui.UiBox;
-import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.modding.coremod.CoreMod;
-import legend.game.submap.SMap;
-import legend.game.types.Translucency;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,9 +20,8 @@ import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
 import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
-import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
-import static lod.thelegendoftides.Main.*;
+import static lod.thelegendoftides.Tlot.*;
 
 public class FishListScreen extends MenuScreen {
 

@@ -14,7 +14,7 @@ import java.nio.file.Path;
 
 import static legend.core.GameEngine.RENDERER;
 import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
-import static lod.thelegendoftides.Main.MOD_ID;
+import static lod.thelegendoftides.Tlot.MOD_ID;
 
 public class QTEScreen extends MenuScreen {
 

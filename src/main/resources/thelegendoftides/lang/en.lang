@@ -3,3 +3,12 @@ thelegendoftides.name=The Legend of Tides
 thelegendoftides.message_bait_lost=Bait lost...
 thelegendoftides.message_fish_escaped=Fish has escaped!
 thelegendoftides.hotkey_bait_cancel=Stop fishing
+
+# Items
+thelegendoftides.items.bait_box.name=Bait Box
+thelegendoftides.items.bait_box.description=Holds 20.
+
+# Bait
+thelegendoftides.bait.regular.name=Regular
+thelegendoftides.bait.premium.name=Premium
+thelegendoftides.bait.shrimp.name=Shrimp
