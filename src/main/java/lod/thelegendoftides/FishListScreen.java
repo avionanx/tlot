@@ -24,6 +24,7 @@ import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
 import static lod.thelegendoftides.Tlot.MOD_ID;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
+import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishListScreen extends MenuScreen {
 
@@ -84,7 +85,7 @@ public class FishListScreen extends MenuScreen {
 
     this.headerBox.render();
     this.contentBox.render();
-    renderText("Fish List", this.fullWidth - 95.0f * this.ratio, 20.0f, UI_WHITE);
+    renderText((I18n.translate(getTranslationKey("fish_list"))), this.fullWidth - 95.0f * this.ratio, 20.0f, UI_WHITE);
   }
 
   private void updateDimensions() {

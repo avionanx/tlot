@@ -11,13 +11,17 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 public class WaitingBiteScreen extends MenuScreen {
   private final Runnable onFishNibbling;
   private final Runnable onFishHooked;
+  private final Runnable onNoFishBiting;
   private final Runnable onFishEscaped;
+  private final Fish fish;
   private int frames;
 
-  public WaitingBiteScreen(final Runnable onFishNibbling, final Runnable onFishHooked, final Runnable onFishEscaped) {
+  public WaitingBiteScreen(final Runnable onFishNibbling, final Fish fish, final Runnable onFishHooked, final Runnable onNoFishBiting, final Runnable onFishEscaped) {
     this.frames = 100 + (int)(Math.random() * 40);
+    this.fish = fish;
     this.onFishNibbling = onFishNibbling;
     this.onFishHooked = onFishHooked;
+    this.onNoFishBiting = onNoFishBiting;
     this.onFishEscaped = onFishEscaped;
   }
 
@@ -26,8 +30,12 @@ public class WaitingBiteScreen extends MenuScreen {
     frames--;
 
     if(frames == 60) {
-      playSound(0x0, 0x25, 0, 0);
-      this.onFishNibbling.run();
+      if(this.fish != null) {
+        playSound(0x0, 0x25, 0, 0);
+        this.onFishNibbling.run();
+      } else {
+        this.deferAction(this::noBites);
+      }
     } else if(frames == 0) {
       playSound(0x0, 0x28, 0, 0);
       this.deferAction(this::failed);
@@ -41,10 +49,8 @@ public class WaitingBiteScreen extends MenuScreen {
     }
 
     if(frames <= 60) {
-      playSound(0x0, 0x26, 0, 0);
       this.deferAction(this::succeeded);
     } else {
-      playSound(0x0, 0x28, 0, 0);
       this.deferAction(this::failed);
     }
 
@@ -52,11 +58,19 @@ public class WaitingBiteScreen extends MenuScreen {
   }
 
   private void succeeded() {
+    playSound(0x0, 0x26, 0, 0);
     this.getStack().popScreen();
     this.onFishHooked.run();
   }
 
+  private void noBites() {
+    playSound(0x0, 0x28, 0, 0);
+    this.getStack().popScreen();
+    this.onNoFishBiting.run();
+  }
+
   private void failed() {
+    playSound(0x0, 0x28, 0, 0);
     this.getStack().popScreen();
     this.onFishEscaped.run();
   }

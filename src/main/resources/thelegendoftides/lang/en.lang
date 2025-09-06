@@ -1,8 +1,12 @@
 # Global config
 thelegendoftides.name=The Legend of Tides
 thelegendoftides.message_bait_lost=Bait lost...
+thelegendoftides.message_no_bites=No fish is biting...
 thelegendoftides.message_fish_escaped=Fish has escaped!
 thelegendoftides.hotkey_bait_cancel=Stop fishing
+thelegendoftides.acquired_fish=Acquired Fish:
+thelegendoftides.bait_list=Bait List
+thelegendoftides.fish_list=Fish List
 
 # Items
 thelegendoftides.items.bait_box.name=Bait Box
