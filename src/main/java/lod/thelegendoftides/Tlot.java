@@ -70,6 +70,7 @@ public class Tlot {
   public static final String MOD_ID = "thelegendoftides";
 
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
+  public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
 
   private final Random rand = new Random();
 
@@ -137,6 +138,7 @@ public class Tlot {
   @EventListener
   public void registerRegistries(final AddRegistryEvent event) {
     event.addRegistry(BAIT_REGISTRY, RegisterBaitEvent::new);
+    event.addRegistry(FISH_REGISTRY, RegisterFishEvent::new);
   }
 
   @EventListener
@@ -147,6 +149,11 @@ public class Tlot {
   @EventListener
   public void registerBait(final RegisterBaitEvent event) {
     TlotBait.register(event);
+  }
+
+  @EventListener
+  public void registerFish(final RegisterFishEvent event) {
+    TlotFish.register(event);
   }
 
   @EventListener

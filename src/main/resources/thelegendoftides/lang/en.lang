@@ -12,3 +12,7 @@ thelegendoftides.items.bait_box.description=Holds 20.
 thelegendoftides.bait.regular.name=Regular
 thelegendoftides.bait.premium.name=Premium
 thelegendoftides.bait.shrimp.name=Shrimp
+
+# Fish
+thelegendoftides.fish.carp.name=Carp
+thelegendoftides.fish.rainbow_trout.name=Rainbow Trout

@@ -1,8 +1,8 @@
 package lod.thelegendoftides;
 
-import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public record FishLocationData(int collisionPrimitive, ArrayList<Pair<String, Integer>> fishWeightRegistries) {
+public record FishLocationData(int collisionPrimitive, List<ObjectIntPair<Fish>> fishWeightRegistries) {
 }
