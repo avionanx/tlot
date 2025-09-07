@@ -22,6 +22,11 @@ public class FishItem extends Item {
   }
 
   @Override
+  public int getMaxStackSize(@NotNull ItemStack stack) {
+    return 5;
+  }
+
+  @Override
   public boolean canBeUsed(@NotNull final ItemStack stack, @NotNull final UsageLocation location) {
     return false;
   }
