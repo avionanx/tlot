@@ -20,6 +20,7 @@ import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.ItemRegistryEvent;
+import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
@@ -63,6 +64,7 @@ import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
+import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
@@ -229,9 +231,7 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
-    if(SCRIPTS.isPaused()) {
-      return;
-    }
+    if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
@@ -453,7 +453,7 @@ public class Tlot {
 
   @EventListener
   public void inputReleased(final InputReleasedEvent event) {
-    if(SCRIPTS.isPaused()) return;
+    if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     if(
       event.action == INPUT_ACTION_SMAP_INTERACT.get() &&
