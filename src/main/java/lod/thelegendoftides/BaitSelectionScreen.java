@@ -51,12 +51,11 @@ public class BaitSelectionScreen extends MenuScreen {
       final BaitItem baitItem = (BaitItem)baitStack.getItem();
       final Bait bait = baitItem.getBait(baitStack);
 
-      final int finalI = i;
       this.addButton(I18n.translate(bait), () -> {
         playMenuSound(2);
         this.deferAction(() -> {
           baitItem.consumeBait(baitStack);
-          inv.removeIfEmpty(finalI);
+          inv.removeIfEmpty(baitStack);
           callback.accept(bait, this::unload);
         });
       });
