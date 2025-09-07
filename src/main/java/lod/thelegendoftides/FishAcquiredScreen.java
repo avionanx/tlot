@@ -48,7 +48,6 @@ public class FishAcquiredScreen extends MenuScreen {
   @Override
   protected void render() {
     if(this.isRenderingTooManyItemsScreen) {
-      menuStack.render();
       if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
         this.deferAction(this::unload);
       }
