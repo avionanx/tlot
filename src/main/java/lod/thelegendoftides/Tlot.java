@@ -504,7 +504,7 @@ public class Tlot {
   }
 
   private void showBaitScreen() {
-    this.menuStack.pushScreen(new BaitSelectionScreen(gameState_800babc8.items_2e9, this::handleBaitSelected));
+    this.menuStack.pushScreen(new BaitSelectionScreen(gameState_800babc8.items_2e9, this::handleBaitSelected, this.fishListScreen::setSelectedBait));
     // yeah
     this.fishListScreen.onResized(null, 0, 0);
     this.fishListScreen.isFishListScreenDisabled = false;

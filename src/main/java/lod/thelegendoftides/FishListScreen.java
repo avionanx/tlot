@@ -4,8 +4,12 @@ import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
+import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
+import legend.game.submap.SMap;
+import legend.game.types.Renderable58;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +20,13 @@ import static legend.game.SItem.UI_WHITE;
 import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
 import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishListScreen extends MenuScreen {
+  public static final FontOptions UI_GREY = new FontOptions().colour(TextColour.GREY);
 
   private final List<Fish> fish = new ArrayList<>();
 
@@ -33,6 +39,8 @@ public class FishListScreen extends MenuScreen {
   private int extraWidth;
   private float ratio;
   public boolean isFishListScreenDisabled;
+
+  private Bait selectedBait;
 
   public FishListScreen(final FishingHole fishingHole) {
     this.extraWidth = (int)getExtraWidth();
@@ -50,6 +58,10 @@ public class FishListScreen extends MenuScreen {
     RENDERER.events().onResize(this::onResized);
   }
 
+  public void setSelectedBait(final Bait bait) {
+    this.selectedBait = bait;
+  }
+
   @Override
   protected void render() {
     if(this.isFishListScreenDisabled) {
@@ -60,8 +72,16 @@ public class FishListScreen extends MenuScreen {
       final Fish fish = this.fish.get(i);
       final int x = (int)(this.fullWidth - 101 * this.ratio);
       final int y = i * 16 + 40;
-      fish.icon.render(x, y, FLAG_DELETE_AFTER_RENDER).z_3c = 10.0f;
-      renderText(I18n.translate(this.fish.get(i)), x + 9.0f, y + 1.5f, UI_WHITE);
+
+      final Renderable58 icon = fish.icon.render(x, y, FLAG_DELETE_AFTER_RENDER);
+      icon.z_3c = 10.0f;
+
+      if(currentEngineState_8004dd04 instanceof SMap || TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) != 0) {
+        renderText(I18n.translate(this.fish.get(i)), x + 9.0f, y + 1.5f, UI_WHITE);
+      } else {
+        renderText(I18n.translate(this.fish.get(i)), x + 9.0f, y + 1.5f, UI_GREY);
+        icon.colour.set(0.5f);
+      }
     }
 
     this.headerBox.render();

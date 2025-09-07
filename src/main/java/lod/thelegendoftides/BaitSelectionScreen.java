@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
@@ -34,7 +35,7 @@ public class BaitSelectionScreen extends MenuScreen {
 
   private int extraWidth;
 
-  public BaitSelectionScreen(final Inventory inv, final BiConsumer<Bait, Runnable> callback) {
+  public BaitSelectionScreen(final Inventory inv, final BiConsumer<Bait, Runnable> onBaitSelected, final Consumer<Bait> onBaitHovered) {
     this.extraWidth = (int)getExtraWidth();
 
     final List<ItemStack> baits = new ArrayList<>();
@@ -51,14 +52,16 @@ public class BaitSelectionScreen extends MenuScreen {
       final BaitItem baitItem = (BaitItem)baitStack.getItem();
       final Bait bait = baitItem.getBait(baitStack);
 
-      this.addButton(I18n.translate(bait), () -> {
+      final Button button = this.addButton(I18n.translate(bait), () -> {
         playMenuSound(2);
         this.deferAction(() -> {
           baitItem.consumeBait(baitStack);
           inv.removeIfEmpty(baitStack);
-          callback.accept(bait, this::unload);
+          onBaitSelected.accept(bait, this::unload);
         });
       });
+
+//      button.onGotFocus(() -> onBaitHovered.accept(bait));
     }
 
     this.headerBox = new UiBox("Bait List Header", 20 - this.extraWidth / 2, 18, 100, 14);
@@ -73,7 +76,7 @@ public class BaitSelectionScreen extends MenuScreen {
 
     this.addHotkey(I18n.translate(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
       playMenuSound(3);
-      this.deferAction(() -> callback.accept(null, this::unload));
+      this.deferAction(() -> onBaitSelected.accept(null, this::unload));
     });
 
     RENDERER.events().onResize(this::onResized);
@@ -112,7 +115,7 @@ public class BaitSelectionScreen extends MenuScreen {
     RENDERER.events().removeOnResize(this::onResized);
   }
 
-  private void addButton(final String text, final Runnable onClick) {
+  private Button addButton(final String text, final Runnable onClick) {
     final int index = this.menuButtons.size();
     final Button button = this.addControl(new Button(text));
 
@@ -155,6 +158,8 @@ public class BaitSelectionScreen extends MenuScreen {
       }
       return InputPropagation.PROPAGATE;
     });
+
+    return button;
   }
 
   // Want to show fish list while this screen is active
