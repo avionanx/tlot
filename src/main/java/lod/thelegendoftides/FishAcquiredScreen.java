@@ -1,6 +1,5 @@
 package lod.thelegendoftides;
 
-import legend.core.platform.Window;
 import legend.core.platform.input.InputAction;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
@@ -10,10 +9,8 @@ import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TooManyItemsScreen;
 import legend.game.types.Renderable58;
-import lod.thelegendoftides.items.FishItem;
 import org.jetbrains.annotations.NotNull;
 
-import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.SItem.menuStack;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
@@ -22,7 +19,6 @@ import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
 import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
-import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 import static lod.thelegendoftides.TlotItems.CARP;
 
@@ -48,7 +44,6 @@ public class FishAcquiredScreen extends MenuScreen {
   @Override
   protected void render() {
     if(this.isRenderingTooManyItemsScreen) {
-      menuStack.render();
       if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
         this.deferAction(this::unload);
       }
