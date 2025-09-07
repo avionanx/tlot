@@ -2,7 +2,6 @@ package lod.thelegendoftides;
 
 public class FishReelingHandler {
   private float stamina;
-  private final float MAX_STAMINA;
   private int chains;
   private final int MAX_CHAINS = 3;
   private final float CHAIN_BONUS = 1.0f;
@@ -16,14 +15,13 @@ public class FishReelingHandler {
   public FishReelingHandler(final Fish fish, final Runnable fishCaptured, final Runnable fishLost) {
     this.fish = fish;
 
-    this.MAX_STAMINA = 30.0f;
-    this.stamina = this.MAX_STAMINA / 2.0f;
+    this.stamina = this.fish.stamina / 2.0f;
     this.fishCaptured = fishCaptured;
     this.fishLost = fishLost;
   }
 
   public void tick() {
-    this.stamina = Math.min(this.MAX_STAMINA, this.stamina + this.fish.strength / 10.0f);
+    this.stamina = Math.min(this.fish.stamina, this.stamina + this.fish.strength / 10.0f);
   }
 
   public void additionSuccessHandler() {
@@ -37,14 +35,14 @@ public class FishReelingHandler {
 
   public void additionFailCallback() {
     this.chains = 0;
-    this.stamina = Math.min(this.stamina + this.ADDITION_FAIL_STAMINA, this.MAX_STAMINA);
+    this.stamina = Math.min(this.stamina + this.ADDITION_FAIL_STAMINA, this.fish.stamina);
 
-    if(this.stamina == this.MAX_STAMINA) {
+    if(this.stamina >= this.fish.stamina) {
       this.fishLost.run();
     }
   }
 
   public float getStaminaFraction() {
-    return Math.clamp(this.stamina / this.MAX_STAMINA, 0.0f, 1.0f);
+    return Math.clamp(this.stamina / this.fish.stamina, 0.0f, 1.0f);
   }
 }
