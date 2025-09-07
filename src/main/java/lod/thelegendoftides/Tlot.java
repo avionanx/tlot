@@ -211,6 +211,7 @@ public class Tlot {
     this.player.model_148.modelPartWithShadowIndex_cd = 8;
     this.player.model_148.shadowSize_10c.x = 0x1800 / (float)0x1000;
     this.player.model_148.shadowSize_10c.z = 0x1800 / (float)0x1000;
+    this.player.model_148.shadowOffset_118.y = this.currentFishingHole.playerPosition.y;
     this.player.model_148.coord2_14.coord.transfer.set(this.currentFishingHole.playerPosition);
     this.player.model_148.coord2_14.transforms.rotate.y = this.currentFishingHole.playerRotation;
 
