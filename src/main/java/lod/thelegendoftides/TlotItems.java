@@ -14,7 +14,9 @@ public final class TlotItems {
 
   private static final Registrar<Item, ItemRegistryEvent> ITEM_REGISTRAR = new Registrar<>(GameEngine.REGISTRIES.items, Tlot.MOD_ID);
 
-  public static final RegistryDelegate<BaitBoxItem> BAIT_BOX = ITEM_REGISTRAR.register("bait_box", BaitBoxItem::new);
+  public static final RegistryDelegate<BaitBoxItem> REGULAR_BAIT_BOX = ITEM_REGISTRAR.register("regular_bait_box", () -> new BaitBoxItem(TlotBait.REGULAR, 20, 150));
+  public static final RegistryDelegate<BaitBoxItem> PREMIUM_BAIT_BOX = ITEM_REGISTRAR.register("premium_bait_box", () -> new BaitBoxItem(TlotBait.PREMIUM, 20, 250));
+  public static final RegistryDelegate<BaitBoxItem> SHRIMP_BAIT_BOX = ITEM_REGISTRAR.register("shrimp_bait_box", () -> new BaitBoxItem(TlotBait.SHRIMP, 10, 300));
 
   // Fish
   public static final RegistryDelegate<CarpItem> CARP = ITEM_REGISTRAR.register("carp", () -> new CarpItem(25));

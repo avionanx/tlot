@@ -3,13 +3,16 @@ package lod.thelegendoftides;
 import legend.core.platform.Window;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
+import legend.game.inventory.ItemStack;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
-import org.legendofdragoon.modloader.registries.RegistryId;
+import legend.game.modding.events.inventory.Inventory;
+import lod.thelegendoftides.items.BaitItem;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -17,7 +20,9 @@ import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
-import static legend.game.modding.coremod.CoreMod.*;
+import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
+import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
+import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
@@ -29,16 +34,31 @@ public class BaitSelectionScreen extends MenuScreen {
 
   private int extraWidth;
 
-  public BaitSelectionScreen(final BiConsumer<Bait, Runnable> callback) {
+  public BaitSelectionScreen(final Inventory inv, final BiConsumer<Bait, Runnable> callback) {
     this.extraWidth = (int)getExtraWidth();
 
-    //TODO sort by quality
-    for(final RegistryId baitId : Tlot.BAIT_REGISTRY) {
-      final Bait bait = Tlot.BAIT_REGISTRY.getEntry(baitId).get();
+    final List<ItemStack> baits = new ArrayList<>();
+    for(final ItemStack stack : inv) {
+      if(stack.getItem() instanceof BaitItem) {
+        baits.add(stack);
+      }
+    }
 
+    baits.sort(Comparator.comparing((ItemStack stack) -> ((BaitItem)stack.getItem()).getBait(stack).quality).reversed());
+
+    for(int i = 0; i < baits.size(); i++) {
+      final ItemStack baitStack = baits.get(i);
+      final BaitItem baitItem = (BaitItem)baitStack.getItem();
+      final Bait bait = baitItem.getBait(baitStack);
+
+      final int finalI = i;
       this.addButton(I18n.translate(bait), () -> {
         playMenuSound(2);
-        this.deferAction(() -> callback.accept(bait, this::unload));
+        this.deferAction(() -> {
+          baitItem.consumeBait(baitStack);
+          inv.removeIfEmpty(finalI);
+          callback.accept(bait, this::unload);
+        });
       });
     }
 
@@ -46,7 +66,12 @@ public class BaitSelectionScreen extends MenuScreen {
     this.contentBox = new UiBox("Bait List Content", 20 - this.extraWidth / 2, 40, 100, 80);
     this.hotkeyBox = new UiBox("Hotkey BG", 8 - this.extraWidth / 2, 226, 304 + this.extraWidth, 10);
 
+    if(baits.isEmpty()) {
+      this.addButton(I18n.translate(getTranslationKey("message_no_bait")), () -> {});
+    }
+
     this.setFocus(this.menuButtons.getFirst());
+
     this.addHotkey(I18n.translate(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
       playMenuSound(3);
       this.deferAction(() -> callback.accept(null, this::unload));

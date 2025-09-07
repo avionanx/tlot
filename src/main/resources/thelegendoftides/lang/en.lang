@@ -3,14 +3,19 @@ thelegendoftides.name=The Legend of Tides
 thelegendoftides.message_bait_lost=Bait lost...
 thelegendoftides.message_no_bites=No fish is biting...
 thelegendoftides.message_fish_escaped=Fish has escaped!
+thelegendoftides.message_no_bait=No bait
 thelegendoftides.hotkey_bait_cancel=Stop fishing
 thelegendoftides.acquired_fish=Acquired Fish:
 thelegendoftides.bait_list=Bait List
 thelegendoftides.fish_list=Fish List
 
 # Items
-thelegendoftides.items.bait_box.name=Bait Box
-thelegendoftides.items.bait_box.description=Holds 20.
+thelegendoftides.items.regular_bait_box.name=Regular Bait Box
+thelegendoftides.items.regular_bait_box.description=Holds 20.
+thelegendoftides.items.premium_bait_box.name=Premium Bait Box
+thelegendoftides.items.premium_bait_box.description=Holds 20.
+thelegendoftides.items.shrimp_bait_box.name=Shrimp Bait Box
+thelegendoftides.items.shrimp_bait_box.description=Holds 10.
 thelegendoftides.items.carp.name=Carp
 thelegendoftides.items.carp.description=Yeah it's a fish
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
