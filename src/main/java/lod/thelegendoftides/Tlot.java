@@ -41,7 +41,6 @@ import org.legendofdragoon.modloader.registries.RegistryId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static legend.core.GameEngine.CONFIG;
@@ -81,6 +80,7 @@ public class Tlot {
   private final Random rand = new Random();
 
   private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
+  private FishingHole currentFishingHole;
   public static boolean isFishEncounter;
 
   private final MenuStack menuStack = new MenuStack();
@@ -189,8 +189,6 @@ public class Tlot {
     scriptStatePtrArr_800bc1c0[11].pause();
     scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
 
-    final FishingStageData stageData = this.fishingStageData.get(submapCut_80052c30);
-
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.playerState = SCRIPTS.getState(6, PlayerBattleEntity.class);
     this.player = this.playerState.innerStruct_00;
@@ -200,8 +198,8 @@ public class Tlot {
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
-    final Vector3f viewPoint = stageData.cameraViewpoint();
-    final Vector3f refPoint = stageData.cameraRefpoint();
+    final Vector3f viewPoint = this.currentFishingHole.cameraViewpoint;
+    final Vector3f refPoint = this.currentFishingHole.cameraRefpoint;
     camera.setViewpoint(viewPoint.x, viewPoint.y, viewPoint.z);
     camera.setRefpoint(refPoint.x, refPoint.y, refPoint.z);
     camera.flags_11c = 3;
@@ -211,8 +209,8 @@ public class Tlot {
     this.player.model_148.modelPartWithShadowIndex_cd = 8;
     this.player.model_148.shadowSize_10c.x = 0x1800 / (float)0x1000;
     this.player.model_148.shadowSize_10c.z = 0x1800 / (float)0x1000;
-    this.player.model_148.coord2_14.coord.transfer.set(stageData.playerPosition());
-    this.player.model_148.coord2_14.transforms.rotate.y = stageData.playerRotation();
+    this.player.model_148.coord2_14.coord.transfer.set(this.currentFishingHole.playerPosition);
+    this.player.model_148.coord2_14.transforms.rotate.y = this.currentFishingHole.playerRotation;
 
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
@@ -242,12 +240,12 @@ public class Tlot {
     if(this.state != FishingState.NOT_FISHING) {
       this.renderFishing();
     } else if(!isFishEncounter && !this.currentCutFishingHoles.isEmpty()) {
-      final FishingHole fishingHole = isAtFishingHole(this.currentCutFishingHoles);
+      this.currentFishingHole = isAtFishingHole(this.currentCutFishingHoles);
 
-      if(this.fishListScreen == null && fishingHole != null) {
-        this.fishListScreen = new FishListScreen(fishingHole);
+      if(this.fishListScreen == null && this.currentFishingHole != null) {
+        this.fishListScreen = new FishListScreen(this.currentFishingHole);
         this.menuStack.pushScreen(this.fishListScreen);
-      } else if(this.fishListScreen != null && fishingHole == null) {
+      } else if(this.fishListScreen != null && this.currentFishingHole == null) {
         this.fishListScreen = null;
         this.menuStack.popScreen();
       }
@@ -300,9 +298,11 @@ public class Tlot {
             }
 
             if(collided) {
-              this.capturingFish = this.fishListScreen.fishingHole.getFishForBait(this.bait);
-              this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this.capturingFish, this::onFishHooked, this::onNoFishBiting, this::onFishEscaped));
-              this.state = FishingState.WAITING_FOR_BITE;
+              if(this.castingTicks > this.animationFrames) {
+                this.capturingFish = this.fishListScreen.fishingHole.getFishForBait(this.bait);
+                this.menuStack.pushScreen(new WaitingBiteScreen(this::onFishNibbling, this.capturingFish, this::onFishHooked, this::onNoFishBiting, this::onFishEscaped));
+                this.state = FishingState.WAITING_FOR_BITE;
+              }
             } else {
               this.fishingRod.bobberCoord2.coord.transfer.add(movement);
               this.fishingRod.bobberCoord2.flg = 0;
@@ -464,7 +464,7 @@ public class Tlot {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.fishingStageData.get(submapCut_80052c30).stageId());
+      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.stageId);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
     }
   }
@@ -483,14 +483,17 @@ public class Tlot {
   }
 
   private void setIdleAnimation() {
+    this.playerState.storage_44[7] &= ~BattleEntity27c.FLAG_ANIMATE_ONCE;
     this.loadingAnimIndex = 0;
   }
 
   private void setHurtAnimation() {
+    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
     this.loadingAnimIndex = 1;
   }
 
   private void setThrowAnimation() {
+    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
     this.loadingAnimIndex = 7;
   }
 
@@ -630,12 +633,6 @@ public class Tlot {
 
     this.state = FishingState.NOT_FISHING;
   }
-
-  // TODO dont use cut, maybe submapId?
-  private final Map<Integer, FishingStageData> fishingStageData = Map.ofEntries(
-          Map.entry(-1, new FishingStageData(13, new Vector3f(-2680, 0, -5200), 0, new Vector3f(-8000.0f, -2000.0f, -15000.0f), new Vector3f(0.0f, 0.0f, -5000.0f))),
-          Map.entry(133, new FishingStageData(7, new Vector3f(1000, 0, -4800), 0, new Vector3f(10000.0f, -1200.0f, -8000.0f), new Vector3f(-3500.0f, 0.0f, -7500.0f)))
-  );
 
   public static float getExtraWidth() {
     final boolean widescreen = RENDERER.getRenderMode() == EngineState.RenderMode.PERSPECTIVE && CONFIG.getConfig(CoreMod.ALLOW_WIDESCREEN_CONFIG.get());

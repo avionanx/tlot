@@ -1,5 +1,6 @@
 package lod.thelegendoftides;
 
+import org.joml.Vector3f;
 import org.legendofdragoon.modloader.registries.RegistryEntry;
 
 import java.util.List;
@@ -9,11 +10,21 @@ import java.util.function.Supplier;
 public final class FishingHole extends RegistryEntry {
   public final int submapCut;
   public final int collisionPrimitive;
+  public final int stageId;
+  public final Vector3f playerPosition;
+  public final float playerRotation;
+  public final Vector3f cameraViewpoint;
+  public final Vector3f cameraRefpoint;
   public final List<FishWeight> fish;
 
-  public FishingHole(final int submapCut, final int collisionPrimitive, final FishWeight... fish) {
+  public FishingHole(final int submapCut, final int collisionPrimitive, final int stageId, final Vector3f playerPosition, final float playerRotation, final Vector3f cameraViewpoint, final Vector3f cameraRefpoint, final FishWeight... fish) {
     this.submapCut = submapCut;
     this.collisionPrimitive = collisionPrimitive;
+    this.stageId = stageId;
+    this.playerPosition = playerPosition;
+    this.playerRotation = playerRotation;
+    this.cameraViewpoint = cameraViewpoint;
+    this.cameraRefpoint = cameraRefpoint;
     this.fish = List.of(fish);
   }
 
