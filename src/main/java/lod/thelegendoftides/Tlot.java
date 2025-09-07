@@ -7,6 +7,7 @@ import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
+import legend.game.combat.bent.BattleEntity27c;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.effects.AdditionSparksEffect08;
@@ -90,6 +91,7 @@ public class Tlot {
   private FishingState state = FishingState.NOT_FISHING;
   private FishingRod fishingRod;
   private Battle battle;
+  private ScriptState<PlayerBattleEntity> playerState;
   private PlayerBattleEntity player;
   private Bait bait;
 
@@ -190,7 +192,8 @@ public class Tlot {
     final FishingStageData stageData = this.fishingStageData.get(submapCut_80052c30);
 
     this.battle = ((Battle)currentEngineState_8004dd04);
-    this.player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6].innerStruct_00;
+    this.playerState = SCRIPTS.getState(6, PlayerBattleEntity.class);
+    this.player = this.playerState.innerStruct_00;
     this.stageCollision = new CollisionMesh[battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00.length];
     Arrays.setAll(this.stageCollision, i -> new CollisionMesh(battlePreloadedEntities_1f8003f4.stage_963c.dobj2s_00[i]));
     final BattleCamera camera = ((Battle)currentEngineState_8004dd04).camera_800c67f0;
@@ -361,6 +364,19 @@ public class Tlot {
           }
         }
 
+        case FISH_PULL_FROM_WATER -> {
+          if(this.player.model_148.remainingFrames_9e == 0) {
+            this.playerState.storage_44[7] &= ~BattleEntity27c.FLAG_ANIMATE_ONCE;
+
+            this.menuStack.popScreen();
+            this.menuStack.pushScreen(new FishAcquiredScreen(this.capturingFish, () -> this.acquiredFishScreenCleared = true));
+
+            this.setVictoryAnimation();
+            this.fishCaughtTicks = 0;
+            this.state = FishingState.FISH_CAUGHT;
+          }
+        }
+
         case FISH_CAUGHT -> {
           this.fishCaughtTicks++;
 
@@ -463,7 +479,7 @@ public class Tlot {
   }
 
   private void loadStandardAnimations() {
-    this.loadAnimations(4031 * this.player.charId_272 * 8);
+    this.loadAnimations(4031 + this.player.charId_272 * 8);
   }
 
   private void setIdleAnimation() {
@@ -588,19 +604,13 @@ public class Tlot {
   }
 
   private void fishCapturedCallback() {
-    //TODO fish caught
-
-    this.menuStack.popScreen();
-    this.menuStack.pushScreen(new FishAcquiredScreen(this.capturingFish, () -> this.acquiredFishScreenCleared = true));
-
-    this.setVictoryAnimation();
-    this.fishCaughtTicks = 0;
-    this.state = FishingState.FISH_CAUGHT;
+    this.loadStandardAnimations();
+    this.loadingAnimIndex = 8;
+    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
+    this.state = FishingState.FISH_PULL_FROM_WATER;
   }
 
   private void fishLostCallback() {
-    //TODO fish lost
-
     this.menuStack.popScreen();
     this.setHurtAnimation();
     playSound(1, 6, 0, 0); // hurt
