@@ -61,7 +61,10 @@ public class BaitSelectionScreen extends MenuScreen {
         });
       });
 
-//      button.onGotFocus(() -> onBaitHovered.accept(bait));
+      button.onGotFocus(() -> {
+        button.setTextColour(TextColour.WHITE);
+        onBaitHovered.accept(bait);
+      });
     }
 
     this.headerBox = new UiBox("Bait List Header", 20 - this.extraWidth / 2, 18, 100, 14);
@@ -128,7 +131,6 @@ public class BaitSelectionScreen extends MenuScreen {
     });
     button.setTextColour(TextColour.GREY);
     button.onLostFocus(() -> button.setTextColour(TextColour.GREY));
-    button.onGotFocus(() -> button.setTextColour(TextColour.WHITE));
 
     button.onPressed(onClick::run);
     this.menuButtons.add(button);
