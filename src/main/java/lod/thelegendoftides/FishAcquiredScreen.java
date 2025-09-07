@@ -20,7 +20,6 @@ import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
-import static lod.thelegendoftides.TlotItems.CARP;
 
 public class FishAcquiredScreen extends MenuScreen {
   private UiBox contentBox;
@@ -34,7 +33,7 @@ public class FishAcquiredScreen extends MenuScreen {
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
     this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
 
-    final ItemStack remainingItems = gameState_800babc8.items_2e9.give(new ItemStack(CARP.get(), 1));
+    final ItemStack remainingItems = gameState_800babc8.items_2e9.give(fish.getReward());
     if(remainingItems.getSize() != 0) {
       itemOverflow.add(remainingItems);
       this.isRemainingItems = true;
