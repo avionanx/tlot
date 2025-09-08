@@ -33,3 +33,6 @@ thelegendoftides.fish.rainbow_trout.name=Rainbow Trout
 
 # Book
 thelegendoftides.book_title=Fishing Records
+
+# Input
+thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
