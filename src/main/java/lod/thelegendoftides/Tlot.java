@@ -100,6 +100,7 @@ public class Tlot {
   private final Random rand = new Random();
 
   private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
+  private List<FishingIndicator> fishingIndicators = new ArrayList<>();
   private FishingHole currentFishingHole;
   public static boolean isFishEncounter;
 
@@ -196,9 +197,13 @@ public class Tlot {
   @EventListener
   public void checkFishingMap(final SubmapEnvironmentTextureEvent event) {
     if(this.fishListScreen != null) { this.fishListScreen.unload(); }
+    this.fishingIndicators.clear();
     this.menuStack.reset();
 
     this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut);
+    for(final FishingHole hole : this.currentCutFishingHoles) {
+      this.fishingIndicators.add(new FishingIndicator(hole.indicatorPosition));
+    }
   }
 
   @EventListener
@@ -256,6 +261,12 @@ public class Tlot {
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
+    }
+
+    if(currentEngineState_8004dd04 instanceof SMap) {
+      for(final FishingIndicator indicator : this.fishingIndicators) {
+        indicator.render();
+      }
     }
 
     if(this.state != FishingState.NOT_FISHING) {

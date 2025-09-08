@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 public final class FishingHole extends RegistryEntry {
   public final int submapCut;
   public final int collisionPrimitive;
+  public final Vector3f indicatorPosition;
   public final int stageId;
   public final Vector3f playerPosition;
   public final float playerRotation;
@@ -17,9 +18,10 @@ public final class FishingHole extends RegistryEntry {
   public final Vector3f cameraRefpoint;
   public final List<FishWeight> fish;
 
-  public FishingHole(final int submapCut, final int collisionPrimitive, final int stageId, final Vector3f playerPosition, final float playerRotation, final Vector3f cameraViewpoint, final Vector3f cameraRefpoint, final FishWeight... fish) {
+  public FishingHole(final int submapCut, final int collisionPrimitive, final Vector3f indicatorPosition, final int stageId, final Vector3f playerPosition, final float playerRotation, final Vector3f cameraViewpoint, final Vector3f cameraRefpoint, final FishWeight... fish) {
     this.submapCut = submapCut;
     this.collisionPrimitive = collisionPrimitive;
+    this.indicatorPosition = indicatorPosition;
     this.stageId = stageId;
     this.playerPosition = playerPosition;
     this.playerRotation = playerRotation;
