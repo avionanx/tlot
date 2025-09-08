@@ -1,4 +1,4 @@
-package lod.thelegendoftides;
+package lod.thelegendoftides.screens;
 
 import legend.core.platform.Window;
 import legend.game.EngineState;
@@ -10,6 +10,10 @@ import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.submap.SMap;
 import legend.game.types.Renderable58;
+import lod.thelegendoftides.Bait;
+import lod.thelegendoftides.Fish;
+import lod.thelegendoftides.FishingHole;
+import lod.thelegendoftides.TlotFishBaitWeights;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;

@@ -1,4 +1,4 @@
-package lod.thelegendoftides;
+package lod.thelegendoftides.screens;
 
 import legend.core.platform.Window;
 import legend.game.combat.ui.UiBox;
@@ -9,6 +9,7 @@ import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
 import legend.game.modding.events.inventory.Inventory;
+import lod.thelegendoftides.Bait;
 import lod.thelegendoftides.items.BaitItem;
 
 import java.util.ArrayList;

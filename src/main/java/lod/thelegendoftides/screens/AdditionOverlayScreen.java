@@ -1,4 +1,4 @@
-package lod.thelegendoftides;
+package lod.thelegendoftides.screens;
 
 import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
@@ -9,6 +9,9 @@ import legend.core.platform.input.InputAction;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.types.Translucency;
+import lod.thelegendoftides.AdditionLastHitSuccessStatus;
+import lod.thelegendoftides.BorderStruct;
+import lod.thelegendoftides.HitStruct;
 import org.joml.Math;
 import org.joml.Vector3f;
 

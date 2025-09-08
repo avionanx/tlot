@@ -1,4 +1,4 @@
-package lod.thelegendoftides;
+package lod.thelegendoftides.screens;
 
 import legend.core.platform.Window;
 import legend.core.platform.input.InputAction;

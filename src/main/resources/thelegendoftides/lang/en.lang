@@ -30,3 +30,6 @@ thelegendoftides.bait.shrimp.name=Shrimp
 # Fish
 thelegendoftides.fish.carp.name=Carp
 thelegendoftides.fish.rainbow_trout.name=Rainbow Trout
+
+# Book
+thelegendoftides.book_title=Fishing Records

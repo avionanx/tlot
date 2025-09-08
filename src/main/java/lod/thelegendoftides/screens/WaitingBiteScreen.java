@@ -1,8 +1,9 @@
-package lod.thelegendoftides;
+package lod.thelegendoftides.screens;
 
 import legend.core.platform.input.InputAction;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
+import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
 
 import static legend.game.Scus94491BpeSegment.playSound;

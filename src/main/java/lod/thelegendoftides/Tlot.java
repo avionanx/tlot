@@ -3,6 +3,10 @@ package lod.thelegendoftides;
 import legend.core.AddRegistryEvent;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
+import legend.core.platform.input.InputAction;
+import legend.core.platform.input.InputActionRegistryEvent;
+import legend.core.platform.input.InputKey;
+import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
@@ -26,6 +30,7 @@ import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
+import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
@@ -33,10 +38,20 @@ import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.TmdAnimationFile;
 import lod.thelegendoftides.icons.FishIconUiType;
+import lod.thelegendoftides.screens.AdditionOverlayScreen;
+import lod.thelegendoftides.screens.BaitSelectionScreen;
+import lod.thelegendoftides.screens.FishAcquiredScreen;
+import lod.thelegendoftides.screens.FishBookScreen;
+import lod.thelegendoftides.screens.FishListScreen;
+import lod.thelegendoftides.screens.MessageScreen;
+import lod.thelegendoftides.screens.TimedMessageScreen;
+import lod.thelegendoftides.screens.WaitingBiteScreen;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
+import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.Registry;
+import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.ArrayList;
@@ -46,6 +61,7 @@ import java.util.Random;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.EVENTS;
+import static legend.core.GameEngine.REGISTRIES;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
 import static legend.game.SItem.buildUiRenderable;
@@ -74,6 +90,8 @@ import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 public class Tlot {
   public static final String MOD_ID = "thelegendoftides";
 
+  public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
+  public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
   public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
@@ -130,6 +148,8 @@ public class Tlot {
   private int fishLostTicks;
   private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
+
+  private FishBookScreen fishBookScreen;
 
   public Tlot() {
     isFishEncounter = false;
@@ -456,7 +476,9 @@ public class Tlot {
   public void inputReleased(final InputReleasedEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
-    if(
+    if(event.action == TIDES_INPUT_FISH_MENU.get()) {
+      this.menuStack.pushScreen(new FishBookScreen());
+    } else if(
       event.action == INPUT_ACTION_SMAP_INTERACT.get() &&
       currentEngineState_8004dd04 instanceof SMap &&
       !gameState_800babc8.indicatorsDisabled_4e3 &&
@@ -633,6 +655,16 @@ public class Tlot {
     this.additionScreen = null;
 
     this.state = FishingState.NOT_FISHING;
+  }
+
+  @EventListener
+  public void registerInputActions(final InputActionRegistryEvent event) {
+    TIDES_INPUT_REGISTRAR.registryEvent(event);
+  }
+
+  @EventListener
+  public void registerInput(final RegisterDefaultInputBindingsEvent event) {
+    event.add(TIDES_INPUT_FISH_MENU.get(), new ScancodeInputActivation(InputKey.Z));
   }
 
   public static float getExtraWidth() {
