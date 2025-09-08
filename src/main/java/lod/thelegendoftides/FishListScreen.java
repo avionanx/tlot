@@ -11,9 +11,6 @@ import legend.game.modding.coremod.CoreMod;
 import legend.game.submap.SMap;
 import legend.game.types.Renderable58;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.SItem.UI_WHITE;
@@ -27,8 +24,6 @@ import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishListScreen extends MenuScreen {
   public static final FontOptions UI_GREY = new FontOptions().colour(TextColour.GREY);
-
-  private final List<Fish> fish = new ArrayList<>();
 
   private UiBox headerBox;
   private UiBox contentBox;
@@ -48,12 +43,8 @@ public class FishListScreen extends MenuScreen {
 
     this.fishingHole = fishingHole;
 
-    for(final FishingHole.FishWeight fishWeight : fishingHole.fish) {
-      this.fish.add(fishWeight.fish.get());
-    }
-
     this.headerBox = new UiBox("Fish List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fish.size() * 16);
+    this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, fishingHole.fish.size() * 16);
 
     RENDERER.events().onResize(this::onResized);
   }
@@ -68,18 +59,32 @@ public class FishListScreen extends MenuScreen {
       return;
     }
 
-    for(int i = 0; i < this.fish.size(); i++) {
-      final Fish fish = this.fish.get(i);
+    for(int i = 0; i < this.fishingHole.fish.size(); i++) {
+      final FishingHole.FishWeight fishWeight = this.fishingHole.fish.get(i);
+
+      if(fishWeight.visibility == FishingHole.FishVisibility.HIDDEN) {
+        continue;
+      }
+
+      final Fish fish = fishWeight.fish.get();
       final int x = (int)(this.fullWidth - 101 * this.ratio);
       final int y = i * 16 + 40;
 
       final Renderable58 icon = fish.icon.render(x, y, FLAG_DELETE_AFTER_RENDER);
       icon.z_3c = 10.0f;
 
-      if(currentEngineState_8004dd04 instanceof SMap || TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) != 0) {
-        renderText(I18n.translate(this.fish.get(i)), x + 9.0f, y + 1.5f, UI_WHITE);
+      final String name;
+
+      if(fishWeight.visibility == FishingHole.FishVisibility.VISIBLE) {
+        name = I18n.translate(fish);
       } else {
-        renderText(I18n.translate(this.fish.get(i)), x + 9.0f, y + 1.5f, UI_GREY);
+        name = I18n.translate(getTranslationKey("fish_obfuscated"));
+      }
+
+      if(currentEngineState_8004dd04 instanceof SMap || TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) != 0) {
+        renderText(name, x + 9.0f, y + 1.5f, UI_WHITE);
+      } else {
+        renderText(name, x + 9.0f, y + 1.5f, UI_GREY);
         icon.colour.set(0.5f);
       }
     }
@@ -108,7 +113,7 @@ public class FishListScreen extends MenuScreen {
     this.updateDimensions();
 
     this.headerBox = new UiBox("Bait List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fish.size() * 16);
+    this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fishingHole.fish.size() * 16);
   }
 
   public void unload() {

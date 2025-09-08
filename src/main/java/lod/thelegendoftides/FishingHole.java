@@ -62,10 +62,25 @@ public final class FishingHole extends RegistryEntry {
   public static class FishWeight {
     public final Supplier<Fish> fish;
     public final int weight;
+    public final FishVisibility visibility;
 
-    public FishWeight(final Supplier<Fish> fish, final int weight) {
+    public FishWeight(final Supplier<Fish> fish, final int weight, final FishVisibility visibility) {
       this.fish = fish;
       this.weight = weight;
+      this.visibility = visibility;
     }
+
+    public FishWeight(final Supplier<Fish> fish, final int weight) {
+      this(fish, weight, FishVisibility.VISIBLE);
+    }
+  }
+
+  public enum FishVisibility {
+    /** Fish name is visible in the list */
+    VISIBLE,
+    /** Fish name will appear as ??? */
+    MASKED,
+    /** Fish name will not show in the list */
+    HIDDEN,
   }
 }

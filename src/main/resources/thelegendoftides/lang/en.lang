@@ -8,6 +8,7 @@ thelegendoftides.hotkey_bait_cancel=Stop fishing
 thelegendoftides.acquired_fish=Acquired Fish:
 thelegendoftides.bait_list=Bait List
 thelegendoftides.fish_list=Fish List
+thelegendoftides.fish_obfuscated=???
 
 # Items
 thelegendoftides.items.regular_bait_box.name=Regular Bait Box
