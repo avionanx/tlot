@@ -1,5 +1,6 @@
-# Stardust Indicators
+# durt loves fishing
 
-Adds glowing effect to stardusts.
 
-Sparkle art by Jordan Irwin (AntumDeluge). [view in opengameart.org](https://opengameart.org/content/ice-sparkles-overlay-effect)
+Book art by Melissa Krautheim. view in [opengameart.org](https://opengameart.org/content/epic-collection-book)
+
+Fishing artwork by [shubibubi](https://shubibubi.itch.io)
