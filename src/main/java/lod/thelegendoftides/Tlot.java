@@ -151,8 +151,6 @@ public class Tlot {
   private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
 
-  private FishBookScreen fishBookScreen;
-
   public Tlot() {
     isFishEncounter = false;
     EVENTS.register(this);
@@ -497,7 +495,8 @@ public class Tlot {
   public void inputReleased(final InputReleasedEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
-    if(event.action == TIDES_INPUT_FISH_MENU.get()) {
+    if(event.action == TIDES_INPUT_FISH_MENU.get() && !SCRIPTS.isPaused()) {
+      SCRIPTS.pause();
       this.menuStack.pushScreen(new FishBookScreen());
     } else if(
       event.action == INPUT_ACTION_SMAP_INTERACT.get() &&

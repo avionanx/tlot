@@ -52,11 +52,12 @@ thelegendoftides.bait.premium.name=Premium
 thelegendoftides.bait.shrimp.name=Shrimp
 
 # Fish
+thelegendoftides.fish.common_trash.name=Trash
 thelegendoftides.fish.carp.name=Carp
 thelegendoftides.fish.silver_carp.name=Silver Carp
 thelegendoftides.fish.grand_carp.name=Grand Carp
-thelegendoftides.fish.black_bass=Black Bass
-thelegendoftides.fish.grand_bass=Grand Bass
+thelegendoftides.fish.black_bass.name=Black Bass
+thelegendoftides.fish.grand_bass.name=Grand Bass
 thelegendoftides.fish.rainbow_trout.name=Rainbow Trout
 thelegendoftides.fish.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.fish.rockhead_pufferfish.name=Rockhead Pufferfish
