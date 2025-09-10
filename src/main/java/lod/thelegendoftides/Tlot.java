@@ -96,6 +96,7 @@ public class Tlot {
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
   public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
   public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
+  public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
 
   private final Random rand = new Random();
 
@@ -166,6 +167,7 @@ public class Tlot {
     event.addRegistry(BAIT_REGISTRY, RegisterBaitEvent::new);
     event.addRegistry(FISH_REGISTRY, RegisterFishEvent::new);
     event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
+    event.addRegistry(FISHING_STAGE_REGISTRY, RegisterFishingStageEvent::new);
     event.addRegistry(FISHING_HOLE_REGISTRY, RegisterFishingHoleEvent::new);
   }
 
@@ -192,6 +194,11 @@ public class Tlot {
   @EventListener
   public void registerFishingHoles(final RegisterFishingHoleEvent event) {
     TlotFishingHoles.register(event);
+  }
+
+  @EventListener
+  public void registerFishingStages(final RegisterFishingStageEvent event) {
+    TlotFishingStages.register(event);
   }
 
   @EventListener
@@ -225,8 +232,11 @@ public class Tlot {
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
-    final Vector3f viewPoint = this.currentFishingHole.cameraViewpoint;
-    final Vector3f refPoint = this.currentFishingHole.cameraRefpoint;
+
+    final FishingStage fishingStage = this.currentFishingHole.fishingStage.get();
+
+    final Vector3f viewPoint = fishingStage.cameraViewpoint;
+    final Vector3f refPoint = fishingStage.cameraRefpoint;
     camera.setViewpoint(viewPoint.x, viewPoint.y, viewPoint.z);
     camera.setRefpoint(refPoint.x, refPoint.y, refPoint.z);
     camera.flags_11c = 3;
@@ -236,9 +246,9 @@ public class Tlot {
     this.player.model_148.modelPartWithShadowIndex_cd = 8;
     this.player.model_148.shadowSize_10c.x = 0x1800 / (float)0x1000;
     this.player.model_148.shadowSize_10c.z = 0x1800 / (float)0x1000;
-    this.player.model_148.shadowOffset_118.y = this.currentFishingHole.playerPosition.y;
-    this.player.model_148.coord2_14.coord.transfer.set(this.currentFishingHole.playerPosition);
-    this.player.model_148.coord2_14.transforms.rotate.y = this.currentFishingHole.playerRotation;
+    this.player.model_148.shadowOffset_118.y = fishingStage.playerPosition.y;
+    this.player.model_148.coord2_14.coord.transfer.set(fishingStage.playerPosition);
+    this.player.model_148.coord2_14.transforms.rotate.y = fishingStage.playerRotation;
 
     // Hide player's weapon
     this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
@@ -498,7 +508,7 @@ public class Tlot {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.stageId);
+      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
     }
   }
