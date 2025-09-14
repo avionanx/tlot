@@ -13,7 +13,9 @@ import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.combat.bent.PlayerBattleEntity;
+import legend.game.combat.deff.DeffPackage;
 import legend.game.combat.deff.DeffPart;
+import legend.game.combat.deff.RegisterDeffsEvent;
 import legend.game.combat.effects.AdditionSparksEffect08;
 import legend.game.combat.effects.EffectManagerData6c;
 import legend.game.combat.effects.EffectManagerParams;
@@ -97,6 +99,7 @@ public class Tlot {
   public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
   public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
   public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
+  public static final Registrar<DeffPackage, RegisterDeffsEvent> TIDES_DEFF_REGISTRAR = new Registrar<>(REGISTRIES.deff, MOD_ID);
 
   private final Random rand = new Random();
 
@@ -675,6 +678,12 @@ public class Tlot {
     this.additionScreen = null;
 
     this.state = FishingState.NOT_FISHING;
+  }
+
+  @EventListener
+  public void deffRegistry(final RegisterDeffsEvent event) {
+    TIDES_DEFF_REGISTRAR.register("rockhead_pufferfish", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.registryEvent(event);
   }
 
   @EventListener

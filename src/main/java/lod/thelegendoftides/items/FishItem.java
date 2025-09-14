@@ -3,12 +3,13 @@ package lod.thelegendoftides.items;
 import legend.game.inventory.Item;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
+import legend.lodmod.items.BattleItem;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class FishItem extends Item {
+public class FishItem extends BattleItem {
   public final Supplier<Fish> fish;
 
   public FishItem(final Supplier<Fish> fish, final int price) {
@@ -28,7 +29,7 @@ public class FishItem extends Item {
 
   @Override
   public boolean canBeUsed(@NotNull final ItemStack stack, @NotNull final UsageLocation location) {
-    return false;
+    return true;
   }
 
   @Override
