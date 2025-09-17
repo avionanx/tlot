@@ -15,7 +15,7 @@ public class TidesItemDeffPackage extends DeffPackage {
   @Override
   public void load() {
     ((Battle)currentEngineState_8004dd04).loadDeff(
-      Loader.resolve("../mods/tlot/items/%s".formatted(this.getRegistryId().entryId())),
-      Loader.resolve("../mods/tlot/items/%s".formatted(this.getRegistryId().entryId())));
+      Loader.resolve("../mods/tlot/items/%s/textures/".formatted(this.getRegistryId().entryId())),
+      Loader.resolve("../mods/tlot/items/%s/scripts/".formatted(this.getRegistryId().entryId())));
   }
 }

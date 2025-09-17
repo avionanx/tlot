@@ -20,7 +20,7 @@ public class RockheadPufferfishItem extends FishItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
+    return type == TargetType.ENEMIES;
   }
 
   @Override
