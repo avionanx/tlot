@@ -34,11 +34,14 @@ import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
+import legend.game.saves.ConfigEntry;
+import legend.game.saves.ConfigRegistryEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.TmdAnimationFile;
+import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
 import lod.thelegendoftides.screens.BaitSelectionScreen;
@@ -93,6 +96,8 @@ public class Tlot {
   public static final String MOD_ID = "thelegendoftides";
 
   public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
+  public static final Registrar<ConfigEntry<?>, ConfigRegistryEvent> TIDES_CONFIG_REGISTRAR = new Registrar<>(REGISTRIES.config, MOD_ID);
+  public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
   public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
@@ -684,6 +689,11 @@ public class Tlot {
   public void deffRegistry(final RegisterDeffsEvent event) {
     TIDES_DEFF_REGISTRAR.register("rockhead_pufferfish", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.registryEvent(event);
+  }
+
+  @EventListener
+  public void configRegistry(final ConfigRegistryEvent event) {
+    TIDES_CONFIG_REGISTRAR.registryEvent(event);
   }
 
   @EventListener
