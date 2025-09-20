@@ -71,6 +71,8 @@ public class FishListScreen extends MenuScreen {
       }
 
       final Fish fish = fishWeight.fish.get();
+      if(fish.isHidden) continue;
+
       final int x = (int)(this.fullWidth - 101 * this.ratio);
       final int y = i * 16 + 40;
 

@@ -67,6 +67,8 @@ public class FishBookScreen extends MenuScreen {
     this.bookTransforms.transfer.set(RENDERER.getNativeWidth() / 2.0f, RENDERER.getNativeHeight() / 2.0f, 60.0f);
 
     for(final RegistryId id : FISH_REGISTRY) {
+      if(FISH_REGISTRY.getEntry(id).get().isHidden) continue;
+
       this.registryIds.add(id);
     }
 
