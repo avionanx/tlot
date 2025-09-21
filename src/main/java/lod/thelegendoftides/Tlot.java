@@ -335,7 +335,7 @@ public class Tlot {
           } else {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
-            final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw);
+            final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw).rotateY(-this.player.model_148.coord2_14.transforms.rotate.y);
 
             boolean collided = false;
             for(final CollisionMesh collisionMesh : this.stageCollision) {
