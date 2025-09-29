@@ -9,8 +9,10 @@ public final class TlotFishBaitWeights {
 
   private static final Registrar<FishBaitWeight, RegisterFishBaitWeightEvent> REGISTRAR = new Registrar<>(Tlot.FISH_BAIT_WEIGHT_REGISTRY, Tlot.MOD_ID);
 
-  public static final RegistryDelegate<FishBaitWeight> CARP_REGULAR = REGISTRAR.register("carp_regular", () -> new FishBaitWeight(TlotFish.CARP, TlotBait.REGULAR, 1));
-  public static final RegistryDelegate<FishBaitWeight> CARP_PREMIUM = REGISTRAR.register("carp_premium", () -> new FishBaitWeight(TlotFish.CARP, TlotBait.PREMIUM, 1));
+  public static final RegistryDelegate<FishBaitWeight> SILVERFISH_SPARKLING = REGISTRAR.register("silverfish_sparkling", () -> new FishBaitWeight(TlotFish.SILVERFISH, TlotBait.SPARKLING, 20));
+  public static final RegistryDelegate<FishBaitWeight> GOLDENFISH_SPARKLING = REGISTRAR.register("goldenfish_sparkling", () -> new FishBaitWeight(TlotFish.GOLDENFISH, TlotBait.SPARKLING, 20));
+  public static final RegistryDelegate<FishBaitWeight> GRAND_GOLDENFISH_SPARKLING = REGISTRAR.register("grand_goldenfish_sparkling", () -> new FishBaitWeight(TlotFish.GRAND_GOLDENFISH, TlotBait.SPARKLING, 20));
+
 
   static void register(final RegisterFishBaitWeightEvent event) {
     REGISTRAR.registryEvent(event);
@@ -27,6 +29,6 @@ public final class TlotFishBaitWeights {
       }
     }
 
-    return 0;
+    return 10;
   }
 }

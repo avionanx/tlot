@@ -17,6 +17,7 @@ import legend.game.combat.deff.DeffPackage;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.deff.RegisterDeffsEvent;
 import legend.game.combat.effects.AdditionSparksEffect08;
+import legend.game.combat.effects.DeffTmdRenderer14;
 import legend.game.combat.effects.EffectManagerData6c;
 import legend.game.combat.effects.EffectManagerParams;
 import legend.game.combat.effects.GenericAttachment1c;

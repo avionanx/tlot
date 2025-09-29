@@ -12,44 +12,72 @@ thelegendoftides.fish_obfuscated=???
 
 # Items
 thelegendoftides.items.regular_bait_box.name=Regular Bait Box
-thelegendoftides.items.regular_bait_box.description=Holds 20.
-thelegendoftides.items.premium_bait_box.name=Premium Bait Box
-thelegendoftides.items.premium_bait_box.description=Holds 20.
-thelegendoftides.items.shrimp_bait_box.name=Shrimp Bait Box
-thelegendoftides.items.shrimp_bait_box.description=Holds 10.
+thelegendoftides.items.regular_bait_box.description=Holds 20. Can\ncatch about anything
+thelegendoftides.items.sparkling_bait_box.name=Sparkling Bait Box
+thelegendoftides.items.sparkling_bait_box.description=Holds 10. Efficient\nfor catching\nexpensive fish
+thelegendoftides.items.infused_bait_box.name=Infused Bait Box
+thelegendoftides.items.infused_bait_box.description=Holds 10. Efficient\nfor catching\nmagical fish
+thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
+thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
+
 thelegendoftides.items.carp.name=Carp
-thelegendoftides.items.carp.description=Restores 300 HP
+thelegendoftides.items.carp.description=Restores 200 HP
+thelegendoftides.items.carp.battle_description=Restores 200 HP
+
 thelegendoftides.items.silver_carp.name=Silver Carp
-thelegendoftides.items.silver_carp.description=Restores 750 HP to everyone
+thelegendoftides.items.silver_carp.description=Restores 500 HP\n to everyone
+thelegendoftides.items.silver_carp.battle_description=Restores 500 HP to everyone
+
 thelegendoftides.items.grand_carp.name=Grand Carp
-thelegendoftides.items.grand_carp.description=Restores 1500 HP to everyone
+thelegendoftides.items.grand_carp.description=Restores 1000 HP to everyone
+thelegendoftides.items.grand_carp.battle_description=Restores 1000 HP\n to everyone
+
 thelegendoftides.items.black_bass.name=Black Bass
-thelegendoftides.items.black_bass.description=Restores 15% HP to everyone for 3 turns
+thelegendoftides.items.black_bass.description=Reflects 1x damage
+thelegendoftides.items.black_bass.battle_description=Reflects 1x damage
+
 thelegendoftides.items.grand_bass.name=Grand Bass
-thelegendoftides.items.grand_bass.description=Restores 25% HP to everyone for 3 turns
+thelegendoftides.items.grand_bass.description=Reflects 2x damage
+thelegendoftides.items.grand_bass.battle_description=Reflects 2x damage
+
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
-thelegendoftides.items.rainbow_trout.description=Recovers 200 HP, 50 SP, 20 MP
+thelegendoftides.items.rainbow_trout.description=Recovers 200 HP,\n50 SP, 20 MP
+thelegendoftides.items.rainbow_trout.battle_description=Recovers 200 HP, 50 SP, 20 MP
+
 thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
-thelegendoftides.items.grand_rainbow_trout.description=Recovers 750 HP, 75 SP, 40 MP to everyone
+thelegendoftides.items.grand_rainbow_trout.description=Recovers 750 HP,\n75 SP, 40 MP to everyone
+thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 750 HP, 75 SP, 40 MP to everyone
+
 thelegendoftides.items.rockhead_pufferfish.name=Rockhead Pufferfish
-thelegendoftides.items.rockhead_pufferfish.description=Deals 200% physical damage to all
+thelegendoftides.items.rockhead_pufferfish.description=Deals 200%\nphysical damage\nto all
+thelegendoftides.items.rockhead_pufferfish.battle_description=Physical scaling attack [multi]
+
 thelegendoftides.items.prickleback.name=Prickleback
-thelegendoftides.items.prickleback.description=Increases DEF/MDEF by 25% for 3 turns
+thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25% for\n3 turns
+thelegendoftides.items.prickleback.battle_description=Increases DEF/MDEF by 25% for 3 turns
+
 thelegendoftides.items.swordfish.name=Swordfish
-thelegendoftides.items.swordfish.description=Increases AT/MAT by 25% for 3 turns
+thelegendoftides.items.swordfish.description=Increases AT/MAT\nby 25% for\n3 turns
+thelegendoftides.items.swordfish.battle_description=Increases AT/MAT by 25% for 3 turns
+
 thelegendoftides.items.sturgeon.name=Sturgeon
-thelegendoftides.items.sturgeon.description=Increases AV/MAV by 25 for 3 turn
+thelegendoftides.items.sturgeon.description=Increases AV/MAV\nby 25 for\n3 turns
+thelegendoftides.items.sturgeon.battle_description=Increases AV/MAV by 25 for 3 turns
+
 thelegendoftides.items.silverfish.name=Silverfish
-thelegendoftides.items.silverfish.description=Expensive, shines under the sun.
+thelegendoftides.items.silverfish.description=Expensive, shines\nunder the sun.
+
 thelegendoftides.items.goldenfishfish.name=Goldenfish
-thelegendoftides.items.goldenfishfish.description=Grown silverfish, more expensive.
+thelegendoftides.items.goldenfishfish.description=Grown silverfish,\nmore expensive.
+
 thelegendoftides.items.grand_goldenfish.name=Grand Goldenfish
 thelegendoftides.items.grand_goldenfish.description=Worth a fortune
 
 # Bait
 thelegendoftides.bait.regular.name=Regular
-thelegendoftides.bait.premium.name=Premium
-thelegendoftides.bait.shrimp.name=Shrimp
+thelegendoftides.bait.sparkling.name=Sparkling
+thelegendoftides.bait.infused.name=Infused
+thelegendoftides.bait.magnetic.name=Magnetic
 
 # Fish
 thelegendoftides.fish.common_trash.name=Trash
