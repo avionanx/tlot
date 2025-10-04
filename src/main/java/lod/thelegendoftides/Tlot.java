@@ -1,6 +1,7 @@
 package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
+import legend.core.GameEngine;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.core.platform.input.InputAction;
@@ -8,6 +9,9 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
+import legend.game.characters.StatType;
+import legend.game.characters.StatTypeRegistryEvent;
+import legend.game.characters.VitalsStat;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -689,6 +693,10 @@ public class Tlot {
   @EventListener
   public void deffRegistry(final RegisterDeffsEvent event) {
     TIDES_DEFF_REGISTRAR.register("rockhead_pufferfish", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("swordfish", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("sturgeon", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("prickleback", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("carp", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.registryEvent(event);
   }
 
