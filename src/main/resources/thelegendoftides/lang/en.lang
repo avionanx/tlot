@@ -40,7 +40,7 @@ thelegendoftides.items.grand_bass.description=Reflects 500 EXP
 
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
 thelegendoftides.items.rainbow_trout.description=Recovers 100 HP,\n35 SP, 20 MP to all
-thelegendoftides.items.rainbow_trout.battle_description=Recovers 100 HP, 50 SP, 20 MP to all
+thelegendoftides.items.rainbow_trout.battle_description=Recovers 100 HP, 35 SP, 20 MP to all
 
 thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 40 MP to all
@@ -99,7 +99,3 @@ thelegendoftides.book_title=Fishing Records
 
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
-
-# Use Item Values
-thelegendoftides.use_item.rainbow=Restored stats
-thelegendoftides.use_item.exp=Received EXP
