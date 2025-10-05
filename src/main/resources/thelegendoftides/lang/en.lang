@@ -21,7 +21,7 @@ thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
 
 thelegendoftides.items.carp.name=Carp
-thelegendoftides.items.carp.description=Restores 100 HP
+thelegendoftides.items.carp.description=Restores 100 HP\n to everyone
 thelegendoftides.items.carp.battle_description=Restores 100 HP
 
 thelegendoftides.items.silver_carp.name=Silver Carp
