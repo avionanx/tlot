@@ -22,7 +22,7 @@ public class CarpItem extends FishItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
+    return type == TargetType.ALLIES || type == TargetType.ALL;
   }
 
   @Override
@@ -39,7 +39,7 @@ public class CarpItem extends FishItem {
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
     response._00 = this.canTarget(stack, TargetType.ALL) ? 3 : 2;
-    response.value_04 = Scus94491BpeSegment_8002.addHp(charId, 300);
+    response.value_04 = Scus94491BpeSegment_8002.addHp(charId, 100);
   }
 
   @Override

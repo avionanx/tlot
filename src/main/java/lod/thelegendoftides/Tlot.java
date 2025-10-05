@@ -697,6 +697,10 @@ public class Tlot {
     TIDES_DEFF_REGISTRAR.register("sturgeon", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("prickleback", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("carp", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("silver_carp", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("grand_carp", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("rainbow_trout", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("grand_rainbow_trout", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.registryEvent(event);
   }
 

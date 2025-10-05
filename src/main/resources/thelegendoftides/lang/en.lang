@@ -21,32 +21,30 @@ thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
 
 thelegendoftides.items.carp.name=Carp
-thelegendoftides.items.carp.description=Restores 200 HP
-thelegendoftides.items.carp.battle_description=Restores 200 HP
+thelegendoftides.items.carp.description=Restores 100 HP
+thelegendoftides.items.carp.battle_description=Restores 100 HP
 
 thelegendoftides.items.silver_carp.name=Silver Carp
-thelegendoftides.items.silver_carp.description=Restores 500 HP\n to everyone
-thelegendoftides.items.silver_carp.battle_description=Restores 500 HP to everyone
+thelegendoftides.items.silver_carp.description=Restores 350 HP\n to everyone
+thelegendoftides.items.silver_carp.battle_description=Restores 350 HP to everyone
 
 thelegendoftides.items.grand_carp.name=Grand Carp
-thelegendoftides.items.grand_carp.description=Restores 1000 HP to everyone
-thelegendoftides.items.grand_carp.battle_description=Restores 1000 HP\n to everyone
+thelegendoftides.items.grand_carp.description=Restores 750 HP to everyone
+thelegendoftides.items.grand_carp.battle_description=Restores 750 HP\n to everyone
 
 thelegendoftides.items.black_bass.name=Black Bass
-thelegendoftides.items.black_bass.description=Reflects 1x damage
-thelegendoftides.items.black_bass.battle_description=Reflects 1x damage
+thelegendoftides.items.black_bass.description=Grants 100 EXP
 
 thelegendoftides.items.grand_bass.name=Grand Bass
-thelegendoftides.items.grand_bass.description=Reflects 2x damage
-thelegendoftides.items.grand_bass.battle_description=Reflects 2x damage
+thelegendoftides.items.grand_bass.description=Reflects 500 EXP
 
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
-thelegendoftides.items.rainbow_trout.description=Recovers 200 HP,\n50 SP, 20 MP
-thelegendoftides.items.rainbow_trout.battle_description=Recovers 200 HP, 50 SP, 20 MP
+thelegendoftides.items.rainbow_trout.description=Recovers 100 HP,\n35 SP, 20 MP to all
+thelegendoftides.items.rainbow_trout.battle_description=Recovers 100 HP, 50 SP, 20 MP to all
 
 thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
-thelegendoftides.items.grand_rainbow_trout.description=Recovers 750 HP,\n75 SP, 40 MP to everyone
-thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 750 HP, 75 SP, 40 MP to everyone
+thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 40 MP to all
+thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 500 HP, 75 SP, 40 MP to all
 
 thelegendoftides.items.rockhead_pufferfish.name=Rockhead Pufferfish
 thelegendoftides.items.rockhead_pufferfish.description=Deals 200%\nphysical damage\nto all
@@ -101,3 +99,7 @@ thelegendoftides.book_title=Fishing Records
 
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
+
+# Use Item Values
+thelegendoftides.use_item.rainbow=Restored stats
+thelegendoftides.use_item.exp=Received EXP
