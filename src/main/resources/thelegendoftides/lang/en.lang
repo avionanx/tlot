@@ -47,7 +47,7 @@ thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 
 thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 500 HP, 75 SP, 40 MP to all
 
 thelegendoftides.items.rockhead_pufferfish.name=Rockhead Pufferfish
-thelegendoftides.items.rockhead_pufferfish.description=Deals 200%\nphysical damage\nto all
+thelegendoftides.items.rockhead_pufferfish.description=Deals scaling\nphysical damage\n[multi]
 thelegendoftides.items.rockhead_pufferfish.battle_description=Physical scaling attack [multi]
 
 thelegendoftides.items.prickleback.name=Prickleback
