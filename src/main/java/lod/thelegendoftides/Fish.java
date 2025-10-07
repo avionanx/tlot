@@ -14,20 +14,25 @@ public abstract class Fish extends RegistryEntry {
   /** How quickly this fish pulls away */
   public final float strength;
   /** If legendary, bit index of CATCH_FLAGS, otherwise -1 */
-  public final int legendaryIndex;
+  public int legendaryIndex;
   /** Whether fish is shown in fishlistscreen or book */
-  public final boolean isHidden;
+  public boolean isHidden;
 
   public Fish(final ItemIcon icon, final float stamina, final float strength) {
-    this(icon, stamina, strength, -1, false);
-  }
-
-  public Fish(final ItemIcon icon, final float stamina, final float strength, final int legendaryIndex, final boolean isHidden) {
     this.icon = icon;
     this.stamina = stamina;
     this.strength = strength;
-    this.legendaryIndex = legendaryIndex;
-    this.isHidden = isHidden;
+    this.legendaryIndex = -1;
+  }
+
+  public Fish setHidden() {
+    this.isHidden = true;
+    return this;
+  }
+
+  public Fish setLegendary(final int index) {
+    this.legendaryIndex = index;
+    return this;
   }
 
   public abstract ItemStack getReward();

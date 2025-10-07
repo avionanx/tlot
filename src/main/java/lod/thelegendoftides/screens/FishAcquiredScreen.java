@@ -12,6 +12,7 @@ import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
 
+import static legend.core.GameEngine.CONFIG;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.SItem.menuStack;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
@@ -20,6 +21,7 @@ import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
 import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
+import static lod.thelegendoftides.Tlot.CATCH_FLAGS;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishAcquiredScreen extends MenuScreen {
@@ -38,6 +40,11 @@ public class FishAcquiredScreen extends MenuScreen {
     if(remainingItems.getSize() != 0) {
       itemOverflow.add(remainingItems);
       this.isRemainingItems = true;
+    }
+
+    if(fish.legendaryIndex != -1) {
+      final long newFlags = CONFIG.getConfig(CATCH_FLAGS.get()) | (1L << fish.legendaryIndex);
+      CONFIG.setConfig(CATCH_FLAGS.get(), newFlags);
     }
   }
 
