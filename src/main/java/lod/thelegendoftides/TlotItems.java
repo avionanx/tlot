@@ -16,6 +16,7 @@ import lod.thelegendoftides.items.RainbowTroutItem;
 import lod.thelegendoftides.items.RockheadPufferfishItem;
 import lod.thelegendoftides.items.SilverCarpItem;
 import lod.thelegendoftides.items.SilverfishItem;
+import lod.thelegendoftides.items.StardustFishItem;
 import lod.thelegendoftides.items.SturgeonItem;
 import lod.thelegendoftides.items.SwordfishItem;
 import org.legendofdragoon.modloader.registries.Registrar;
@@ -46,6 +47,7 @@ public final class TlotItems {
   public static final RegistryDelegate<SilverfishItem> SILVERFISH = ITEM_REGISTRAR.register("silverfish", () -> new SilverfishItem(150));
   public static final RegistryDelegate<GoldenfishItem> GOLDENFISH = ITEM_REGISTRAR.register("goldenfish", () -> new GoldenfishItem(300));
   public static final RegistryDelegate<GrandGoldenfishItem> GRAND_GOLDENFISH = ITEM_REGISTRAR.register("grand_goldenfish", () -> new GrandGoldenfishItem(500));
+  public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", () -> new StardustFishItem(4000));
 
   static void register(final ItemRegistryEvent event) {
     ITEM_REGISTRAR.registryEvent(event);

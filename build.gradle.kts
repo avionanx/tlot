@@ -11,8 +11,8 @@ group = "the-legend-of-tides"
 version = "1.0-SNAPSHOT"
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_21
-  targetCompatibility = JavaVersion.VERSION_21
+  sourceCompatibility = JavaVersion.VERSION_25
+  targetCompatibility = JavaVersion.VERSION_25
 }
 
 javafx {
@@ -28,7 +28,7 @@ repositories {
   mavenCentral()
   mavenLocal() // Uncomment to use mavenLocal version of LoD engine
   maven { url = uri("https://jitpack.io") }
-  maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+  maven { url = uri("https://central.sonatype.com/repository/maven-snapshots/") }
 }
 
 dependencies {
