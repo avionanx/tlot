@@ -30,11 +30,14 @@ import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.types.AdditionHitProperties10;
 import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
+import legend.game.inventory.Equipment;
+import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
+import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
@@ -45,7 +48,10 @@ import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
+import legend.game.types.CharacterData2c;
+import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
+import legend.lodmod.LodMod;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
@@ -164,6 +170,8 @@ public class Tlot {
   private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
 
+  private ArrayList<SpecialWeapon> specialWeaponList = new ArrayList<>();
+
   public Tlot() {
     isFishEncounter = false;
     EVENTS.register(this);
@@ -185,6 +193,11 @@ public class Tlot {
   @EventListener
   public void registerItems(final ItemRegistryEvent event) {
     TlotItems.register(event);
+  }
+
+  @EventListener
+  public void registerEquipments(final EquipmentRegistryEvent event) {
+    TlotEquipments.register(event);
   }
 
   @EventListener
@@ -226,7 +239,10 @@ public class Tlot {
 
   @EventListener
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
-    if(!isFishEncounter) return;
+    if(!isFishEncounter) {
+      this.loadSpecialWeapons();
+      return;
+    }
     isFishEncounter = false;
 
     scriptStatePtrArr_800bc1c0[5].pause();
@@ -276,8 +292,39 @@ public class Tlot {
     this.state = FishingState.IDLE;
   }
 
+  private void loadSpecialWeapons() {
+    for(int i = 0; i < 3; i++) {
+      if(gameState_800babc8.charIds_88[i] != -1) {
+        final CharacterData2c charData = gameState_800babc8.charData_32c[gameState_800babc8.charIds_88[i]];
+        final Equipment specialWeaponId;
+        switch(gameState_800babc8.charIds_88[i]) {
+          case 0 -> specialWeaponId = TlotEquipments.LIGHTSABER.get();
+          case 1, 5 -> specialWeaponId = TlotEquipments.POOL_NOODLE.get();
+          case 2, 8 -> specialWeaponId = TlotEquipments.GUN.get();
+          case 3 -> specialWeaponId = TlotEquipments.ENERGY_SWORD.get();
+          case 6 -> specialWeaponId = TlotEquipments.BROOM.get();
+          case 7 -> specialWeaponId = TlotEquipments.TREE.get();
+          default -> specialWeaponId = null;
+        }
+        if(specialWeaponId == null) continue;
+        if(charData.equipment_14.get(EquipmentSlot.WEAPON) == specialWeaponId) {
+          final PlayerBattleEntity player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6 + i].innerStruct_00;
+          player.model_148.partInvisible_f4 |= 0x1L << player.getWeaponModelPart();
+          this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[player.getWeaponModelPart()].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+        }
+      }
+    }
+  }
+
+  @EventListener
+  public void onBattleEnded(final BattleEndedEvent event) {
+    this.specialWeaponList.forEach(SpecialWeapon::unload);
+    this.specialWeaponList.clear();
+  }
+
   @EventListener
   public void renderLoop(final RenderEvent event) {
+    this.specialWeaponList.forEach(SpecialWeapon::render);
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     if(FishIconUiType.FISH_ICONS.obj == null) {

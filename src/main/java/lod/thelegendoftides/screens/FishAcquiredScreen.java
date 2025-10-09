@@ -3,6 +3,7 @@ package lod.thelegendoftides.screens;
 import legend.core.platform.input.InputAction;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
+import legend.game.inventory.Equipment;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.InputPropagation;
@@ -15,7 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import static legend.core.GameEngine.CONFIG;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.SItem.menuStack;
+import static legend.game.Scus94491BpeSegment_8002.giveEquipment;
 import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static legend.game.Scus94491BpeSegment_800b.equipmentOverflow;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
 import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
@@ -36,10 +39,19 @@ public class FishAcquiredScreen extends MenuScreen {
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
     this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
 
-    final ItemStack remainingItems = gameState_800babc8.items_2e9.give(fish.getReward());
-    if(remainingItems.getSize() != 0) {
-      itemOverflow.add(remainingItems);
-      this.isRemainingItems = true;
+    if(fish.getReward() instanceof final ItemStack itemReward) {
+      final ItemStack remainingItems = gameState_800babc8.items_2e9.give(itemReward);
+      if(remainingItems.getSize() != 0) {
+        itemOverflow.add(remainingItems);
+        this.isRemainingItems = true;
+      }
+    } else if(fish.getReward() instanceof final Equipment equipmentReward) {
+      gameState_800babc8.equipment_1e8.add(equipmentReward);
+      // TODO handle overflow
+      // if(!giveEquipment(equipmentReward)) {
+      //   equipmentOverflow.add(equipmentReward);
+      //   this.isRemainingItems = true;
+      // }
     }
 
     if(fish.legendaryIndex != -1) {

@@ -1,5 +1,6 @@
 package lod.thelegendoftides;
 
+import legend.game.inventory.InventoryEntry;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
 import org.legendofdragoon.modloader.registries.RegistryEntry;
@@ -35,7 +36,7 @@ public abstract class Fish extends RegistryEntry {
     return this;
   }
 
-  public abstract ItemStack getReward();
+  public abstract InventoryEntry getReward();
 
   public boolean canBeCaught() {
     return this.legendaryIndex < 0 || (this.legendaryIndex & (1L << CONFIG.getConfig(CATCH_FLAGS.get()))) == 0;

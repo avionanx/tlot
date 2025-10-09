@@ -14,8 +14,12 @@ import org.joml.Vector3f;
 import java.nio.file.Path;
 
 import static legend.core.GameEngine.GPU;
+import static legend.core.GameEngine.GTE;
 import static legend.core.GameEngine.RENDERER;
 import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
+import static legend.game.Scus94491BpeSegment_8003.GsSetLightMatrix;
+import static legend.game.Scus94491BpeSegment_800c.lightColourMatrix_800c3508;
+import static legend.game.Scus94491BpeSegment_800c.lightDirectionMatrix_800c34e8;
 
 public class FishingRod {
   private final float[] stringX = new float[32];
@@ -40,8 +44,8 @@ public class FishingRod {
     this.initString();
 
     // Load rod/bobber models
-    this.rod = new GlbLoader("rod", Path.of("rod.glb")).build();
-    this.bobber = new GlbLoader("bobber", Path.of("bobber.glb")).build();
+    this.rod = new GlbLoader("rod", Path.of("mods", "tlot", "models", "rod.glb")).build();
+    this.bobber = new GlbLoader("bobber", Path.of("mods", "tlot", "models", "bobber.glb")).build();
   }
 
   public void delete() {
@@ -145,7 +149,7 @@ public class FishingRod {
 
     final MV lw = new MV();
     GsGetLw(this.parent, lw);
-//    GsSetLightMatrix(lw);
+    GsSetLightMatrix(lw);
     lw
       .rotateY(-MathHelper.HALF_PI)
       .scale(800.0f)
@@ -153,9 +157,9 @@ public class FishingRod {
 
     RENDERER.queueModel(this.rod, lw, QueuedModelStandard.class)
       .depthOffset(zOffset)
-//      .lightDirection(lightDirectionMatrix_800c34e8)
-//      .lightColour(lightColourMatrix_800c3508)
-//      .backgroundColour(GTE.backgroundColour)
+      .lightDirection(lightDirectionMatrix_800c34e8)
+      .lightColour(lightColourMatrix_800c3508)
+      .backgroundColour(GTE.backgroundColour)
     ;
   }
 
