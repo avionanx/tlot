@@ -17,16 +17,20 @@ public class TlotEquipments {
 
   // Model Swap Weapons
   // Dart
-  public static final RegistryDelegate<Equipment> LIGHTSABER = EQUIPMENT_REGISTRAR.register("lightsaber", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> LIGHTSABER = EQUIPMENT_REGISTRAR.register("lightsaber", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 70, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Alvitz
-  public static final RegistryDelegate<Equipment> POOL_NOODLE = EQUIPMENT_REGISTRAR.register("pool_noodle", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> POOL_NOODLE = EQUIPMENT_REGISTRAR.register("pool_noodle", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x40, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SPEAR, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Sharanda
-  public static final RegistryDelegate<Equipment> GUN = EQUIPMENT_REGISTRAR.register("gun", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> BIANCA = EQUIPMENT_REGISTRAR.register("bianca", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x2, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 250, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.BOW, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Rose
-  public static final RegistryDelegate<Equipment> ENERGY_SWORD = EQUIPMENT_REGISTRAR.register("energy_sword", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
-  //
-  public static final RegistryDelegate<Equipment> BROOM = EQUIPMENT_REGISTRAR.register("broom", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
-  public static final RegistryDelegate<Equipment> TREE = EQUIPMENT_REGISTRAR.register("tree", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> ENERGY_SWORD = EQUIPMENT_REGISTRAR.register("energy_sword", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 125, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  // Meru
+  public static final RegistryDelegate<Equipment> SPATULA = EQUIPMENT_REGISTRAR.register("spatula", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x1, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 70, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 20, 0, 0, 0, ItemIcon.HAMMER, -10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  // Kongol
+  public static final RegistryDelegate<Equipment> TREE = EQUIPMENT_REGISTRAR.register("tree", () -> new Equipment(70, 0x0, EquipmentSlot.WEAPON, 0x80, 0x20, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 200, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.AXE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+
+  public static final RegistryDelegate<Equipment> OLD_BOOTS = EQUIPMENT_REGISTRAR.register("old_boots", () -> new Equipment(200, 0x0, EquipmentSlot.BOOTS, 0x40, 0xf7, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 10, 0, 0, 0, ItemIcon.BOOTS, 0, 0, 0, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> THE_ONE_RING = EQUIPMENT_REGISTRAR.register("the_one_ring", () -> new Equipment(1000, 0x0, EquipmentSlot.ACCESSORY, 0x20, 0xf7, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 50, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.BRACELET, 0, 0, 50, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0x0));
 
   static void register(final EquipmentRegistryEvent event) {
     EQUIPMENT_REGISTRAR.registryEvent(event);

@@ -1,5 +1,6 @@
 package lod.thelegendoftides;
 
+import legend.game.inventory.Equipment;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
 import legend.lodmod.LodItems;
@@ -12,6 +13,7 @@ public final class TlotFish {
 
   private static final Registrar<Fish, RegisterFishEvent> REGISTRAR = new Registrar<>(Tlot.FISH_REGISTRY, Tlot.MOD_ID);
 
+  // Fish
   public static final RegistryDelegate<Fish> CARP = REGISTRAR.register("carp", () -> new RegularFish(new FishIcon(0), 30.0f, 0.2f, () -> new ItemStack(TlotItems.CARP.get())));
   public static final RegistryDelegate<Fish> SILVER_CARP = REGISTRAR.register("silver_carp", () -> new RegularFish(new FishIcon(0), 30.0f, 0.3f, () -> new ItemStack(TlotItems.SILVER_CARP.get())));
   public static final RegistryDelegate<Fish> GRAND_CARP = REGISTRAR.register("grand_carp", () -> new RegularFish(new FishIcon(0), 40.0f, 0.4f, () -> new ItemStack(TlotItems.GRAND_CARP.get())));
@@ -26,10 +28,21 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> SILVERFISH = REGISTRAR.register("silverfish", () -> new RegularFish(new FishIcon(4), 30.0f, 0.2f, () -> new ItemStack(TlotItems.SILVERFISH.get())));
   public static final RegistryDelegate<Fish> GOLDENFISH = REGISTRAR.register("goldenfish", () -> new RegularFish(new FishIcon(4), 36.0f, 0.25f, () -> new ItemStack(TlotItems.GOLDENFISH.get())));
   public static final RegistryDelegate<Fish> GRAND_GOLDENFISH = REGISTRAR.register("grand_goldenfish", () -> new RegularFish(new FishIcon(4), 42.0f, 0.35f, () -> new ItemStack(TlotItems.GRAND_GOLDENFISH.get())));
-  public static final RegistryDelegate<Fish> STARDUSTFISH = REGISTRAR.register("stardustfish", () -> new RegularFish(new FishIcon(4), 80.0f, 0.35f, () -> new ItemStack(TlotItems.STARDUSTFISH.get())).setLegendary(0).setHidden());
+  public static final RegistryDelegate<Fish> STARDUSTFISH = REGISTRAR.register("stardustfish", () -> new RegularFish(new FishIcon(4), 80.0f, 0.35f, () -> new ItemStack(TlotItems.STARDUSTFISH.get())).setLegendary(0));
 
-  public static final RegistryDelegate<Fish> COMMON_TRASH = REGISTRAR.register("common_trash", () -> new RandomRewardFish(ItemIcon.SACK, 30.0f, 1.5f, () -> new ItemStack(LodItems.HEALING_POTION.get()), () -> new ItemStack(LodItems.CHARM_POTION.get())).setHidden()
-  );
+  // Treasures
+  public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());
+  public static final RegistryDelegate<Fish> POOL_NOODLE = REGISTRAR.register("pool_noodle", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.POOL_NOODLE).setLegendary(2).setHidden());
+  public static final RegistryDelegate<Fish> DWARVEN_XBOW = REGISTRAR.register("dwarven_xbow", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.BIANCA).setLegendary(3).setHidden());
+  public static final RegistryDelegate<Fish> ENERGY_SWORD = REGISTRAR.register("energy_sword", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.ENERGY_SWORD).setLegendary(4).setHidden());
+  public static final RegistryDelegate<Fish> SPATULA = REGISTRAR.register("spatula", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.SPATULA).setLegendary(5).setHidden());
+  public static final RegistryDelegate<Fish> TREE = REGISTRAR.register("tree", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.TREE).setLegendary(6).setHidden());
+
+  public static final RegistryDelegate<Fish> OLD_BOOTS = REGISTRAR.register("old_boots", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.OLD_BOOTS).setLegendary(7).setHidden());
+  public static final RegistryDelegate<Fish> THE_ONE_RING = REGISTRAR.register("the_one_ring", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.THE_ONE_RING).setLegendary(8).setHidden());
+
+  // Misc
+  public static final RegistryDelegate<Fish> COMMON_TRASH = REGISTRAR.register("common_trash", () -> new RandomRewardFish(ItemIcon.SACK, 30.0f, 1.5f, () -> new ItemStack(LodItems.HEALING_POTION.get()), () -> new ItemStack(LodItems.CHARM_POTION.get())).setHidden());
 
   static void register(final RegisterFishEvent event) {
     REGISTRAR.registryEvent(event);

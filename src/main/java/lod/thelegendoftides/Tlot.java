@@ -300,9 +300,9 @@ public class Tlot {
         switch(gameState_800babc8.charIds_88[i]) {
           case 0 -> specialWeaponId = TlotEquipments.LIGHTSABER.get();
           case 1, 5 -> specialWeaponId = TlotEquipments.POOL_NOODLE.get();
-          case 2, 8 -> specialWeaponId = TlotEquipments.GUN.get();
+          case 2, 8 -> specialWeaponId = TlotEquipments.BIANCA.get();
           case 3 -> specialWeaponId = TlotEquipments.ENERGY_SWORD.get();
-          case 6 -> specialWeaponId = TlotEquipments.BROOM.get();
+          case 6 -> specialWeaponId = TlotEquipments.SPATULA.get();
           case 7 -> specialWeaponId = TlotEquipments.TREE.get();
           default -> specialWeaponId = null;
         }

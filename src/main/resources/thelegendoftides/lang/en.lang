@@ -21,15 +21,15 @@ thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
 
 thelegendoftides.items.carp.name=Carp
-thelegendoftides.items.carp.description=Restores 100 HP\n to everyone
+thelegendoftides.items.carp.description=Restores 100 HP\nto everyone
 thelegendoftides.items.carp.battle_description=Restores 100 HP
 
 thelegendoftides.items.silver_carp.name=Silver Carp
-thelegendoftides.items.silver_carp.description=Restores 350 HP\n to everyone
+thelegendoftides.items.silver_carp.description=Restores 350 HP\nto everyone
 thelegendoftides.items.silver_carp.battle_description=Restores 350 HP to everyone
 
 thelegendoftides.items.grand_carp.name=Grand Carp
-thelegendoftides.items.grand_carp.description=Restores 750 HP to everyone
+thelegendoftides.items.grand_carp.description=Restores 750 HP\nto everyone
 thelegendoftides.items.grand_carp.battle_description=Restores 750 HP\n to everyone
 
 thelegendoftides.items.black_bass.name=Black Bass
@@ -51,11 +51,11 @@ thelegendoftides.items.rockhead_pufferfish.description=Deals scaling\nphysical d
 thelegendoftides.items.rockhead_pufferfish.battle_description=Physical scaling attack [multi]
 
 thelegendoftides.items.prickleback.name=Prickleback
-thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25% for\n3 turns
+thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25%% for\n3 turns
 thelegendoftides.items.prickleback.battle_description=Buffs DEF/MDEF by 25%% for 3 turns
 
 thelegendoftides.items.swordfish.name=Swordfish
-thelegendoftides.items.swordfish.description=Increases AT/MAT\nby 25% for\n3 turns
+thelegendoftides.items.swordfish.description=Increases AT/MAT\nby 25%% for\n3 turns
 thelegendoftides.items.swordfish.battle_description=Buffs AT/MAT by 25%% for 3 turns
 
 thelegendoftides.items.sturgeon.name=Sturgeon
@@ -65,11 +65,39 @@ thelegendoftides.items.sturgeon.battle_description=Buffs AV/MAV by 25 for 3 turn
 thelegendoftides.items.silverfish.name=Silverfish
 thelegendoftides.items.silverfish.description=Expensive, shines\nunder the sun.
 
-thelegendoftides.items.goldenfishfish.name=Goldenfish
-thelegendoftides.items.goldenfishfish.description=Grown silverfish,\nmore expensive.
+thelegendoftides.items.goldenfish.name=Goldenfish
+thelegendoftides.items.goldenfish.description=Grown silverfish,\nmore expensive.
 
 thelegendoftides.items.grand_goldenfish.name=Grand Goldenfish
 thelegendoftides.items.grand_goldenfish.description=Worth a fortune
+
+thelegendoftides.items.stardustfish.name=Stardustfish
+thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.
+
+# Equipment
+thelegendoftides.equipment.lightsaber.name=Lightsaber
+thelegendoftides.equipment.lightsaber.description=Hello there
+
+thelegendoftides.equipment.pool_noodle.name=Pool Noodle
+thelegendoftides.equipment.pool_noodle.description=Bonk
+
+thelegendoftides.equipment.bianca.name=Bianca
+thelegendoftides.equipment.bianca.description=Idk I\nnever played\nDA
+
+thelegendoftides.equipment.energy_sword.name=Energy Sword
+thelegendoftides.equipment.energy_sword.description=You no longer\nneed a weapon
+
+thelegendoftides.equipment.spatula.name=Spatula
+thelegendoftides.equipment.spatula.description=Let her cook
+
+thelegendoftides.equipment.tree.name=Tree
+thelegendoftides.equipment.tree.description=Kongol Smash.
+
+thelegendoftides.equipment.old_boots.name=Old Boots
+thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
+
+thelegendoftides.equipment.the_one_ring.name=The One Ring
+thelegendoftides.equipment.the_one_ring.description=Cast it into\nthe fire!\nDestroy it!
 
 # Bait
 thelegendoftides.bait.regular.name=Regular
@@ -93,7 +121,17 @@ thelegendoftides.fish.sturgeon.name=Sturgeon
 thelegendoftides.fish.silverfish.name=Silverfish
 thelegendoftides.fish.goldenfish.name=Goldenfish
 thelegendoftides.fish.grand_goldenfish.name=Grand Goldenfish
+thelegendoftides.fish.stardustfish.name=Stardust Fish
 
+thelegendoftides.fish.lightsaber.name=Lightsaber
+thelegendoftides.fish.pool_noodle.name=Pool Noodle
+thelegendoftides.fish.bianca.name=Bianca
+thelegendoftides.fish.energy_sword.name=Energy Sword
+thelegendoftides.fish.spatula.name=Spatula
+thelegendoftides.fish.tree.name=Tree
+
+thelegendoftides.fish.old_boots.name=Old Boots
+thelegendoftides.fish.the_one_ring.name=The One Ring
 # Book
 thelegendoftides.book_title=Fishing Records
 
