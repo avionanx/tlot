@@ -25,11 +25,6 @@ public class BlackBassItem extends FishItem {
   }
 
   @Override
-  public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
-  }
-
-  @Override
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
     response._00 = 9;

@@ -33,6 +33,7 @@ import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
+import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.modding.coremod.CoreMod;
@@ -740,6 +741,7 @@ public class Tlot {
   @EventListener
   public void deffRegistry(final RegisterDeffsEvent event) {
     TIDES_DEFF_REGISTRAR.register("rockhead_pufferfish", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("koi", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("swordfish", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("sturgeon", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("prickleback", TidesItemDeffPackage::new);

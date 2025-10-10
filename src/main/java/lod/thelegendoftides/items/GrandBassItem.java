@@ -24,10 +24,6 @@ public class GrandBassItem extends FishItem {
     return location == UsageLocation.MENU;
   }
 
-  @Override
-  public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
-  }
 
   @Override
   @Method(0x80022d88L)

@@ -30,13 +30,13 @@ thelegendoftides.items.silver_carp.battle_description=Restores 350 HP to everyon
 
 thelegendoftides.items.grand_carp.name=Grand Carp
 thelegendoftides.items.grand_carp.description=Restores 750 HP\nto everyone
-thelegendoftides.items.grand_carp.battle_description=Restores 750 HP\n to everyone
+thelegendoftides.items.grand_carp.battle_description=Restores 750 HP to everyone
 
 thelegendoftides.items.black_bass.name=Black Bass
 thelegendoftides.items.black_bass.description=Grants 100 EXP
 
 thelegendoftides.items.grand_bass.name=Grand Bass
-thelegendoftides.items.grand_bass.description=Reflects 500 EXP
+thelegendoftides.items.grand_bass.description=Grants 500 EXP
 
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
 thelegendoftides.items.rainbow_trout.description=Recovers 100 HP,\n35 SP, 20 MP to all
@@ -53,6 +53,10 @@ thelegendoftides.items.rockhead_pufferfish.battle_description=Physical scaling a
 thelegendoftides.items.prickleback.name=Prickleback
 thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25%% for\n3 turns
 thelegendoftides.items.prickleback.battle_description=Buffs DEF/MDEF by 25%% for 3 turns
+
+thelegendoftides.items.koi.name=Koi
+thelegendoftides.items.koi.description=Increases HP by\n25%% for 5 turns
+thelegendoftides.items.koi.battle_description=Buffs HP by 25%% for 5 turns
 
 thelegendoftides.items.swordfish.name=Swordfish
 thelegendoftides.items.swordfish.description=Increases AT/MAT\nby 25%% for\n3 turns
@@ -73,6 +77,14 @@ thelegendoftides.items.grand_goldenfish.description=Worth a fortune
 
 thelegendoftides.items.stardustfish.name=Stardustfish
 thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.
+
+thelegendoftides.items.last_kraken_jr.name=Last Kraken Jr.
+thelegendoftides.items.last_kraken_jr.description=Summons a Cleone\nto fight in your\nplace (repeat).
+thelegendoftides.items.last_kraken_jr.battle_description=Summons a Cleone (repeat)
+
+thelegendoftides.items.abyssal_rage.name=Abyssal Rage
+thelegendoftides.items.abyssal_rage.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
+thelegendoftides.items.abyssal_rage.battle_description=Deals extreme phys. DMG (multi)(repeat)
 
 # Equipment
 thelegendoftides.equipment.lightsaber.name=Lightsaber
