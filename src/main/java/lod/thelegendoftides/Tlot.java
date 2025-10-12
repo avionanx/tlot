@@ -32,16 +32,19 @@ import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
+import legend.game.inventory.InventoryEntry;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
+import legend.game.inventory.screens.ShopScreen;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
+import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
@@ -69,6 +72,7 @@ import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
+import org.legendofdragoon.modloader.registries.RegistryEntry;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.ArrayList;
@@ -782,5 +786,16 @@ public class Tlot {
 
   public static String getTranslationKey(final String... args) {
     return MOD_ID + '.' + String.join(".", args);
+  }
+
+  // Will probably switch to new shops rather than adding to existing ones
+  @EventListener
+  public void shopBaitsEvent(final ShopContentsEvent event) {
+    if(event.shop.shopType_00 == 0) return;
+
+    event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null)), TlotItems.REGULAR_BAIT_BOX.get().getPrice(null)));
+    event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1, TlotItems.SPARKLING_BAIT_BOX.get().getMaxDurability(null)), TlotItems.SPARKLING_BAIT_BOX.get().getPrice(null)));
+    event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1, TlotItems.INFUSED_BAIT_BOX.get().getMaxDurability(null)), TlotItems.INFUSED_BAIT_BOX.get().getPrice(null)));
+    event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1, TlotItems.MAGNETIC_BAIT_BOX.get().getMaxDurability(null)), TlotItems.MAGNETIC_BAIT_BOX.get().getPrice(null)));
   }
 }
