@@ -3,7 +3,7 @@ package lod.thelegendoftides;
 import legend.core.GameEngine;
 import legend.game.inventory.Item;
 import legend.game.inventory.ItemRegistryEvent;
-import lod.thelegendoftides.items.AbyssalRageItem;
+import lod.thelegendoftides.items.AzeelGladiatorItem;
 import lod.thelegendoftides.items.BaitBoxItem;
 import lod.thelegendoftides.items.BlackBassItem;
 import lod.thelegendoftides.items.CarpItem;
@@ -53,7 +53,7 @@ public final class TlotItems {
   public static final RegistryDelegate<GrandGoldenfishItem> GRAND_GOLDENFISH = ITEM_REGISTRAR.register("grand_goldenfish", () -> new GrandGoldenfishItem(500));
   public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", () -> new StardustFishItem(4000));
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", () -> new LastKrakenJrItem(800));
-  public static final RegistryDelegate<AbyssalRageItem> ABYSSAL_RAGE = ITEM_REGISTRAR.register("abyssal_rage", () -> new AbyssalRageItem(1000));
+  public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", () -> new AzeelGladiatorItem(1000));
 
   static void register(final ItemRegistryEvent event) {
     ITEM_REGISTRAR.registryEvent(event);

@@ -46,10 +46,12 @@ import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
+import legend.game.modding.events.submap.SubmapLoadEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
+import legend.game.submap.SubmapObject;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.CharacterData2c;
@@ -754,6 +756,7 @@ public class Tlot {
     TIDES_DEFF_REGISTRAR.register("grand_carp", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("rainbow_trout", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("grand_rainbow_trout", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("azeel_gladiator", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.registryEvent(event);
   }
 

@@ -31,7 +31,7 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> GRAND_GOLDENFISH = REGISTRAR.register("grand_goldenfish", () -> new RegularFish(new FishIcon(4), 42.0f, 0.35f, () -> new ItemStack(TlotItems.GRAND_GOLDENFISH.get())));
   public static final RegistryDelegate<Fish> STARDUSTFISH = REGISTRAR.register("stardustfish", () -> new RegularFish(new FishIcon(4), 80.0f, 0.35f, () -> new ItemStack(TlotItems.STARDUSTFISH.get())).setLegendary(0));
   public static final RegistryDelegate<Fish> LAST_KRAKEN_JR = REGISTRAR.register("last_kraken_jr", () -> new RegularFish(new FishIcon(9), 80.0f, 0.35f, () -> new ItemStack(TlotItems.LAST_KRAKEN_JR.get())).setLegendary(9));
-  public static final RegistryDelegate<Fish> AZEEL_GLADIATOR = REGISTRAR.register("azeel_gladiator", () -> new RegularFish(new FishIcon(10), 120.0f, 0.5f, () -> new ItemStack(TlotItems.ABYSSAL_RAGE.get())).setLegendary(10));
+  public static final RegistryDelegate<Fish> AZEEL_GLADIATOR = REGISTRAR.register("azeel_gladiator", () -> new RegularFish(new FishIcon(10), 120.0f, 0.5f, () -> new ItemStack(TlotItems.AZEEL_GLADIATOR.get())).setLegendary(10));
 
   // Treasures
   public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());

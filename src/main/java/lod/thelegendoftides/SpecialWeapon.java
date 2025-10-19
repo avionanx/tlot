@@ -4,6 +4,7 @@ import legend.core.QueuedModelStandard;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
 import legend.core.opengl.Obj;
+import legend.core.opengl.Texture;
 import legend.game.types.Model124;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
@@ -19,11 +20,14 @@ import static legend.game.Scus94491BpeSegment_800c.lightDirectionMatrix_800c34e8
 public class SpecialWeapon {
   private final GsCOORDINATE2 parent;
   private final Obj model;
+  private Texture texture;
   private final Model124 bentModel;
 
   public SpecialWeapon(final GsCOORDINATE2 parent, final RegistryId id, final Model124 bentModel) {
     this.parent = parent;
-    this.model = new GlbLoader(id.entryId(), Path.of("mods", "tlot", "models", id.entryId() + ".glb")).build();
+    final GlbLoader loader = new GlbLoader(id.entryId(), Path.of("mods", "tlot", "models", id.entryId() + ".glb"));
+    this.model = loader.build();
+    this.texture = loader.texture;
     this.bentModel = bentModel;
   }
 
@@ -41,11 +45,15 @@ public class SpecialWeapon {
       .scale(800.0f)
     ;
 
-    RENDERER.queueModel(this.model, lw, QueuedModelStandard.class)
+    final var queuedModel = RENDERER.queueModel(this.model, lw, QueuedModelStandard.class)
       .depthOffset(bentModel.zOffset_a0)
          .lightDirection(lightDirectionMatrix_800c34e8)
          .lightColour(lightColourMatrix_800c3508)
           .backgroundColour(GTE.backgroundColour)
     ;
+    
+    if(this.texture != null) {
+      queuedModel.texture(this.texture);
+    }
   }
 }

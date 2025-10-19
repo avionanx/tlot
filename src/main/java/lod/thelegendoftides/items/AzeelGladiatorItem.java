@@ -7,8 +7,8 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class AbyssalRageItem extends FishItem {
-  public AbyssalRageItem(final int price) {
+public class AzeelGladiatorItem extends FishItem {
+  public AzeelGladiatorItem(final int price) {
     super(TlotFish.AZEEL_GLADIATOR, price);
   }
 

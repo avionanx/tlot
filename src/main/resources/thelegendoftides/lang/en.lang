@@ -82,9 +82,9 @@ thelegendoftides.items.last_kraken_jr.name=Last Kraken Jr.
 thelegendoftides.items.last_kraken_jr.description=Summons a Cleone\nto fight in your\nplace (repeat).
 thelegendoftides.items.last_kraken_jr.battle_description=Summons a Cleone (repeat)
 
-thelegendoftides.items.abyssal_rage.name=Abyssal Rage
-thelegendoftides.items.abyssal_rage.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
-thelegendoftides.items.abyssal_rage.battle_description=Deals extreme phys. DMG (multi)(repeat)
+thelegendoftides.items.azeel_gladiator.name=Azeel Gladiator
+thelegendoftides.items.azeel_gladiator.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
+thelegendoftides.items.azeel_gladiator.battle_description=Deals extreme phys. DMG (multi)(repeat)
 
 # Equipment
 thelegendoftides.equipment.lightsaber.name=Lightsaber
