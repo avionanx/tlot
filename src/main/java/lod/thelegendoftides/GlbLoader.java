@@ -42,7 +42,7 @@ public class GlbLoader {
           final IntBuffer h = stack.mallocInt(1);
           final IntBuffer comp = stack.mallocInt(1);
 
-          final ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, comp, 4);
+          final ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, comp, 3);
           if(data == null) {
             throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
           }
@@ -79,9 +79,9 @@ public class GlbLoader {
               if(this.texture == null) {
                 this.builder.rgb(colour.r() / 2, colour.g() / 2, colour.b() / 2);
               } else {
-                this.builder.rgb(1.0f, 1.0f, 1.0f);
+                this.builder.rgb(2.0f, 2.0f, 2.0f);
               }
-              this.builder.uv(uv.x(), uv.y());
+              this.builder.uv(uv.x(), 1.0f - uv.y());
             }
           }
         }
