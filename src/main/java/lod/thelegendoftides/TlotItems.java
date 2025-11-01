@@ -13,6 +13,7 @@ import lod.thelegendoftides.items.GrandCarpItem;
 import lod.thelegendoftides.items.GrandGoldenfishItem;
 import lod.thelegendoftides.items.GrandRainbowTroutItem;
 import lod.thelegendoftides.items.KoiItem;
+import lod.thelegendoftides.items.MessageBottleItem;
 import lod.thelegendoftides.items.PricklebackItem;
 import lod.thelegendoftides.items.RainbowTroutItem;
 import lod.thelegendoftides.items.RockheadPufferfishItem;
@@ -54,6 +55,8 @@ public final class TlotItems {
   public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", () -> new StardustFishItem(4000));
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", () -> new LastKrakenJrItem(800));
   public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", () -> new AzeelGladiatorItem(1000));
+
+  public static final RegistryDelegate<MessageBottleItem> MESSAGE_BOTTLE = ITEM_REGISTRAR.register("message_bottle", () -> new MessageBottleItem(0));
 
   static void register(final ItemRegistryEvent event) {
     ITEM_REGISTRAR.registryEvent(event);

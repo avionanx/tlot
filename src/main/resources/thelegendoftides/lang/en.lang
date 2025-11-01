@@ -86,6 +86,10 @@ thelegendoftides.items.azeel_gladiator.name=Azeel Gladiator
 thelegendoftides.items.azeel_gladiator.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
 thelegendoftides.items.azeel_gladiator.battle_description=Deals extreme phys. DMG (multi)(repeat)
 
+thelegendoftides.items.message_bottle.name=Message Bottle
+thelegendoftides.items.message_bottle.description=It appears to\ncontain a message.
+thelegendoftides.items.message_bottle.battle_description=Read message
+
 # Equipment
 thelegendoftides.equipment.lightsaber.name=Lightsaber
 thelegendoftides.equipment.lightsaber.description=Hello there
@@ -103,7 +107,7 @@ thelegendoftides.equipment.spatula.name=Spatula
 thelegendoftides.equipment.spatula.description=Let her cook
 
 thelegendoftides.equipment.ends_of_the_earth.name=Ends of the Earth
-thelegendoftides.equipment.ends_of_the_earth.description=One day, Kongol\n set this right.
+thelegendoftides.equipment.ends_of_the_earth.description=One day, Kongol\nset this right.
 
 thelegendoftides.equipment.old_boots.name=Old Boots
 thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
