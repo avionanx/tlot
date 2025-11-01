@@ -77,11 +77,11 @@ public class GlbLoader {
               this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
               this.builder.normal(normal.x(), normal.y(), normal.z());
               if(this.texture == null) {
-                this.builder.rgb(colour.r() / 2, colour.g() / 2, colour.b() / 2);
+                this.builder.rgb(colour.r() * 2.0f, colour.g() * 2.0f, colour.b() * 2.0f);
               } else {
                 this.builder.rgb(2.0f, 2.0f, 2.0f);
+                this.builder.uv(uv.x(), 1.0f - uv.y());
               }
-              this.builder.uv(uv.x(), 1.0f - uv.y());
             }
           }
         }
