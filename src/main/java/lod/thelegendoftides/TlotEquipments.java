@@ -25,7 +25,7 @@ public class TlotEquipments {
   // Rose
   public static final RegistryDelegate<Equipment> ENERGY_SWORD = EQUIPMENT_REGISTRAR.register("energy_sword", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 125, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Meru
-  public static final RegistryDelegate<Equipment> SPATULA = EQUIPMENT_REGISTRAR.register("spatula", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x1, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 70, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 20, 0, 0, 0, ItemIcon.HAMMER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> GUITAR = EQUIPMENT_REGISTRAR.register("guitar", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x1, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 70, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 20, 0, 0, 0, ItemIcon.HAMMER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Kongol
   public static final RegistryDelegate<Equipment> ENDS_OF_THE_EARTH = EQUIPMENT_REGISTRAR.register("ends_of_the_earth", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x20, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 80, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.AXE, 0, 0, 50, 25, 25, 0, 0, 0, 0, 0, 0, 0, 0x0));
 

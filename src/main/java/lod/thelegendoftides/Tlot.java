@@ -309,7 +309,7 @@ public class Tlot {
           case 1, 5 -> specialWeaponId = TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
           case 2, 8 -> specialWeaponId = TlotEquipments.BIANCA.get();
           case 3 -> specialWeaponId = TlotEquipments.ENERGY_SWORD.get();
-          case 6 -> specialWeaponId = TlotEquipments.SPATULA.get();
+          case 6 -> specialWeaponId = TlotEquipments.GUITAR.get();
           case 7 -> specialWeaponId = TlotEquipments.ENDS_OF_THE_EARTH.get();
           default -> specialWeaponId = null;
         }
