@@ -17,11 +17,11 @@ import lod.thelegendoftides.TlotFishBaitWeights;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.EngineStates.currentEngineState_8004dd04;
+import static legend.game.Graphics.displayHeight_1f8003e4;
+import static legend.game.Graphics.displayWidth_1f8003e0;
 import static legend.game.SItem.UI_WHITE;
-import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
-import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
-import static legend.game.Scus94491BpeSegment_8002.renderText;
-import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
+import static legend.game.Text.renderText;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;

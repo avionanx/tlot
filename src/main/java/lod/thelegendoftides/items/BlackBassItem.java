@@ -1,14 +1,8 @@
 package lod.thelegendoftides.items;
 
 import legend.core.memory.Method;
-import legend.game.Scus94491BpeSegment_8002;
-import legend.game.characters.Element;
-import legend.game.combat.bent.BattleEntity27c;
-import legend.game.i18n.I18n;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.UseItemResponse;
-import legend.game.scripting.ScriptState;
-import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 import static legend.game.SItem.getXpToNextLevel;

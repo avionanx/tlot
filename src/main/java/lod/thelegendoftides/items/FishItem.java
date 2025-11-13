@@ -1,6 +1,5 @@
 package lod.thelegendoftides.items;
 
-import legend.game.inventory.Item;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
 import legend.lodmod.items.BattleItem;

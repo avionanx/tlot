@@ -4,15 +4,13 @@ import legend.core.platform.Window;
 import legend.core.platform.input.InputAction;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
-import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import org.jetbrains.annotations.NotNull;
 
 import static legend.core.GameEngine.RENDERER;
-import static legend.game.SItem.UI_TEXT_CENTERED;
 import static legend.game.SItem.UI_WHITE;
-import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static legend.game.Text.renderText;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 

@@ -19,9 +19,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static legend.core.GameEngine.RENDERER;
+import static legend.game.Audio.playMenuSound;
 import static legend.game.SItem.UI_WHITE;
-import static legend.game.Scus94491BpeSegment_8002.playMenuSound;
-import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static legend.game.Text.renderText;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;

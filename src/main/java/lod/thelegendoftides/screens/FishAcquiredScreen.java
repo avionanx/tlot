@@ -12,16 +12,13 @@ import legend.game.inventory.screens.TooManyItemsScreen;
 import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
-
 import static legend.core.GameEngine.CONFIG;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.SItem.menuStack;
-import static legend.game.Scus94491BpeSegment_8002.giveEquipment;
-import static legend.game.Scus94491BpeSegment_8002.renderText;
-import static legend.game.Scus94491BpeSegment_800b.equipmentOverflow;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
-import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
+import static legend.game.Text.renderText;
+import static legend.game.Menus.whichMenu_800bdc38;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.CATCH_FLAGS;

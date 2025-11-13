@@ -1,7 +1,6 @@
 package lod.thelegendoftides.items;
 
 import legend.core.memory.Method;
-import legend.game.Scus94491BpeSegment_8002;
 import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.inventory.ItemStack;
@@ -9,6 +8,8 @@ import legend.game.inventory.UseItemResponse;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
+
+import static legend.game.SItem.addHp;
 
 public class SilverCarpItem extends FishItem {
   public SilverCarpItem(final int price) {
@@ -39,7 +40,7 @@ public class SilverCarpItem extends FishItem {
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
     response._00 = this.canTarget(stack, TargetType.ALL) ? 3 : 2;
-    response.value_04 = Scus94491BpeSegment_8002.addHp(charId, 350);
+    response.value_04 = addHp(charId, 350);
   }
 
   @Override

@@ -1,7 +1,6 @@
 package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
-import legend.core.GameEngine;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.core.platform.input.InputAction;
@@ -9,9 +8,6 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
-import legend.game.characters.StatType;
-import legend.game.characters.StatTypeRegistryEvent;
-import legend.game.characters.VitalsStat;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -21,7 +17,6 @@ import legend.game.combat.deff.DeffPackage;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.deff.RegisterDeffsEvent;
 import legend.game.combat.effects.AdditionSparksEffect08;
-import legend.game.combat.effects.DeffTmdRenderer14;
 import legend.game.combat.effects.EffectManagerData6c;
 import legend.game.combat.effects.EffectManagerParams;
 import legend.game.combat.effects.GenericAttachment1c;
@@ -32,7 +27,6 @@ import legend.game.combat.types.AdditionHits80;
 import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
-import legend.game.inventory.InventoryEntry;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
@@ -46,18 +40,15 @@ import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
-import legend.game.modding.events.submap.SubmapLoadEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.submap.SMap;
-import legend.game.submap.SubmapObject;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
 import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
-import legend.lodmod.LodMod;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
@@ -74,7 +65,6 @@ import org.legendofdragoon.modloader.events.EventListener;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
-import org.legendofdragoon.modloader.registries.RegistryEntry;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.ArrayList;
@@ -87,23 +77,22 @@ import static legend.core.GameEngine.EVENTS;
 import static legend.core.GameEngine.REGISTRIES;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
+import static legend.game.Audio.playSound;
+import static legend.game.DrgnFiles.loadDrgnDir;
+import static legend.game.DrgnFiles.loadDrgnFileSync;
+import static legend.game.EngineStates.currentEngineState_8004dd04;
+import static legend.game.Graphics.GsGetLw;
+import static legend.game.Graphics.displayHeight_1f8003e4;
+import static legend.game.Graphics.displayWidth_1f8003e0;
+import static legend.game.Menus.whichMenu_800bdc38;
 import static legend.game.SItem.buildUiRenderable;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
-import static legend.game.Scus94491BpeSegment.displayHeight_1f8003e4;
-import static legend.game.Scus94491BpeSegment.displayWidth_1f8003e0;
-import static legend.game.Scus94491BpeSegment.loadDrgnDir;
-import static legend.game.Scus94491BpeSegment.loadDrgnFileSync;
-import static legend.game.Scus94491BpeSegment.playSound;
-import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
 import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
-import static legend.game.Scus94491BpeSegment_8004.currentEngineState_8004dd04;
 import static legend.game.Scus94491BpeSegment_8005.collidedPrimitiveIndex_80052c38;
 import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
-import static legend.game.Scus94491BpeSegment_800b.scriptStatePtrArr_800bc1c0;
-import static legend.game.Scus94491BpeSegment_800b.whichMenu_800bdc38;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
@@ -252,10 +241,10 @@ public class Tlot {
     }
     isFishEncounter = false;
 
-    scriptStatePtrArr_800bc1c0[5].pause();
-    scriptStatePtrArr_800bc1c0[6].pause();
-    scriptStatePtrArr_800bc1c0[11].pause();
-    scriptStatePtrArr_800bc1c0[11].storage_44[7] |= FLAG_HIDE;
+    SCRIPTS.getState(5).pause();
+    SCRIPTS.getState(6).pause();
+    SCRIPTS.getState(11).pause();
+    SCRIPTS.getState(11).storage_44[7] |= FLAG_HIDE;
 
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.playerState = SCRIPTS.getState(6, PlayerBattleEntity.class);
@@ -315,7 +304,7 @@ public class Tlot {
         }
         if(specialWeaponId == null) continue;
         if(charData.equipment_14.get(EquipmentSlot.WEAPON) == specialWeaponId) {
-          final PlayerBattleEntity player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6 + i].innerStruct_00;
+          final PlayerBattleEntity player = (PlayerBattleEntity)SCRIPTS.getState(6 + i).innerStruct_00;
           if(player.charId_272 == 2 || player.charId_272 == 8) {
             this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[2].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
             player.model_148.partInvisible_f4 |= 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
@@ -708,7 +697,7 @@ public class Tlot {
   }
 
   public static FishingHole isAtFishingHole(final List<FishingHole> fishingHoles) {
-    if(scriptStatePtrArr_800bc1c0[10] != null && scriptStatePtrArr_800bc1c0[10].innerStruct_00 instanceof final SubmapObject210 player) {
+    if(SCRIPTS.getState(10) != null && SCRIPTS.getState(10).innerStruct_00 instanceof final SubmapObject210 player) {
       for(int i = 0; i < fishingHoles.size(); i++) {
         final FishingHole fishingHole = fishingHoles.get(i);
 

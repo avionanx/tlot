@@ -6,7 +6,7 @@ import legend.game.inventory.screens.MenuScreen;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
 
-import static legend.game.Scus94491BpeSegment.playSound;
+import static legend.game.Audio.playSound;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 
 public class WaitingBiteScreen extends MenuScreen {

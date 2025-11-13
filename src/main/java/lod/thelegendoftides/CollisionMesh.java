@@ -4,10 +4,11 @@ import legend.core.IoHelper;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
 import legend.core.gte.ModelPart10;
-import legend.core.gte.TmdObjTable1c;
+import legend.game.tmd.TmdObjTable1c;
 import org.joml.Vector3f;
 
-import static legend.game.Scus94491BpeSegment_8003.GsGetLw;
+import static legend.game.Graphics.GsGetLw;
+
 
 public class CollisionMesh {
   private final GsCOORDINATE2 coord2;

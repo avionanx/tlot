@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
-import static legend.game.Scus94491BpeSegment_8002.renderText;
+import static legend.game.Text.renderText;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_LEFT;
@@ -32,7 +32,6 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.FISH_REGISTRY;
 import static lod.thelegendoftides.Tlot.MOD_ID;
-import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishBookScreen extends MenuScreen {
