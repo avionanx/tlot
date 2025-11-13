@@ -316,8 +316,13 @@ public class Tlot {
         if(specialWeaponId == null) continue;
         if(charData.equipment_14.get(EquipmentSlot.WEAPON) == specialWeaponId) {
           final PlayerBattleEntity player = (PlayerBattleEntity)scriptStatePtrArr_800bc1c0[6 + i].innerStruct_00;
-          player.model_148.partInvisible_f4 |= 0x1L << player.getWeaponModelPart();
-          this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[player.getWeaponModelPart()].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+          if(player.charId_272 == 2 || player.charId_272 == 8) {
+            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[2].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+            player.model_148.partInvisible_f4 |= 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
+          } else {
+            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[player.getWeaponModelPart()].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+            player.model_148.partInvisible_f4 |= 0x1L << player.getWeaponModelPart();
+          }
         }
       }
     }
