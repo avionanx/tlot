@@ -11,7 +11,6 @@ import legend.game.EngineState;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
-import legend.game.combat.bent.BattleEntity27c;
 import legend.game.combat.bent.PlayerBattleEntity;
 import legend.game.combat.deff.DeffPackage;
 import legend.game.combat.deff.DeffPart;
@@ -43,6 +42,7 @@ import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
 import legend.game.scripting.ScriptState;
+import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
@@ -305,7 +305,7 @@ public class Tlot {
         }
         if(specialWeaponId == null) continue;
         if(charData.equipment_14.get(EquipmentSlot.WEAPON) == specialWeaponId) {
-          final PlayerBattleEntity player = (PlayerBattleEntity)SCRIPTS.getState(6 + i).innerStruct_00;
+          final PlayerBattleEntity player = SCRIPTS.getObject(6 + i, PlayerBattleEntity.class);
           if(player.charId_272 == 2 || player.charId_272 == 8) {
             this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[2].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
             player.model_148.partInvisible_f4 |= 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
@@ -698,7 +698,7 @@ public class Tlot {
   }
 
   public static FishingHole isAtFishingHole(final List<FishingHole> fishingHoles) {
-    if(SCRIPTS.getState(10) != null && SCRIPTS.getState(10).innerStruct_00 instanceof final SubmapObject210 player) {
+    if(SCRIPTS.getObject(10, ScriptedObject.class) instanceof final SubmapObject210 player) {
       for(int i = 0; i < fishingHoles.size(); i++) {
         final FishingHole fishingHole = fishingHoles.get(i);
 

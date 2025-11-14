@@ -1,6 +1,5 @@
 package lod.thelegendoftides;
 
-import legend.game.inventory.Equipment;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
 import legend.lodmod.LodItems;
@@ -34,7 +33,7 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> AZEEL_GLADIATOR = REGISTRAR.register("azeel_gladiator", () -> new RegularFish(new FishIcon(10), 120.0f, 0.5f, () -> new ItemStack(TlotItems.AZEEL_GLADIATOR.get())).setLegendary(10));
 
   public static final RegistryDelegate<Fish> MESSAGE_BOTTLE = REGISTRAR.register("message_bottle", () -> new RegularFish(new FishIcon(11), 20.0f, 0.0f, () -> new ItemStack(TlotItems.MESSAGE_BOTTLE.get())).setLegendary(11).setHidden());
-  
+
   // Treasures
   public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());
   public static final RegistryDelegate<Fish> DRAGONSLAYER_SWORDSPEAR = REGISTRAR.register("dragonslayer_swordspear", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.DRAGONSLAYER_SWORDSPEAR).setLegendary(2).setHidden());
