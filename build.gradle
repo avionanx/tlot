@@ -1,0 +1,52 @@
+plugins {
+  id 'java'
+  id 'org.openjfx.javafxplugin' version '0.1.0'
+  id 'java-library'
+  id 'maven-publish'
+}
+
+group = "the-legend-of-tides"
+version = "1.0-SNAPSHOT"
+
+java {
+  sourceCompatibility = targetCompatibility = JavaVersion.VERSION_25
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+javafx {
+  version = "21.0.1"
+  modules = ['javafx.controls', 'javafx.fxml']
+}
+
+// This is so it picks up new builds on jitpack
+configurations.all {
+  resolutionStrategy.cacheChangingModulesFor(0, "seconds")
+}
+
+repositories {
+  mavenCentral()
+  mavenLocal() // Uncomment to use mavenLocal version of LoD engine
+  maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
+  maven { url = "https://jitpack.io" }
+}
+
+dependencies {
+  implementation "legend:lod:snapshot" // Uncomment to use mavenLocal version of LoD engine (also comment out next line)
+//  implementation "com.github.Legend-of-Dragoon-Modding:Legend-of-Dragoon-Java:main-SNAPSHOT"
+  api "org.legendofdragoon:mod-loader:4.2.0"
+  api "org.legendofdragoon:script-recompiler:0.5.6"
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs = ["src/main/java"]
+      exclude ".gradle", "build", "files"
+    }
+  }
+}
+
+tasks.jar {
+  exclude("*.jar")
+}

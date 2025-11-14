@@ -95,6 +95,7 @@ import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
@@ -244,7 +245,7 @@ public class Tlot {
     SCRIPTS.getState(5).pause();
     SCRIPTS.getState(6).pause();
     SCRIPTS.getState(11).pause();
-    SCRIPTS.getState(11).storage_44[7] |= FLAG_HIDE;
+    SCRIPTS.getState(11).setFlag(FLAG_HIDE);
 
     this.battle = ((Battle)currentEngineState_8004dd04);
     this.playerState = SCRIPTS.getState(6, PlayerBattleEntity.class);
@@ -467,7 +468,7 @@ public class Tlot {
 
         case FISH_PULL_FROM_WATER -> {
           if(this.player.model_148.remainingFrames_9e == 0) {
-            this.playerState.storage_44[7] &= ~BattleEntity27c.FLAG_ANIMATE_ONCE;
+            this.playerState.clearFlag(FLAG_ANIMATE_ONCE);
 
             this.menuStack.popScreen();
             this.menuStack.pushScreen(new FishAcquiredScreen(this.capturingFish, () -> this.acquiredFishScreenCleared = true));
@@ -587,17 +588,17 @@ public class Tlot {
   }
 
   private void setIdleAnimation() {
-    this.playerState.storage_44[7] &= ~BattleEntity27c.FLAG_ANIMATE_ONCE;
+    this.playerState.clearFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 0;
   }
 
   private void setHurtAnimation() {
-    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
+    this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 1;
   }
 
   private void setThrowAnimation() {
-    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
+    this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 7;
   }
 
@@ -713,7 +714,7 @@ public class Tlot {
   private void fishCapturedCallback() {
     this.loadStandardAnimations();
     this.loadingAnimIndex = 8;
-    this.playerState.storage_44[7] |= BattleEntity27c.FLAG_ANIMATE_ONCE;
+    this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.state = FishingState.FISH_PULL_FROM_WATER;
   }
 
