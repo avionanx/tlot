@@ -24,6 +24,8 @@ public class TlotEquipments {
   public static final RegistryDelegate<Equipment> BIANCA = EQUIPMENT_REGISTRAR.register("bianca", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x2, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 250, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.BOW, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Rose
   public static final RegistryDelegate<Equipment> ENERGY_SWORD = EQUIPMENT_REGISTRAR.register("energy_sword", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 125, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  // Haschel
+  public static final RegistryDelegate<Equipment> PUFFERFISH_KNUCKLES = EQUIPMENT_REGISTRAR.register("pufferfish_knuckles", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x10, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 75, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.KNUCKLE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Meru
   public static final RegistryDelegate<Equipment> GUITAR = EQUIPMENT_REGISTRAR.register("guitar", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x1, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 70, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 20, 0, 0, 0, ItemIcon.HAMMER, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Kongol

@@ -299,6 +299,7 @@ public class Tlot {
           case 1, 5 -> specialWeaponId = TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
           case 2, 8 -> specialWeaponId = TlotEquipments.BIANCA.get();
           case 3 -> specialWeaponId = TlotEquipments.ENERGY_SWORD.get();
+          case 4 -> specialWeaponId = TlotEquipments.PUFFERFISH_KNUCKLES.get();
           case 6 -> specialWeaponId = TlotEquipments.GUITAR.get();
           case 7 -> specialWeaponId = TlotEquipments.ENDS_OF_THE_EARTH.get();
           default -> specialWeaponId = null;
@@ -309,6 +310,10 @@ public class Tlot {
           if(player.charId_272 == 2 || player.charId_272 == 8) {
             this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[2].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
             player.model_148.partInvisible_f4 |= 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
+          } else if(player.charId_272 == 4) {
+            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[5].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[6].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
+            player.model_148.partInvisible_f4 |= 0x1L << 5 | 0x1L << 6;
           } else {
             this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[player.getWeaponModelPart()].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
             player.model_148.partInvisible_f4 |= 0x1L << player.getWeaponModelPart();

@@ -103,6 +103,9 @@ thelegendoftides.equipment.bianca.description=A marvel of Dwarven\ncraftsmanship
 thelegendoftides.equipment.energy_sword.name=Energy Sword
 thelegendoftides.equipment.energy_sword.description=You no longer\nneed a weapon
 
+thelegendoftides.equipment.pufferfish_knuckles.name=Pufferfish
+thelegendoftides.equipment.pufferfish_knuckles.description=*blub blub to\nreceive your blub\nblub...*
+
 thelegendoftides.equipment.guitar.name=Guitar
 thelegendoftides.equipment.guitar.description=*through the fire\nand flames starts\nplaying*
 
@@ -140,9 +143,10 @@ thelegendoftides.fish.grand_goldenfish.name=Grand Goldenfish
 thelegendoftides.fish.stardustfish.name=Stardust Fish
 
 thelegendoftides.fish.lightsaber.name=Lightsaber
-thelegendoftides.fish.pool_noodle.name=Pool Noodle
+thelegendoftides.fish.dragonslayer_swordspear.name=Dragonslayer Swordspear
 thelegendoftides.fish.bianca.name=Bianca
 thelegendoftides.fish.energy_sword.name=Energy Sword
+thelegendoftides.fish.pufferfish_knuckles.name=Pufferfish Knuckles
 thelegendoftides.fish.spatula.name=Spatula
 thelegendoftides.fish.tree.name=Tree
 
