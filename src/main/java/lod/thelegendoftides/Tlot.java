@@ -1,6 +1,7 @@
 package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
+import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.core.platform.input.InputAction;
@@ -35,6 +36,7 @@ import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
+import legend.game.modding.events.battle.CombatantModelLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
@@ -46,7 +48,6 @@ import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
-import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
@@ -69,6 +70,7 @@ import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -96,6 +98,7 @@ import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
@@ -167,7 +170,7 @@ public class Tlot {
   private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
 
-  private ArrayList<SpecialWeapon> specialWeaponList = new ArrayList<>();
+  private HashMap<Integer, SpecialWeapon> specialWeaponList = new HashMap();
 
   public Tlot() {
     isFishEncounter = false;
@@ -237,7 +240,7 @@ public class Tlot {
   @EventListener
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
     if(!isFishEncounter) {
-      this.loadSpecialWeapons();
+      //this.loadSpecialWeapons();
       return;
     }
     isFishEncounter = false;
@@ -289,49 +292,87 @@ public class Tlot {
     this.state = FishingState.IDLE;
   }
 
-  private void loadSpecialWeapons() {
-    for(int i = 0; i < 3; i++) {
-      if(gameState_800babc8.charIds_88[i] != -1) {
-        final CharacterData2c charData = gameState_800babc8.charData_32c[gameState_800babc8.charIds_88[i]];
-        final Equipment specialWeaponId;
-        switch(gameState_800babc8.charIds_88[i]) {
-          case 0 -> specialWeaponId = TlotEquipments.LIGHTSABER.get();
-          case 1, 5 -> specialWeaponId = TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
-          case 2, 8 -> specialWeaponId = TlotEquipments.BIANCA.get();
-          case 3 -> specialWeaponId = TlotEquipments.ENERGY_SWORD.get();
-          case 4 -> specialWeaponId = TlotEquipments.PUFFERFISH_KNUCKLES.get();
-          case 6 -> specialWeaponId = TlotEquipments.GUITAR.get();
-          case 7 -> specialWeaponId = TlotEquipments.ENDS_OF_THE_EARTH.get();
-          default -> specialWeaponId = null;
-        }
-        if(specialWeaponId == null) continue;
-        if(charData.equipment_14.get(EquipmentSlot.WEAPON) == specialWeaponId) {
-          final PlayerBattleEntity player = SCRIPTS.getObject(6 + i, PlayerBattleEntity.class);
-          if(player.charId_272 == 2 || player.charId_272 == 8) {
-            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[2].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
-            player.model_148.partInvisible_f4 |= 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
-          } else if(player.charId_272 == 4) {
-            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[5].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
-            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[6].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
-            player.model_148.partInvisible_f4 |= 0x1L << 5 | 0x1L << 6;
-          } else {
-            this.specialWeaponList.add(new SpecialWeapon(player.model_148.modelParts_00[player.getWeaponModelPart()].coord2_04, specialWeaponId.getRegistryId(), player.model_148));
-            player.model_148.partInvisible_f4 |= 0x1L << player.getWeaponModelPart();
-          }
-        }
+  @EventListener
+  public void  loadCombatantSpecialWeapon(final CombatantModelLoadedEvent event) {
+    if(event.combatant.charSlot_19c == -1) return;
+    
+    final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
+    final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
+    final int playerId = (event.combatant.charIndex_1a2 - 0x200) / 2;
+
+    final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
+    final int modelPartIndex;
+    int modelPartIndex2 = -1;
+    final Vector3f dragoonRotation = new Vector3f();
+    final long partFlags;
+    
+    //TODO nuke this and canRender
+    if(isDragoon) {
+      this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = false;
+      return;
+    } else {
+      if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
+        this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = true;
+    }
+    
+    switch(player.charId_272) {
+      case 2, 8 -> {
+        modelPartIndex = isDragoon ? 0 : 2;
+        partFlags = isDragoon ? 0L : 0x1L << 2 | 0x1L << 4 | 0x1L << 3;
+      }
+      case 4 -> {
+        modelPartIndex = isDragoon ? 0 : 5;
+        modelPartIndex2 = isDragoon ? 0 : 6;
+        partFlags = isDragoon ? 0L : 0x1L << 5 | 0x1L << 6;
+      }
+      default -> {
+        modelPartIndex = isDragoon ? 18 : player.getWeaponModelPart();
+        partFlags = isDragoon ? 0x1L << 0x12 : 0x1L << player.getWeaponModelPart();
+      }
+    }
+    
+    player.model_148.partInvisible_f4 |= partFlags;
+    
+    // If weapon already exists (dragoons), reparent models to new bent models instead of loading another one
+    if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
+      this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
+      this.specialWeaponList.get(event.combatant.charSlot_19c).withDragoonRotation(dragoonRotation);
+      if(playerId == 4) {
+        this.specialWeaponList.get(event.combatant.charSlot_19c + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
+        this.specialWeaponList.get(event.combatant.charSlot_19c + 10).withDragoonRotation(dragoonRotation);
+      }
+      return;
+    }
+    
+    final Equipment specialWeapon = switch(playerId) {
+      case 0 -> TlotEquipments.LIGHTSABER.get();
+      case 1, 5 -> TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
+      case 2, 8 -> TlotEquipments.BIANCA.get();
+      case 3 -> TlotEquipments.ENERGY_SWORD.get();
+      case 4 -> TlotEquipments.PUFFERFISH_KNUCKLES.get();
+      case 6 -> TlotEquipments.GUITAR.get();
+      case 7 -> TlotEquipments.ENDS_OF_THE_EARTH.get();
+      default -> null;
+    };
+    if(specialWeapon == null) return;
+    
+    if(gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == specialWeapon) {
+      this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
+      if(playerId == 4) {
+        this.specialWeaponList.put(event.combatant.charSlot_19c + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
       }
     }
   }
 
   @EventListener
   public void onBattleEnded(final BattleEndedEvent event) {
-    this.specialWeaponList.forEach(SpecialWeapon::unload);
-    this.specialWeaponList.clear();
+    this.specialWeaponList.values().forEach(SpecialWeapon::unload);
+    this.specialWeaponList.values().clear();
   }
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
-    this.specialWeaponList.forEach(SpecialWeapon::render);
+    this.specialWeaponList.values().forEach(SpecialWeapon::render);
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
