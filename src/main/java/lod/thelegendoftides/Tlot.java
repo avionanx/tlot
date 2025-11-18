@@ -293,7 +293,7 @@ public class Tlot {
 
   @EventListener
   public void  loadCombatantSpecialWeapon(final CombatantModelLoadedEvent event) {
-    if(event.combatant.charSlot_19c == -1) return;
+    if(event.combatant.charSlot_19c == -1 || isFishEncounter) return;
     
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
