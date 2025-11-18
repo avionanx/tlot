@@ -240,7 +240,6 @@ public class Tlot {
   @EventListener
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
     if(!isFishEncounter) {
-      //this.loadSpecialWeapons();
       return;
     }
     isFishEncounter = false;
