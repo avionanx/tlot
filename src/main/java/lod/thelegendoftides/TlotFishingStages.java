@@ -20,7 +20,7 @@ public class TlotFishingStages {
   public static final RegistryDelegate<FishingStage> VOLCANO_VILLUDE = REGISTRAR.register("volcano_villude", () -> new FishingStage(91, new Vector3f(-8000, 0, 1250), MathHelper.HALF_PI, new Vector3f(-6500, -5000, -2000), new Vector3f(-11500, 3000, 3000)));
   public static final RegistryDelegate<FishingStage> MESA_GREEN = REGISTRAR.register("mesa_green", () -> new FishingStage(25, new Vector3f(11000, 0, 1500), MathHelper.PI * 1.4f, new Vector3f(23000, -1200, 5000), new Vector3f(7000, 1200, -2000)));
   public static final RegistryDelegate<FishingStage> MESA_DAY = REGISTRAR.register("mesa_day", () -> new FishingStage(94, new Vector3f(11000, 0, 1500), MathHelper.PI * 1.4f, new Vector3f(23000, -1200, 5000), new Vector3f(7000, 1200, -2000)));
-  public static final RegistryDelegate<FishingStage> MESA_NIGHT = REGISTRAR.register("mesa_night", () -> new FishingStage(95, new Vector3f(11000, 0, 1500), MathHelper.PI * 1.4f, new Vector3f(23000, -1200, 5000), new Vector3f(7000, 1200, -2000)));
+  public static final RegistryDelegate<FishingStage> MESA_NIGHT = REGISTRAR.register("mesa_night", () -> new FishingStage(95, new Vector3f(11000, 0, 1500), 0, new Vector3f(23000, -1200, 5000), new Vector3f(7000, 1200, -2000)));
 
   static void register(final RegisterFishingStageEvent event) {
     REGISTRAR.registryEvent(event);
