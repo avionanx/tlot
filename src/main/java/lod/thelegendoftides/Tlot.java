@@ -330,8 +330,6 @@ public class Tlot {
       }
     }
     
-    player.model_148.partInvisible_f4 |= partFlags;
-    
     // If weapon already exists (dragoons), reparent models to new bent models instead of loading another one
     if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
       this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
@@ -340,6 +338,7 @@ public class Tlot {
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).withDragoonRotation(dragoonRotation);
       }
+      player.model_148.partInvisible_f4 |= partFlags;
       return;
     }
     
@@ -354,8 +353,9 @@ public class Tlot {
       default -> null;
     };
     if(specialWeapon == null) return;
-    
+
     if(gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == specialWeapon) {
+      player.model_148.partInvisible_f4 |= partFlags;
       this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
       if(playerId == 4) {
         this.specialWeaponList.put(event.combatant.charSlot_19c + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
