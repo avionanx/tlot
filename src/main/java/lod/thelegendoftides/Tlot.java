@@ -1,7 +1,6 @@
 package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
-import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
 import legend.core.platform.input.InputAction;
@@ -9,6 +8,10 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
+import legend.game.additions.Addition;
+import legend.game.additions.AdditionHitProperties10;
+import legend.game.additions.AdditionSound;
+import legend.game.additions.CharacterAdditionStats;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -22,9 +25,6 @@ import legend.game.combat.effects.EffectManagerParams;
 import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
-import legend.game.combat.types.AdditionHitProperties10;
-import legend.game.combat.types.AdditionHits80;
-import legend.game.combat.types.AdditionSound;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
@@ -48,8 +48,10 @@ import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
+import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
+import legend.game.unpacker.FileData;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
@@ -72,6 +74,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static legend.core.GameEngine.CONFIG;
@@ -89,7 +92,7 @@ import static legend.game.Graphics.displayWidth_1f8003e0;
 import static legend.game.Menus.whichMenu_800bdc38;
 import static legend.game.SItem.buildUiRenderable;
 import static legend.game.Scus94491BpeSegment.battlePreloadedEntities_1f8003f4;
-import static legend.game.Scus94491BpeSegment_8004.additionCounts_8004f5c0;
+import static legend.game.Scus94491BpeSegment_8004.CHARACTER_ADDITIONS;
 import static legend.game.Scus94491BpeSegment_8005.collidedPrimitiveIndex_80052c38;
 import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
@@ -161,7 +164,6 @@ public class Tlot {
   private Fish capturingFish;
   private FishReelingHandler fishReelingHandler;
   private AdditionOverlayScreen additionScreen;
-  private AdditionHits80 activeAddition;
   private AdditionHitProperties10 activeAdditionHit;
   private int additionTicks;
 
@@ -170,7 +172,7 @@ public class Tlot {
   private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
 
-  private HashMap<Integer, SpecialWeapon> specialWeaponList = new HashMap();
+  private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
 
   public Tlot() {
     isFishEncounter = false;
@@ -292,9 +294,9 @@ public class Tlot {
   }
 
   @EventListener
-  public void  loadCombatantSpecialWeapon(final CombatantModelLoadedEvent event) {
+  public void loadCombatantSpecialWeapon(final CombatantModelLoadedEvent event) {
     if(event.combatant.charSlot_19c == -1 || isFishEncounter) return;
-    
+
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
     final int playerId = (event.combatant.charIndex_1a2 - 0x200) / 2;
@@ -304,7 +306,7 @@ public class Tlot {
     int modelPartIndex2 = -1;
     final Vector3f dragoonRotation = new Vector3f();
     final long partFlags;
-    
+
     //TODO nuke this and canRender
     if(isDragoon) {
       this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = false;
@@ -313,7 +315,7 @@ public class Tlot {
       if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
         this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = true;
     }
-    
+
     switch(player.charId_272) {
       case 2, 8 -> {
         modelPartIndex = isDragoon ? 0 : 2;
@@ -329,7 +331,7 @@ public class Tlot {
         partFlags = isDragoon ? 0x1L << 0x12 : 0x1L << player.getWeaponModelPart();
       }
     }
-    
+
     // If weapon already exists (dragoons), reparent models to new bent models instead of loading another one
     if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
       this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
@@ -341,7 +343,7 @@ public class Tlot {
       player.model_148.partInvisible_f4 |= partFlags;
       return;
     }
-    
+
     final Equipment specialWeapon = switch(playerId) {
       case 0 -> TlotEquipments.LIGHTSABER.get();
       case 1, 5 -> TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
@@ -366,7 +368,7 @@ public class Tlot {
   @EventListener
   public void onBattleEnded(final BattleEndedEvent event) {
     this.specialWeaponList.values().forEach(SpecialWeapon::unload);
-    this.specialWeaponList.values().clear();
+    this.specialWeaponList.clear();
   }
 
   @EventListener
@@ -620,12 +622,14 @@ public class Tlot {
   }
 
   private void loadAnimations(final int fileIndex) {
-    loadDrgnDir(0, fileIndex, files -> {
-      this.player.combatant_144.mrg_04 = null;
-      this.battle.attackAnimationsLoaded(files, this.player.combatant_144, false, this.player.combatant_144.charSlot_19c);
-      // Finish asset loading - some animations need to be decompressed
-      this.battle.FUN_800c9e10(this.player.combatant_144, this.loadingAnimIndex);
-    });
+    loadDrgnDir(0, fileIndex, this::onAnimationsLoaded);
+  }
+
+  private void onAnimationsLoaded(final List<FileData> files) {
+    this.player.combatant_144.mrg_04 = null;
+    this.battle.attackAnimationsLoaded(files, this.player.combatant_144, false, this.player.combatant_144.charSlot_19c);
+    // Finish asset loading - some animations need to be decompressed
+    this.battle.FUN_800c9e10(this.player.combatant_144, this.loadingAnimIndex);
   }
 
   private void loadStandardAnimations() {
@@ -715,30 +719,24 @@ public class Tlot {
 
   private void loadRandomAdditionHit() {
     final int charId = this.player.charId_272;
-    final int additionCount = additionCounts_8004f5c0[charId];
-    final int randomAddition = this.rand.nextInt(additionCount);
-    final int fileIndex = 4031 + charId * 8 + randomAddition;
+    final CharacterData2c charData = gameState_800babc8.charData_32c[charId];
+    final RegistryDelegate<Addition>[] charAdditions = CHARACTER_ADDITIONS[charId];
+    final int additionCount = charAdditions.length;
+    final Addition randomAddition = charAdditions[this.rand.nextInt(additionCount)].get();
+    final CharacterAdditionStats additionStats = charData.additionStats.get(randomAddition.getRegistryId());
 
-    final int oldAddition = gameState_800babc8.charData_32c[charId].selectedAddition_19;
-    gameState_800babc8.charData_32c[charId].selectedAddition_19 = randomAddition;
+    final RegistryId oldAddition = charData.selectedAddition_19;
+    charData.selectedAddition_19 = randomAddition.getRegistryId();
     loadAdditions();
-    gameState_800babc8.charData_32c[charId].selectedAddition_19 = oldAddition;
+    charData.selectedAddition_19 = oldAddition;
 
-    this.activeAddition = battlePreloadedEntities_1f8003f4.additionHits_38[0];
-    int hitCount = 0;
+    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(charData, additionStats));
+    this.loadingAnimIndex = 16 + hitIndex;
 
-    for(int i = 0; i < this.activeAddition.hits_00.length; i++) {
-      if(this.activeAddition.hits_00[i].flags_00 != 0) {
-        hitCount++;
-      }
-    }
-
-    this.loadingAnimIndex = 16 + this.rand.nextInt(hitCount);
-
-    this.activeAdditionHit = this.activeAddition.hits_00[this.loadingAnimIndex - 16];
+    this.activeAdditionHit = randomAddition.getHit(charData, additionStats, hitIndex);
     this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
-    this.loadAnimations(fileIndex);
+    randomAddition.loadAnimations(charData, additionStats, this::onAnimationsLoaded);
     this.additionScreen.addHit();
   }
 
