@@ -2,7 +2,11 @@ package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
 import legend.core.QueuedModelStandard;
+import legend.core.gpu.Bpp;
 import legend.core.gte.MV;
+import legend.core.opengl.MeshObj;
+import legend.core.opengl.QuadBuilder;
+import legend.core.opengl.Texture;
 import legend.core.platform.input.InputAction;
 import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
@@ -37,6 +41,7 @@ import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.battle.CombatantModelLoadedEvent;
+import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
@@ -52,6 +57,7 @@ import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
+import legend.game.unpacker.Loader;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
@@ -70,6 +76,8 @@ import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
+import java.io.IOException;
+import java.nio.file.LinkOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -124,6 +132,9 @@ public class Tlot {
 
   private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
   private List<FishingIndicator> fishingIndicators = new ArrayList<>();
+  private MeshObj texturedQuad;
+  private Texture fishingIndicatorTexture;
+
   private FishingHole currentFishingHole;
   public static boolean isFishEncounter;
 
@@ -190,6 +201,17 @@ public class Tlot {
     event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
     event.addRegistry(FISHING_STAGE_REGISTRY, RegisterFishingStageEvent::new);
     event.addRegistry(FISHING_HOLE_REGISTRY, RegisterFishingHoleEvent::new);
+  }
+
+  @EventListener
+  public void handleGameLoaded(final GameLoadedEvent event) throws IOException {
+    this.fishingIndicatorTexture = Texture.png(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/sparkle.png"));
+    this.texturedQuad = new QuadBuilder("Textured Quad")
+      .bpp(Bpp.BITS_24)
+      .pos(-0.5f, -0.5f, 0.0f)
+      .size(1.0f, 1.0f)
+      .uv(1.0f, 1.0f)
+      .build();
   }
 
   @EventListener
@@ -382,7 +404,7 @@ public class Tlot {
 
     if(currentEngineState_8004dd04 instanceof SMap) {
       for(final FishingIndicator indicator : this.fishingIndicators) {
-        indicator.render();
+        indicator.render(this.texturedQuad, this.fishingIndicatorTexture);
       }
     }
 

@@ -2,6 +2,8 @@ package lod.thelegendoftides;
 
 import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
+import legend.core.opengl.MeshObj;
+import legend.core.opengl.Texture;
 import legend.game.types.Translucency;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -20,15 +22,15 @@ public class FishingIndicator {
     final Vector2f screenSpaceTransforms = new Vector2f();
     transformWorldspaceToScreenspace(indicatorPosition, screenSpaceTransforms);
 
-    this.transforms.scaling(12.0f);
+    this.transforms.scaling(24.0f);
     this.transforms.transfer.set(screenSpaceTransforms.x, screenSpaceTransforms.y, 0.0f);
   }
 
-  public void render() {
-    RENDERER.queueOrthoModel(RENDERER.centredQuadOpaque, this.transforms, QueuedModelStandard.class)
+  public void render(final MeshObj quad, final Texture texture) {
+    RENDERER.queueOrthoModel(quad, this.transforms, QueuedModelStandard.class)
       .screenspaceOffset(GPU.getOffsetX() + GTE.getScreenOffsetX(), GPU.getOffsetY() + GTE.getScreenOffsetY())
-      .colour(1.0f, 1.0f, 1.0f)
-      .translucency(Translucency.HALF_B_PLUS_HALF_F)
-      .alpha(0.5f);
+      .texture(texture)
+      .translucency(Translucency.HALF_B_PLUS_HALF_F);
+    this.transforms.rotateZ(0.01f);
   }
 }
