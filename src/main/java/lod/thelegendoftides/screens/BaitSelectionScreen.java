@@ -16,7 +16,6 @@ import lod.thelegendoftides.items.BaitItem;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static legend.core.GameEngine.RENDERER;
@@ -85,7 +84,7 @@ public class BaitSelectionScreen extends MenuScreen {
 
     this.addHotkey(I18n.translate(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
       playMenuSound(3);
-      this.deferAction(() -> onBaitSelected.accept(null, this::unload));
+      this.deferAction(() -> onBaitSelected.accept(null, this::unload, null));
     });
 
     RENDERER.events().onResize(this::onResized);
