@@ -15,6 +15,8 @@ import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
+import lod.thelegendoftides.FishBaitWeight;
+import lod.thelegendoftides.FishingHole;
 import lod.thelegendoftides.Tlot;
 import org.jetbrains.annotations.NotNull;
 import org.legendofdragoon.modloader.registries.RegistryId;
@@ -25,8 +27,10 @@ import java.util.List;
 import java.util.Set;
 
 import static legend.core.GameEngine.CONFIG;
+import static legend.core.GameEngine.DEFAULT_FONT;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
+import static legend.game.SItem.renderMenuCentredText;
 import static legend.game.Text.renderText;
 import static legend.game.Text.textZ_800bdf00;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
@@ -35,6 +39,8 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_LEFT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_RIGHT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
+import static lod.thelegendoftides.Tlot.FISHING_HOLE_REGISTRY;
+import static lod.thelegendoftides.Tlot.FISH_BAIT_WEIGHT_REGISTRY;
 import static lod.thelegendoftides.Tlot.FISH_REGISTRY;
 import static lod.thelegendoftides.Tlot.MOD_ID;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
@@ -42,8 +48,9 @@ import static lod.thelegendoftides.Tlot.getTranslationKey;
 public class FishBookScreen extends MenuScreen {
 
   private final FontOptions menuTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.WHITE).shadowColour(TextColour.BLACK);
-  private final FontOptions pageFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.5f);
   private final FontOptions fishTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.75f);
+  private final FontOptions pageFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.5f);
+  private final FontOptions pageFontOptsLeft = new FontOptions().horizontalAlign(HorizontalAlign.LEFT).colour(TextColour.BROWN).size(0.5f);
   private final Texture bookTexture;
   private final MeshObj bookQuad;
   private final MV bookTransforms;
@@ -134,15 +141,15 @@ public class FishBookScreen extends MenuScreen {
     final String name = this.seen.contains(fish.getRegistryId()) ? I18n.translate(fish) : I18n.translate("thelegendoftides.fish_obfuscated");
     final int oldZ = textZ_800bdf00;
     textZ_800bdf00 = 2;
-    renderText(name, x, 60, this.fishTitleFontOpts);
+    renderText(name, x, 56, this.fishTitleFontOpts);
     textZ_800bdf00 = oldZ;
   }
 
   private void renderFishIcon(final Fish fish, final float x) {
-    final Renderable58 icon = fish.icon.render((int)x, 94, FLAG_DELETE_AFTER_RENDER);
+    final Renderable58 icon = fish.icon.render((int)x, 85, FLAG_DELETE_AFTER_RENDER);
     icon.z_3c = 2.5f;
-    icon.widthScale = 4.0f;
-    icon.heightScale_38 = 4.0f;
+    icon.widthScale = 3.5f;
+    icon.heightScale_38 = 3.5f;
 
     if(!this.seen.contains(fish.getRegistryId())) {
       icon.colour.zero();
@@ -150,8 +157,10 @@ public class FishBookScreen extends MenuScreen {
   }
 
   private void renderFishInfo(final Fish fish, final float x) {
+    final boolean seen = this.seen.contains(fish.getRegistryId());
+
     final String text;
-    if(this.seen.contains(fish.getRegistryId())) {
+    if(seen) {
       text = I18n.translate(fish.getTranslationKey("description"));
     } else {
       final String hint = I18n.translate(fish.getTranslationKey("hint"));
@@ -165,7 +174,39 @@ public class FishBookScreen extends MenuScreen {
 
     final int oldZ = textZ_800bdf00;
     textZ_800bdf00 = 2;
-    renderText(text, x, 134, this.fishTitleFontOpts);
+
+    renderText(text, x, 124, this.pageFontOpts);
+
+    if(seen) {
+      final List<String> locations = new ArrayList<>();
+      for(final RegistryId holeId : FISHING_HOLE_REGISTRY) {
+        final FishingHole hole = FISHING_HOLE_REGISTRY.getEntry(holeId).get();
+
+        for(int fishIndex = 0; fishIndex < hole.fish.size(); fishIndex++) {
+          if(hole.fish.get(fishIndex).fish.get() == fish) {
+            locations.add(I18n.translate(hole));
+            break;
+          }
+        }
+      }
+
+      final List<String> baits = new ArrayList<>();
+      for(final RegistryId holeId : FISH_BAIT_WEIGHT_REGISTRY) {
+        final FishBaitWeight bait = FISH_BAIT_WEIGHT_REGISTRY.getEntry(holeId).get();
+
+        if(bait.fish.get() == fish) {
+          baits.add(I18n.translate(bait.bait.get()));
+          break;
+        }
+      }
+
+      final float locationHeight = renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.locations", String.join(", ", locations)), x, 133, 106, this.pageFontOptsLeft);
+
+      if(!baits.isEmpty()) {
+        renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.baits", String.join(", ", baits)), x, 136 + locationHeight, 106, this.pageFontOptsLeft);
+      }
+    }
+
     textZ_800bdf00 = oldZ;
   }
 }

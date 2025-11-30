@@ -192,8 +192,40 @@ thelegendoftides.fish.tree.name=Tree
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring
 
+# Holes
+thelegendoftides.fishing_hole.nest_of_dragon_river.name=Nest of Dragon River
+thelegendoftides.fishing_hole.hellena_prison.name=Hellena Prison
+thelegendoftides.fishing_hole.limestone_cave_1.name=Limestone Cave 1
+thelegendoftides.fishing_hole.limestone_cave_2.name=Limestone Cave 2
+thelegendoftides.fishing_hole.bale.name=Bale
+thelegendoftides.fishing_hole.marshlands.name=Marshlands
+thelegendoftides.fishing_hole.volcano_villude.name=Volcano Villude
+thelegendoftides.fishing_hole.shrine_of_shirley_1.name=Shrine of Shirley 1
+thelegendoftides.fishing_hole.shrine_of_shirley_2.name=Shrine of Shirley 2
+thelegendoftides.fishing_hole.magi_sewers.name=Black Castle Sewers
+thelegendoftides.fishing_hole.fletz_1.name=Fletz 1
+thelegendoftides.fishing_hole.fletz_2.name=Fletz 2
+thelegendoftides.fishing_hole.donau.name=Donau
+thelegendoftides.fishing_hole.vocg.name=Valley of Corrupted Gravity
+thelegendoftides.fishing_hole.queen_fury.name=The Open Sea
+thelegendoftides.fishing_hole.lidiera.name=Lidiera
+thelegendoftides.fishing_hole.undersea_cavern_1.name=Undersea Cavern 1
+thelegendoftides.fishing_hole.undersea_cavern_2.name=Undersea Cavern 2
+thelegendoftides.fishing_hole.furni_1.name=Furni 1
+thelegendoftides.fishing_hole.furni_2.name=Furni 2
+thelegendoftides.fishing_hole.furni_3.name=Furni 3
+thelegendoftides.fishing_hole.wingly_forest_1.name=Wingly Forest 1
+thelegendoftides.fishing_hole.wingly_forest_2.name=Wingly Forest 2
+thelegendoftides.fishing_hole.death_frontier.name=Death Frontier
+thelegendoftides.fishing_hole.ulara.name=Ulara
+thelegendoftides.fishing_hole.rouge_1.name=Rouge 1
+thelegendoftides.fishing_hole.rouge_2.name=Rouge 2
+thelegendoftides.fishing_hole.aglis.name=Aglis
+
 # Book
 thelegendoftides.book_title=Fishing Records
+thelegendoftides.locations=Location: %s
+thelegendoftides.baits=Special bait: %s
 
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
