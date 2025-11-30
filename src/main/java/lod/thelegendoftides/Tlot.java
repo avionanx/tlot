@@ -149,6 +149,7 @@ public class Tlot {
   private ScriptState<PlayerBattleEntity> playerState;
   private PlayerBattleEntity player;
   private Bait bait;
+  private Runnable consumeBait;
 
   private TmdAnimationFile victoryAnimation;
   private boolean usingVictoryAnimation;
@@ -686,7 +687,7 @@ public class Tlot {
     this.fishListScreen.isFishListScreenDisabled = false;
   }
 
-  private void handleBaitSelected(final Bait bait, final Runnable unloadBaitSelectionScreen) {
+  private void handleBaitSelected(final Bait bait, final Runnable unloadBaitSelectionScreen, final Runnable consumeBait) {
     unloadBaitSelectionScreen.run();
     this.fishListScreen.isFishListScreenDisabled = true;
 
@@ -697,6 +698,7 @@ public class Tlot {
     }
 
     this.bait = bait;
+    this.consumeBait = consumeBait;
     this.cast();
   }
 
@@ -711,6 +713,7 @@ public class Tlot {
   }
 
   private void onFishNibbling() {
+    this.consumeBait.run();
     this.nibbleEndPos.set(this.fishingRod.bobberCoord2.coord.transfer);
     this.nibbleStartPos.set(this.nibbleEndPos).add(0.0f, 100.0f, 0.0f);
     this.nextBobTime = 0; // Bob immediately

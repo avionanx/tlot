@@ -1,5 +1,6 @@
 package lod.thelegendoftides.screens;
 
+import legend.core.memory.types.TriConsumer;
 import legend.core.platform.Window;
 import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
@@ -36,7 +37,10 @@ public class BaitSelectionScreen extends MenuScreen {
 
   private int extraWidth;
 
-  public BaitSelectionScreen(final Inventory inv, final BiConsumer<Bait, Runnable> onBaitSelected, final Consumer<Bait> onBaitHovered) {
+  /**
+   * @param onBaitSelected bait, on close, consume bait
+   */
+  public BaitSelectionScreen(final Inventory inv, final TriConsumer<Bait, Runnable, Runnable> onBaitSelected, final Consumer<Bait> onBaitHovered) {
     this.extraWidth = (int)getExtraWidth();
 
     final List<ItemStack> baits = new ArrayList<>();
@@ -56,9 +60,10 @@ public class BaitSelectionScreen extends MenuScreen {
       final Button button = this.addButton(I18n.translate(bait), () -> {
         playMenuSound(2);
         this.deferAction(() -> {
-          baitItem.consumeBait(baitStack);
-          inv.removeIfEmpty(baitStack);
-          onBaitSelected.accept(bait, this::unload);
+          onBaitSelected.accept(bait, this::unload, () -> {
+            baitItem.consumeBait(baitStack);
+            inv.removeIfEmpty(baitStack);
+          });
         });
       });
 
