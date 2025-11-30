@@ -13,7 +13,11 @@ import legend.game.types.Renderable58;
 import lod.thelegendoftides.Bait;
 import lod.thelegendoftides.Fish;
 import lod.thelegendoftides.FishingHole;
+import lod.thelegendoftides.Tlot;
 import lod.thelegendoftides.TlotFishBaitWeights;
+import org.legendofdragoon.modloader.registries.RegistryId;
+
+import java.util.Set;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;
@@ -34,6 +38,8 @@ public class FishListScreen extends MenuScreen {
 
   public final FishingHole fishingHole;
 
+  private final Set<RegistryId> seen;
+
   private float fullWidth;
   private int extraWidth;
   private float ratio;
@@ -46,6 +52,8 @@ public class FishListScreen extends MenuScreen {
     this.updateDimensions();
 
     this.fishingHole = fishingHole;
+
+    this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
 
     this.headerBox = new UiBox("Fish List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
     this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, fishingHole.fish.size() * 16);
@@ -71,7 +79,10 @@ public class FishListScreen extends MenuScreen {
       }
 
       final Fish fish = fishWeight.fish.get();
-      if(fish.isHidden) continue;
+
+      if(fish.isHidden) {
+        continue;
+      }
 
       final int x = (int)(this.fullWidth - 101 * this.ratio);
       final int y = i * 16 + 40;
@@ -79,12 +90,14 @@ public class FishListScreen extends MenuScreen {
       final Renderable58 icon = fish.icon.render(x, y, FLAG_DELETE_AFTER_RENDER);
       icon.z_3c = 10.0f;
 
+      final boolean seen = this.seen.contains(fish.getRegistryId());
       final String name;
 
-      if(fishWeight.visibility == FishingHole.FishVisibility.VISIBLE) {
+      if(seen || fishWeight.visibility == FishingHole.FishVisibility.VISIBLE) {
         name = I18n.translate(fish);
       } else {
         name = I18n.translate(getTranslationKey("fish_obfuscated"));
+        icon.colour.zero();
       }
 
       if(currentEngineState_8004dd04 instanceof SMap || TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) != 0) {

@@ -21,7 +21,7 @@ import static legend.game.Text.renderText;
 import static legend.game.Menus.whichMenu_800bdc38;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
-import static lod.thelegendoftides.Tlot.CATCH_FLAGS;
+import static lod.thelegendoftides.Tlot.CATCH_FLAGS_CONFIG;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishAcquiredScreen extends MenuScreen {
@@ -52,8 +52,8 @@ public class FishAcquiredScreen extends MenuScreen {
     }
 
     if(fish.legendaryIndex != -1) {
-      final long newFlags = CONFIG.getConfig(CATCH_FLAGS.get()) | (1L << fish.legendaryIndex);
-      CONFIG.setConfig(CATCH_FLAGS.get(), newFlags);
+      final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (1L << fish.legendaryIndex);
+      CONFIG.setConfig(CATCH_FLAGS_CONFIG.get(), newFlags);
     }
   }
 

@@ -23,7 +23,7 @@ public class FishingIndicator {
     transformWorldspaceToScreenspace(indicatorPosition, screenSpaceTransforms);
 
     this.transforms.scaling(24.0f);
-    this.transforms.transfer.set(screenSpaceTransforms.x, screenSpaceTransforms.y, 0.0f);
+    this.transforms.transfer.set(screenSpaceTransforms.x, screenSpaceTransforms.y, 125.0f);
   }
 
   public void render(final MeshObj quad, final Texture texture) {

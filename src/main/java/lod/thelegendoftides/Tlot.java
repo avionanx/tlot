@@ -59,6 +59,7 @@ import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
+import lod.thelegendoftides.configs.SeenFishConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
 import lod.thelegendoftides.screens.BaitSelectionScreen;
@@ -84,6 +85,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.EVENTS;
@@ -119,7 +121,8 @@ public class Tlot {
 
   public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
   public static final Registrar<ConfigEntry<?>, ConfigRegistryEvent> TIDES_CONFIG_REGISTRAR = new Registrar<>(REGISTRIES.config, MOD_ID);
-  public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
+  public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS_CONFIG = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
+  public static final RegistryDelegate<SeenFishConfig> SEEN_FISH_CONFIG = TIDES_CONFIG_REGISTRAR.register("seen_fish", SeenFishConfig::new);
   public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
@@ -131,7 +134,7 @@ public class Tlot {
   private final Random rand = new Random();
 
   private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
-  private List<FishingIndicator> fishingIndicators = new ArrayList<>();
+  private final List<FishingIndicator> fishingIndicators = new ArrayList<>();
   private MeshObj texturedQuad;
   private Texture fishingIndicatorTexture;
 
@@ -723,6 +726,11 @@ public class Tlot {
   }
 
   private void onFishHooked() {
+    // Add to list of seen fish
+    final Set<RegistryId> ids = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
+    ids.add(this.capturingFish.getRegistryId());
+    CONFIG.setConfig(Tlot.SEEN_FISH_CONFIG.get(), ids);
+
     this.fishReelingHandler = new FishReelingHandler(this.capturingFish, this::fishCapturedCallback, this::fishLostCallback);
     this.additionScreen = new AdditionOverlayScreen(this.fishReelingHandler::additionSuccessHandler, this.fishReelingHandler::additionFailCallback);
     this.menuStack.pushScreen(this.additionScreen);

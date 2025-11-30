@@ -127,20 +127,59 @@ thelegendoftides.bait.magnetic.name=Magnetic
 # Fish
 thelegendoftides.fish.common_trash.name=Trash
 thelegendoftides.fish.carp.name=Carp
+thelegendoftides.fish.carp.description=A Carp
+thelegendoftides.fish.carp.hint=
 thelegendoftides.fish.silver_carp.name=Silver Carp
+thelegendoftides.fish.silver_carp.description=A Silver Carp
+thelegendoftides.fish.silver_carp.hint=
 thelegendoftides.fish.grand_carp.name=Grand Carp
+thelegendoftides.fish.grand_carp.description=A Grand Carp
+thelegendoftides.fish.grand_carp.hint=
 thelegendoftides.fish.black_bass.name=Black Bass
+thelegendoftides.fish.black_bass.description=A Black Bass
+thelegendoftides.fish.black_bass.hint=
 thelegendoftides.fish.grand_bass.name=Grand Bass
+thelegendoftides.fish.grand_bass.description=A Grand Bass
+thelegendoftides.fish.grand_bass.hint=
 thelegendoftides.fish.rainbow_trout.name=Rainbow Trout
+thelegendoftides.fish.rainbow_trout.description=A Rainbow Trout
+thelegendoftides.fish.rainbow_trout.hint=
 thelegendoftides.fish.grand_rainbow_trout.name=Grand Rainbow Trout
+thelegendoftides.fish.grand_rainbow_trout.description=A Grand Rainbow Trout
+thelegendoftides.fish.grand_rainbow_trout.hint=
+thelegendoftides.fish.koi.name=Koi
+thelegendoftides.fish.koi.description=A Koi
+thelegendoftides.fish.koi.hint=
 thelegendoftides.fish.rockhead_pufferfish.name=Rockhead Pufferfish
+thelegendoftides.fish.rockhead_pufferfish.description=A Rockhead Pufferfish
+thelegendoftides.fish.rockhead_pufferfish.hint=
 thelegendoftides.fish.prickleback.name=Prickleback
+thelegendoftides.fish.prickleback.description=A Prickleback
+thelegendoftides.fish.prickleback.hint=
 thelegendoftides.fish.swordfish.name=Swordfish
+thelegendoftides.fish.swordfish.description=A Swordfish
+thelegendoftides.fish.swordfish.hint=
 thelegendoftides.fish.sturgeon.name=Sturgeon
+thelegendoftides.fish.sturgeon.description=A Sturgeon
+thelegendoftides.fish.sturgeon.hint=
 thelegendoftides.fish.silverfish.name=Silverfish
+thelegendoftides.fish.silverfish.description=A Silverfish
+thelegendoftides.fish.silverfish.hint=
 thelegendoftides.fish.goldenfish.name=Goldenfish
+thelegendoftides.fish.goldenfish.description=A Goldenfish
+thelegendoftides.fish.goldenfish.hint=
 thelegendoftides.fish.grand_goldenfish.name=Grand Goldenfish
+thelegendoftides.fish.grand_goldenfish.description=A Grand Goldenfish
+thelegendoftides.fish.grand_goldenfish.hint=
 thelegendoftides.fish.stardustfish.name=Stardust Fish
+thelegendoftides.fish.stardustfish.description=A Stardust Fish
+thelegendoftides.fish.stardustfish.hint=
+thelegendoftides.fish.azeel_gladiator.name=Azeel Gladiator
+thelegendoftides.fish.azeel_gladiator.description=An Azeel Gladiator
+thelegendoftides.fish.azeel_gladiator.hint=
+thelegendoftides.fish.last_kraken_jr.name=Last Kraken Jr.
+thelegendoftides.fish.last_kraken_jr.description=A Last Kraken Jr.
+thelegendoftides.fish.last_kraken_jr.hint=
 
 thelegendoftides.fish.lightsaber.name=Lightsaber
 thelegendoftides.fish.dragonslayer_swordspear.name=Dragonslayer Swordspear
@@ -152,6 +191,7 @@ thelegendoftides.fish.tree.name=Tree
 
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring
+
 # Book
 thelegendoftides.book_title=Fishing Records
 

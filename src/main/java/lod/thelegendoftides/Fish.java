@@ -2,11 +2,10 @@ package lod.thelegendoftides;
 
 import legend.game.inventory.InventoryEntry;
 import legend.game.inventory.ItemIcon;
-import legend.game.inventory.ItemStack;
 import org.legendofdragoon.modloader.registries.RegistryEntry;
 
 import static legend.core.GameEngine.CONFIG;
-import static lod.thelegendoftides.Tlot.CATCH_FLAGS;
+import static lod.thelegendoftides.Tlot.CATCH_FLAGS_CONFIG;
 
 public abstract class Fish extends RegistryEntry {
   public final ItemIcon icon;
@@ -39,6 +38,6 @@ public abstract class Fish extends RegistryEntry {
   public abstract InventoryEntry getReward();
 
   public boolean canBeCaught() {
-    return this.legendaryIndex < 0 || (this.legendaryIndex & (1L << CONFIG.getConfig(CATCH_FLAGS.get()))) == 0;
+    return this.legendaryIndex < 0 || (this.legendaryIndex & (1L << CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()))) == 0;
   }
 }
