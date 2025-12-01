@@ -3,6 +3,7 @@ package lod.thelegendoftides;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.registries.RegistryEntry;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -11,14 +12,16 @@ public final class FishingHole extends RegistryEntry {
   public final int submapCut;
   public final int collisionPrimitive;
   public final Supplier<FishingStage> fishingStage;
+  public final Supplier<FishingHolePrerequisites> prerequisities;
   public final Vector3f indicatorPosition;
   public final List<FishWeight> fish;
 
-  public FishingHole(final int submapCut, final int collisionPrimitive, final Vector3f indicatorPosition, final Supplier<FishingStage> fishingStage, final FishWeight... fish) {
+  public FishingHole(final int submapCut, final int collisionPrimitive, final Vector3f indicatorPosition, final Supplier<FishingStage> fishingStage, final Supplier<FishingHolePrerequisites> prerequisities, final FishWeight... fish) {
     this.submapCut = submapCut;
     this.collisionPrimitive = collisionPrimitive;
     this.indicatorPosition = indicatorPosition;
     this.fishingStage = fishingStage;
+    this.prerequisities = prerequisities;
     this.fish = List.of(fish);
   }
 
@@ -51,6 +54,10 @@ public final class FishingHole extends RegistryEntry {
     }
 
     throw new RuntimeException("Could not find fish");
+  }
+
+  public boolean canFish() {
+    return Arrays.stream(this.prerequisities.get().requirements).allMatch(Supplier::get);
   }
 
   public static class FishWeight {

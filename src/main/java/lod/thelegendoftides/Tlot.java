@@ -128,6 +128,7 @@ public class Tlot {
   public static final Registry<Fish> FISH_REGISTRY = new FishRegistry();
   public static final Registry<FishBaitWeight> FISH_BAIT_WEIGHT_REGISTRY = new FishBaitWeightRegistry();
   public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
+  public static final Registry<FishingHolePrerequisites> FISHING_HOLE_PREREQUISITES_REGISTRY = new FishingHolePrerequisitesRegistry();
   public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
   public static final Registrar<DeffPackage, RegisterDeffsEvent> TIDES_DEFF_REGISTRAR = new Registrar<>(REGISTRIES.deff, MOD_ID);
 
@@ -205,6 +206,7 @@ public class Tlot {
     event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
     event.addRegistry(FISHING_STAGE_REGISTRY, RegisterFishingStageEvent::new);
     event.addRegistry(FISHING_HOLE_REGISTRY, RegisterFishingHoleEvent::new);
+    event.addRegistry(FISHING_HOLE_PREREQUISITES_REGISTRY, RegisterFishingHolePrerequisitiesEvent::new);
   }
 
   @EventListener
@@ -244,9 +246,10 @@ public class Tlot {
   }
 
   @EventListener
-  public void registerFishingHoles(final RegisterFishingHoleEvent event) {
-    TlotFishingHoles.register(event);
-  }
+  public void registerFishingHoles(final RegisterFishingHoleEvent event) { TlotFishingHoles.register(event); }
+
+  @EventListener
+  public void registerFishingHolePrerequisites(final RegisterFishingHolePrerequisitiesEvent event) { TlotFishingHolePrerequisites.register(event); }
 
   @EventListener
   public void registerFishingStages(final RegisterFishingStageEvent event) {
@@ -259,7 +262,7 @@ public class Tlot {
     this.fishingIndicators.clear();
     this.menuStack.reset();
 
-    this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut);
+    this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut).stream().filter(FishingHole::canFish).toList();
     for(final FishingHole hole : this.currentCutFishingHoles) {
       this.fishingIndicators.add(new FishingIndicator(hole.indicatorPosition));
     }
