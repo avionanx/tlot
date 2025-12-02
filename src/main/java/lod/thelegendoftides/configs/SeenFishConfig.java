@@ -17,7 +17,7 @@ public class SeenFishConfig extends ConfigEntry<Set<RegistryId>> {
   }
 
   private static byte[] serialize(final Set<RegistryId> ids) {
-    final FileData data = new ExpandableFileData(ids.size() * 15);
+    final FileData data = new ExpandableFileData((ids.size() + 1) * 15);
     final IntRef offset = new IntRef();
 
     data.writeVarInt(offset, ids.size());
