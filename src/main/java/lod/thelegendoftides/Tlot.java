@@ -277,6 +277,12 @@ public class Tlot {
 
     SCRIPTS.getState(5).pause();
     SCRIPTS.getState(6).pause();
+    if(gameState_800babc8.charIds_88[1] != -1) {
+      SCRIPTS.getState(7).setFlag(FLAG_HIDE).pause();
+    }
+    if(gameState_800babc8.charIds_88[2] != -1) {
+      SCRIPTS.getState(8).setFlag(FLAG_HIDE).pause();
+    }
     SCRIPTS.getState(11).pause();
     SCRIPTS.getState(11).setFlag(FLAG_HIDE);
 
@@ -877,6 +883,7 @@ public class Tlot {
       }
       case "serdio_item_shop", "lohan_item_shop", "fletz_item_shop",
            "donau_item_shop", "queen_fury_item_shop", "wingly_forest_item_shop",
+           "hellena_01_item_shop", "hellena_02_item_shop",
            "fueno_item_shop", "furni_item_shop", "deningrad_item_shop",
            "kazas_item_shop", "ulara_item_shop", "rouge_item_shop" -> {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1), TlotItems.REGULAR_BAIT_BOX.get().getPrice(null)));
