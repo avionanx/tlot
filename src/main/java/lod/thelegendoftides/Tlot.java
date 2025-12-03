@@ -12,6 +12,7 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
+import legend.game.SItem;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
@@ -36,6 +37,7 @@ import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.inventory.screens.ShopScreen;
+import legend.game.inventory.screens.TooManyItemsScreen;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleEndedEvent;
@@ -107,6 +109,7 @@ import static legend.game.Scus94491BpeSegment_8005.collidedPrimitiveIndex_80052c
 import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
+import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
@@ -122,6 +125,7 @@ public class Tlot {
   public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
   public static final Registrar<ConfigEntry<?>, ConfigRegistryEvent> TIDES_CONFIG_REGISTRAR = new Registrar<>(REGISTRIES.config, MOD_ID);
   public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS_CONFIG = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
+  public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
   public static final RegistryDelegate<SeenFishConfig> SEEN_FISH_CONFIG = TIDES_CONFIG_REGISTRAR.register("seen_fish", SeenFishConfig::new);
   public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
@@ -189,6 +193,7 @@ public class Tlot {
   private boolean acquiredFishScreenCleared;
 
   private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
+  private boolean isRenderingTooManyItemsScreen;
 
   public Tlot() {
     isFishEncounter = false;
@@ -408,8 +413,15 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
+    if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
+      if(this.isRenderingTooManyItemsScreen) {
+        postBattleAction_800bc974 = 5;
+        this.isRenderingTooManyItemsScreen = false;
+      }
+      return;
+    }
+
     this.specialWeaponList.values().forEach(SpecialWeapon::render);
-    if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
@@ -705,7 +717,13 @@ public class Tlot {
 
     if(bait == null) {
       this.stopFishing();
-      postBattleAction_800bc974 = 5;
+      if(itemOverflow.isEmpty()) {
+        postBattleAction_800bc974 = 5;
+      } else {
+        SItem.menuStack.pushScreen(new TooManyItemsScreen());
+        this.isRenderingTooManyItemsScreen = true;
+        whichMenu_800bdc38 = WhichMenu.RENDER_NEW_MENU;
+      }
       return;
     }
 

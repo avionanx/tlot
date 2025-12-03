@@ -18,7 +18,7 @@ public class TlotFishingHolePrerequisites {
 
   // Utility methods
   private static Boolean hasObtainedTracker() {
-    return !TlotFish.MESSAGE_BOTTLE.get().canBeCaught();
+    return !TlotFish.AZEEL_TRACKER.get().canBeCaught();
   }
 
   static void register(final RegisterFishingHolePrerequisitiesEvent event) {

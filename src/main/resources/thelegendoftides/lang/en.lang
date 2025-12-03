@@ -86,9 +86,9 @@ thelegendoftides.items.azeel_gladiator.name=Azeel Gladiator
 thelegendoftides.items.azeel_gladiator.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
 thelegendoftides.items.azeel_gladiator.battle_description=Deals extreme phys. DMG (multi)(repeat)
 
-thelegendoftides.items.message_bottle.name=Message Bottle
-thelegendoftides.items.message_bottle.description=It appears to\ncontain a message.
-thelegendoftides.items.message_bottle.battle_description=Read message
+thelegendoftides.items.azeel_tracker.name=Azeel Tracker
+thelegendoftides.items.azeel_tracker.description=A hastily constructed\nartifact that appears\nto track something..
+thelegendoftides.items.azeel_tracker.battle_description=Run tracker (repeat)
 
 # Equipment
 thelegendoftides.equipment.lightsaber.name=Lightsaber

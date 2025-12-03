@@ -13,7 +13,7 @@ import lod.thelegendoftides.items.GrandCarpItem;
 import lod.thelegendoftides.items.GrandGoldenfishItem;
 import lod.thelegendoftides.items.GrandRainbowTroutItem;
 import lod.thelegendoftides.items.KoiItem;
-import lod.thelegendoftides.items.MessageBottleItem;
+import lod.thelegendoftides.items.AzeelTrackerItem;
 import lod.thelegendoftides.items.PricklebackItem;
 import lod.thelegendoftides.items.RainbowTroutItem;
 import lod.thelegendoftides.items.RockheadPufferfishItem;
@@ -32,7 +32,7 @@ public final class TlotItems {
   private static final Registrar<Item, ItemRegistryEvent> ITEM_REGISTRAR = new Registrar<>(GameEngine.REGISTRIES.items, Tlot.MOD_ID);
 
   public static final RegistryDelegate<BaitBoxItem> REGULAR_BAIT_BOX = ITEM_REGISTRAR.register("regular_bait_box", () -> new BaitBoxItem(TlotBait.REGULAR, 20, 200));
-  public static final RegistryDelegate<BaitBoxItem> SPARKLING_BAIT_BOX = ITEM_REGISTRAR.register("sparkling_bait_box", () -> new BaitBoxItem(TlotBait.REGULAR, 10, 400));
+  public static final RegistryDelegate<BaitBoxItem> SPARKLING_BAIT_BOX = ITEM_REGISTRAR.register("sparkling_bait_box", () -> new BaitBoxItem(TlotBait.SPARKLING, 10, 400));
   public static final RegistryDelegate<BaitBoxItem> INFUSED_BAIT_BOX = ITEM_REGISTRAR.register("infused_bait_box", () -> new BaitBoxItem(TlotBait.INFUSED, 10, 200));
   public static final RegistryDelegate<BaitBoxItem> MAGNETIC_BAIT_BOX = ITEM_REGISTRAR.register("magnetic_bait_box", () -> new BaitBoxItem(TlotBait.MAGNETIC, 5, 500));
 
@@ -56,7 +56,7 @@ public final class TlotItems {
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", () -> new LastKrakenJrItem(800));
   public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", () -> new AzeelGladiatorItem(1000));
 
-  public static final RegistryDelegate<MessageBottleItem> MESSAGE_BOTTLE = ITEM_REGISTRAR.register("message_bottle", () -> new MessageBottleItem(0));
+  public static final RegistryDelegate<AzeelTrackerItem> MESSAGE_BOTTLE = ITEM_REGISTRAR.register("message_bottle", () -> new AzeelTrackerItem(0));
 
   static void register(final ItemRegistryEvent event) {
     ITEM_REGISTRAR.registryEvent(event);

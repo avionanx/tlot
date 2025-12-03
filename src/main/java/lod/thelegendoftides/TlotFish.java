@@ -32,7 +32,7 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> LAST_KRAKEN_JR = REGISTRAR.register("last_kraken_jr", () -> new RegularFish(new FishIcon(9), 80.0f, 0.35f, () -> new ItemStack(TlotItems.LAST_KRAKEN_JR.get())).setLegendary(9));
   public static final RegistryDelegate<Fish> AZEEL_GLADIATOR = REGISTRAR.register("azeel_gladiator", () -> new RegularFish(new FishIcon(10), 120.0f, 0.5f, () -> new ItemStack(TlotItems.AZEEL_GLADIATOR.get())).setLegendary(10));
 
-  public static final RegistryDelegate<Fish> MESSAGE_BOTTLE = REGISTRAR.register("message_bottle", () -> new RegularFish(new FishIcon(11), 20.0f, 0.0f, () -> new ItemStack(TlotItems.MESSAGE_BOTTLE.get())).setLegendary(11).setHidden());
+  public static final RegistryDelegate<Fish> AZEEL_TRACKER = REGISTRAR.register("azeel_tracker", () -> new RegularFish(new FishIcon(11), 20.0f, 0.0f, () -> new ItemStack(TlotItems.MESSAGE_BOTTLE.get())).setLegendary(11).setHidden());
 
   // Treasures
   public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());
