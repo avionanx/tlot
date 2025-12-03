@@ -47,7 +47,7 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> THE_ONE_RING = REGISTRAR.register("the_one_ring", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.THE_ONE_RING).setLegendary(8).setHidden());
 
   // Misc
-  public static final RegistryDelegate<Fish> COMMON_TRASH = REGISTRAR.register("common_trash", () -> new RandomRewardFish(ItemIcon.SACK, 30.0f, 1.5f, () -> new ItemStack(LodItems.HEALING_POTION.get()), () -> new ItemStack(LodItems.CHARM_POTION.get())).setHidden());
+  public static final RegistryDelegate<Fish> COMMON_TRASH = REGISTRAR.register("common_trash", () -> new RandomRewardFish(ItemIcon.SACK, 20.0f, 0.0f, () -> new ItemStack(LodItems.HEALING_POTION.get()), () -> new ItemStack(LodItems.CHARM_POTION.get())).setHidden());
 
   static void register(final RegisterFishEvent event) {
     REGISTRAR.registryEvent(event);

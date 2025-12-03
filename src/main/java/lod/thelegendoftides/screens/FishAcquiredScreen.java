@@ -5,8 +5,11 @@ import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.ItemStack;
+import legend.game.inventory.screens.FontOptions;
+import legend.game.inventory.screens.HorizontalAlign;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.inventory.screens.TextColour;
 import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +27,7 @@ public class FishAcquiredScreen extends MenuScreen {
   private UiBox contentBox;
   private final Fish fish;
   private final Runnable setCaughtScreenUnloaded;
+  private final FontOptions fontOptions = new FontOptions().colour(TextColour.WHITE).horizontalAlign(HorizontalAlign.CENTRE);
 
   public FishAcquiredScreen(final Fish fish, final Runnable setCaughtScreenUnloaded) {
     this.fish = fish;
@@ -56,11 +60,11 @@ public class FishAcquiredScreen extends MenuScreen {
 
     final Renderable58 renderable = this.fish.icon.render(160, 110, FLAG_DELETE_AFTER_RENDER);
     renderable.z_3c = 10.0f;
-    renderable.widthScale = 6.0f;
-    renderable.heightScale_38 = 6.0f;
+    renderable.widthScale = 4.0f;
+    renderable.heightScale_38 = 4.0f;
 
-    renderText((I18n.translate(getTranslationKey("acquired_fish"))), 112.5f, 60, UI_WHITE);
-    renderText((I18n.translate(this.fish)), 145.0f, 165, UI_WHITE);
+    renderText((I18n.translate(getTranslationKey("acquired_fish"))), 160.0f, 60, this.fontOptions);
+    renderText((I18n.translate(this.fish)), 160.0f, 165, this.fontOptions);
   }
 
 
