@@ -413,13 +413,14 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
-    if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
-      if(this.isRenderingTooManyItemsScreen) {
+    if(this.isRenderingTooManyItemsScreen) {
+      if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
         postBattleAction_800bc974 = 5;
         this.isRenderingTooManyItemsScreen = false;
       }
       return;
     }
+    if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     this.specialWeaponList.values().forEach(SpecialWeapon::render);
 
