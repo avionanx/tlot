@@ -12,6 +12,7 @@ import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
+import lod.thelegendoftides.TlotFish;
 import org.jetbrains.annotations.NotNull;
 import static legend.core.GameEngine.CONFIG;
 import static legend.game.SItem.UI_WHITE;
@@ -21,6 +22,7 @@ import static legend.game.Text.renderText;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.CATCH_FLAGS_CONFIG;
+import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishAcquiredScreen extends MenuScreen {
@@ -34,24 +36,35 @@ public class FishAcquiredScreen extends MenuScreen {
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
     this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
 
-    if(fish.getReward() instanceof final ItemStack itemReward) {
-      final ItemStack remainingItems = gameState_800babc8.items_2e9.give(itemReward);
-      if(remainingItems.getSize() != 0) {
-        itemOverflow.add(remainingItems);
-      }
-    } else if(fish.getReward() instanceof final Equipment equipmentReward) {
-      gameState_800babc8.equipment_1e8.add(equipmentReward);
-      // TODO handle overflow
-      // if(!giveEquipment(equipmentReward)) {
-      //   equipmentOverflow.add(equipmentReward);
-      //   this.isRemainingItems = true;
-      // }
-    }
-
     if(fish.legendaryIndex != -1) {
       final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (1L << fish.legendaryIndex);
       CONFIG.setConfig(CATCH_FLAGS_CONFIG.get(), newFlags);
     }
+
+    if(fish.getReward() instanceof final ItemStack itemReward) {
+      if(fish.getRegistryId() == TlotFish.AZEEL_GLADIATOR.getId()) {
+        if((0x100 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x100) {
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x200L);
+          return;
+        } else if((0x200 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x200) {
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x300L);
+        } else {
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x100L);
+          return;
+        }
+      }
+      final ItemStack remainingItems = gameState_800babc8.items_2e9.give(itemReward);
+      if(remainingItems.getSize() != 0) {
+        itemOverflow.add(remainingItems);
+      }
+     } else if(fish.getReward() instanceof final Equipment equipmentReward) {
+       gameState_800babc8.equipment_1e8.add(equipmentReward);
+       // TODO handle overflow
+       // if(!giveEquipment(equipmentReward)) {
+       //   equipmentOverflow.add(equipmentReward);
+       //   this.isRemainingItems = true;
+       // }
+     }
   }
 
   @Override

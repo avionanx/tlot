@@ -125,7 +125,6 @@ public class Tlot {
   public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
   public static final Registrar<ConfigEntry<?>, ConfigRegistryEvent> TIDES_CONFIG_REGISTRAR = new Registrar<>(REGISTRIES.config, MOD_ID);
   public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS_CONFIG = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
-  public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
   public static final RegistryDelegate<SeenFishConfig> SEEN_FISH_CONFIG = TIDES_CONFIG_REGISTRAR.register("seen_fish", SeenFishConfig::new);
   public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);
   public static final Registry<Bait> BAIT_REGISTRY = new BaitRegistry();
@@ -135,6 +134,19 @@ public class Tlot {
   public static final Registry<FishingHolePrerequisites> FISHING_HOLE_PREREQUISITES_REGISTRY = new FishingHolePrerequisitesRegistry();
   public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
   public static final Registrar<DeffPackage, RegisterDeffsEvent> TIDES_DEFF_REGISTRAR = new Registrar<>(REGISTRIES.deff, MOD_ID);
+
+  /**
+   * <ul>
+   *  <li>0x1 -> is at undersea cavern</li>
+   *  <li>0x2 -> is at prairie</li>
+   *  <li>0x4 -> is at queen fury</li>
+   *  <li>0x8 -> is at aglis</li>
+   *  <li>0x10 -> is at mt. mortal dragon</li>
+   *  <li>0x100, 0x200, 0x300 -> caught 1/2/3(final) times</li>
+   * </ul>
+   */
+  public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
+
 
   private final Random rand = new Random();
 

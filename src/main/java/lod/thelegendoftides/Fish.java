@@ -31,7 +31,7 @@ public abstract class Fish extends RegistryEntry {
   }
 
   public Fish setLegendary(final int index) {
-    this.legendaryIndex = index;
+    this.legendaryIndex = 1 << index;
     return this;
   }
 
