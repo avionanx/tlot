@@ -9,7 +9,7 @@ import legend.game.inventory.screens.MenuScreen;
 import org.jetbrains.annotations.NotNull;
 
 import static legend.core.GameEngine.RENDERER;
-import static legend.game.SItem.UI_WHITE;
+import static legend.game.SItem.UI_WHITE_CENTERED;
 import static legend.game.Text.renderText;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
@@ -52,7 +52,7 @@ public class TimedMessageScreen extends MenuScreen {
     @Override
     protected void render() {
         if(this.framesRemaining-- > 0) {
-            renderText(this.message, 160.0f - this.message.length() * 2, 20.0f, UI_WHITE);
+            renderText(this.message, 160.0f, 20.0f, UI_WHITE_CENTERED);
             this.backgroundBox.render();
         } else {
             this.deferAction(this::unloadMessage);

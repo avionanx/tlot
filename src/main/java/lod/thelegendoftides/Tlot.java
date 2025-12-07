@@ -840,7 +840,7 @@ public class Tlot {
     playSound(1, 6, 0, 0); // hurt
     this.fishLostTicks = 0;
     this.state = FishingState.FISH_LOST;
-    this.menuStack.pushScreen(new TimedMessageScreen("message_fish_escaped", this.animationFrames + 20));
+    this.menuStack.pushScreen(new TimedMessageScreen("message_fish_escaped", 20));
   }
 
   private void stopFishing() {

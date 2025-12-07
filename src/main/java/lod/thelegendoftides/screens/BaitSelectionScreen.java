@@ -12,9 +12,12 @@ import legend.game.inventory.screens.controls.Button;
 import legend.game.modding.events.inventory.Inventory;
 import lod.thelegendoftides.Bait;
 import lod.thelegendoftides.items.BaitItem;
+import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -42,21 +45,25 @@ public class BaitSelectionScreen extends MenuScreen {
   public BaitSelectionScreen(final Inventory inv, final TriConsumer<Bait, Runnable, Runnable> onBaitSelected, final Consumer<Bait> onBaitHovered) {
     this.extraWidth = (int)getExtraWidth();
 
-    final List<ItemStack> baits = new ArrayList<>();
+    final HashMap<RegistryId, ArrayList<ItemStack>> baits = new HashMap<>();
     for(final ItemStack stack : inv) {
       if(stack.getItem() instanceof BaitItem) {
-        baits.add(stack);
+        if(baits.get(stack.getRegistryId()) != null) {
+          baits.get(stack.getRegistryId()).add(stack);
+        } else {
+          baits.put(stack.getRegistryId(), new ArrayList<>(List.of(stack)));
+        }
       }
     }
 
-    baits.sort(Comparator.comparing((ItemStack stack) -> ((BaitItem)stack.getItem()).getBait(stack).quality).reversed());
+    baits.values().forEach((stacks) -> {
+      final int count = stacks.stream().mapToInt(ItemStack::getCurrentDurability).sum();
 
-    for(int i = 0; i < baits.size(); i++) {
-      final ItemStack baitStack = baits.get(i);
+      final ItemStack baitStack = stacks.getFirst();
       final BaitItem baitItem = (BaitItem)baitStack.getItem();
       final Bait bait = baitItem.getBait(baitStack);
 
-      final Button button = this.addButton(I18n.translate(bait), () -> {
+      final Button button = this.addButton(I18n.translate(bait) + " x%d".formatted(count), () -> {
         playMenuSound(2);
         this.deferAction(() -> {
           onBaitSelected.accept(bait, this::unload, () -> {
@@ -70,7 +77,7 @@ public class BaitSelectionScreen extends MenuScreen {
         button.setTextColour(TextColour.WHITE);
         onBaitHovered.accept(bait);
       });
-    }
+    });
 
     this.headerBox = new UiBox("Bait List Header", 20 - this.extraWidth / 2, 18, 100, 14);
     this.contentBox = new UiBox("Bait List Content", 20 - this.extraWidth / 2, 40, 100, 80);
