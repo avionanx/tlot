@@ -23,16 +23,16 @@ thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
 
 thelegendoftides.items.carp.name=Carp
-thelegendoftides.items.carp.description=Restores 100 HP\nto everyone
-thelegendoftides.items.carp.battle_description=Restores 100 HP to everyone
+thelegendoftides.items.carp.description=Recovers 100 HP\nto everyone
+thelegendoftides.items.carp.battle_description=Recovers 100 HP to everyone
 
 thelegendoftides.items.silver_carp.name=Silver Carp
-thelegendoftides.items.silver_carp.description=Restores 350 HP\nto everyone
-thelegendoftides.items.silver_carp.battle_description=Restores 350 HP to everyone
+thelegendoftides.items.silver_carp.description=Recovers 350 HP\nto everyone
+thelegendoftides.items.silver_carp.battle_description=Recovers 350 HP to everyone
 
 thelegendoftides.items.grand_carp.name=Grand Carp
-thelegendoftides.items.grand_carp.description=Restores 750 HP\nto everyone
-thelegendoftides.items.grand_carp.battle_description=Restores 750 HP to everyone
+thelegendoftides.items.grand_carp.description=Recovers 750 HP\nto everyone
+thelegendoftides.items.grand_carp.battle_description=Recovers 750 HP to everyone
 
 thelegendoftides.items.black_bass.name=Black Bass
 thelegendoftides.items.black_bass.description=Grants 100 EXP
