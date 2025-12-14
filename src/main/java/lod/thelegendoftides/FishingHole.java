@@ -14,14 +14,16 @@ public final class FishingHole extends RegistryEntry {
   public final Supplier<FishingStage> fishingStage;
   public final Supplier<FishingHolePrerequisites> prerequisities;
   public final Vector3f indicatorPosition;
+  public final int musicIndex;
   public final List<FishWeight> fish;
 
-  public FishingHole(final int submapCut, final int collisionPrimitive, final Vector3f indicatorPosition, final Supplier<FishingStage> fishingStage, final Supplier<FishingHolePrerequisites> prerequisities, final FishWeight... fish) {
+  public FishingHole(final int submapCut, final int collisionPrimitive, final Vector3f indicatorPosition, final Supplier<FishingStage> fishingStage, final Supplier<FishingHolePrerequisites> prerequisities, final int musicIndex, final FishWeight... fish) {
     this.submapCut = submapCut;
     this.collisionPrimitive = collisionPrimitive;
     this.indicatorPosition = indicatorPosition;
     this.fishingStage = fishingStage;
     this.prerequisities = prerequisities;
+    this.musicIndex = musicIndex;
     this.fish = List.of(fish);
   }
 

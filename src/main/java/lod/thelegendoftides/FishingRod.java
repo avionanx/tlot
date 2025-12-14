@@ -61,6 +61,8 @@ public class FishingRod {
     this.gravity = gravity;
   }
 
+  public float getGravity() { return this.gravity; }
+
   public void initString() {
     // Seed string X values so the math doesn't NaN
     for(int i = 0; i < this.stringX.length; i++) {

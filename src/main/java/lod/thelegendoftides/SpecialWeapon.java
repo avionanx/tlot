@@ -18,6 +18,8 @@ import static legend.game.Graphics.GsGetLw;
 import static legend.game.Graphics.GsSetLightMatrix;
 import static legend.game.Graphics.lightColourMatrix_800c3508;
 import static legend.game.Graphics.lightDirectionMatrix_800c34e8;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_1;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_200;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 
 public class SpecialWeapon {
@@ -41,7 +43,9 @@ public class SpecialWeapon {
 
   public void unload() {
     this.model.delete();
-    this.texture.delete();
+    if(this.texture != null) {
+      this.texture.delete();
+    }
   }
 
   public void setParent(final GsCOORDINATE2 parent, final Model124 bentModel) {
@@ -54,7 +58,7 @@ public class SpecialWeapon {
   }
   
   public void render() {
-    if(!this.canRender || (SCRIPTS.getState(this.scriptStateIndex).getStor(0x7) & FLAG_HIDE) != 0) {
+    if(!this.canRender || (SCRIPTS.getState(this.scriptStateIndex).hasAnyFlag(FLAG_200 | FLAG_HIDE | FLAG_1))) {
       return;
     }
     

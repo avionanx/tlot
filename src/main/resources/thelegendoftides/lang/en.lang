@@ -6,6 +6,8 @@ thelegendoftides.message_fish_escaped=Fish has escaped!
 thelegendoftides.message_no_bait=No bait
 thelegendoftides.hotkey_bait_cancel=Stop fishing
 thelegendoftides.acquired_fish=Acquired Fish:
+thelegendoftides.azeel_escaped=Fish Escaped!
+thelegendoftides.azeel_acquired=Fish Finally Caught!
 thelegendoftides.bait_list=Bait List
 thelegendoftides.fish_list=Fish List
 thelegendoftides.fish_obfuscated=???
@@ -22,7 +24,7 @@ thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor cat
 
 thelegendoftides.items.carp.name=Carp
 thelegendoftides.items.carp.description=Restores 100 HP\nto everyone
-thelegendoftides.items.carp.battle_description=Restores 100 HP
+thelegendoftides.items.carp.battle_description=Restores 100 HP to everyone
 
 thelegendoftides.items.silver_carp.name=Silver Carp
 thelegendoftides.items.silver_carp.description=Restores 350 HP\nto everyone
@@ -186,8 +188,8 @@ thelegendoftides.fish.dragonslayer_swordspear.name=Dragonslayer Swordspear
 thelegendoftides.fish.bianca.name=Bianca
 thelegendoftides.fish.energy_sword.name=Energy Sword
 thelegendoftides.fish.pufferfish_knuckles.name=Pufferfish Knuckles
-thelegendoftides.fish.spatula.name=Spatula
-thelegendoftides.fish.tree.name=Tree
+thelegendoftides.fish.guitar.name=Guitar
+thelegendoftides.fish.ends_of_the_earth.name=Ends of the Earth
 
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring

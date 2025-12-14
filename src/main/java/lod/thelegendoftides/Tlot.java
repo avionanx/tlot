@@ -139,10 +139,15 @@ public class Tlot {
    * <ul>
    *  <li>0x1 -> is at undersea cavern</li>
    *  <li>0x2 -> is at prairie</li>
-   *  <li>0x4 -> is at queen fury</li>
+   *  <li>0x4 -> is at shrine of shirley</li>
    *  <li>0x8 -> is at aglis</li>
-   *  <li>0x10 -> is at mt. mortal dragon</li>
+   *  <li>0x10 -> is at bale</li>
    *  <li>0x100, 0x200, 0x300 -> caught 1/2/3(final) times</li>
+   *  <li>0x1000 -> was at undersea cavern</li>
+   *  <li>0x2000 -> was at prairie</li>
+   *  <li>0x4000 -> was at shrine of shirley</li>
+   *  <li>0x8000 -> was at aglis</li>
+   *  <li>0x10000 -> was at bale</li>
    * </ul>
    */
   public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
@@ -341,6 +346,9 @@ public class Tlot {
     }
 
     this.fishingRod = new FishingRod(this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04);
+    if(this.currentFishingHole.fishingStage.get() == TlotFishingStages.VOCG.get()) {
+      this.fishingRod.setGravity(-0.1f);
+    }
     this.showBaitScreen();
     this.state = FishingState.IDLE;
   }
@@ -492,11 +500,11 @@ public class Tlot {
           if(this.castingTicks < 18) {
             this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
             this.bobberHorizontalAcceleration = 450.0f;
-            this.bobberVerticalAcceleration = 100.0f;
+            this.bobberVerticalAcceleration = -100.0f;
           } else {
             final MV lw = new MV();
             GsGetLw(this.player.model_148.coord2_14, lw);
-            final Vector3f movement = new Vector3f(0.0f, -this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw).rotateY(-this.player.model_148.coord2_14.transforms.rotate.y);
+            final Vector3f movement = new Vector3f(0.0f, this.bobberVerticalAcceleration, -this.bobberHorizontalAcceleration).mul(lw).rotateY(-this.player.model_148.coord2_14.transforms.rotate.y);
 
             boolean collided = false;
             for(final CollisionMesh collisionMesh : this.stageCollision) {
@@ -516,7 +524,7 @@ public class Tlot {
               this.fishingRod.bobberCoord2.coord.transfer.add(movement);
               this.fishingRod.bobberCoord2.flg = 0;
               this.bobberHorizontalAcceleration -= 30.0f;
-              this.bobberVerticalAcceleration -= 30.0f;
+              this.bobberVerticalAcceleration += 300.0f * this.fishingRod.getGravity();
 
               // Prevent it from starting to move back towards caster
               this.bobberHorizontalAcceleration = Math.max(this.bobberHorizontalAcceleration, 0.0f);
@@ -603,7 +611,12 @@ public class Tlot {
             this.acquiredFishScreenCleared = false;
             this.setIdleAnimation();
             this.showBaitScreen();
-            this.state = FishingState.IDLE;
+
+            if(this.capturingFish == TlotFish.AZEEL_GLADIATOR.get()) {
+              this.returnToSubmapFromFishing();
+            } else {
+              this.state = FishingState.IDLE;
+            }
           }
         }
 
@@ -676,7 +689,7 @@ public class Tlot {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new Encounter(1, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+      SBtld.startEncounter(new Encounter(this.currentFishingHole.musicIndex, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
     }
   }
@@ -729,20 +742,24 @@ public class Tlot {
     this.fishListScreen.isFishListScreenDisabled = true;
 
     if(bait == null) {
-      this.stopFishing();
-      if(itemOverflow.isEmpty()) {
-        postBattleAction_800bc974 = 5;
-      } else {
-        SItem.menuStack.pushScreen(new TooManyItemsScreen());
-        this.isRenderingTooManyItemsScreen = true;
-        whichMenu_800bdc38 = WhichMenu.RENDER_NEW_MENU;
-      }
+      this.returnToSubmapFromFishing();
       return;
     }
 
     this.bait = bait;
     this.consumeBait = consumeBait;
     this.cast();
+  }
+
+  private void returnToSubmapFromFishing() {
+    this.stopFishing();
+    if(itemOverflow.isEmpty()) {
+      postBattleAction_800bc974 = 5;
+    } else {
+      SItem.menuStack.pushScreen(new TooManyItemsScreen());
+      this.isRenderingTooManyItemsScreen = true;
+      whichMenu_800bdc38 = WhichMenu.RENDER_NEW_MENU;
+    }
   }
 
   private void cast() {
@@ -868,8 +885,7 @@ public class Tlot {
     TIDES_DEFF_REGISTRAR.register("rainbow_trout", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("grand_rainbow_trout", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.register("azeel_gladiator", TidesItemDeffPackage::new);
-
-    TIDES_DEFF_REGISTRAR.register("message_bottle", TidesItemDeffPackage::new);
+    TIDES_DEFF_REGISTRAR.register("azeel_tracker", TidesItemDeffPackage::new);
     TIDES_DEFF_REGISTRAR.registryEvent(event);
   }
 
@@ -923,6 +939,5 @@ public class Tlot {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1), TlotItems.MAGNETIC_BAIT_BOX.get().getPrice(null)));
       }
     }
-
   }
 }

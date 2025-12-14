@@ -7,6 +7,11 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
+import java.util.Random;
+
+import static legend.core.GameEngine.CONFIG;
+import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
+
 
 public class AzeelTrackerItem extends FishItem {
   public AzeelTrackerItem(int price) {
@@ -40,7 +45,35 @@ public class AzeelTrackerItem extends FishItem {
 
   @Override
   protected void useItemScriptLoaded(final ScriptState<BattleEntity27c> user, final int targetBentIndex) {
+    this.selectNextAzeelLocation();
     user.setStor(28, targetBentIndex);
     user.setStor(30, user.index);
+  }
+
+  private void selectNextAzeelLocation() {
+    final long currentFlag = CONFIG.getConfig(TLOT_FLAGS_OTHER.get());
+    if((currentFlag & 0x1f) != 0x0 || (currentFlag & 0x300) == 0x300) return;
+
+    final int visitedCount = this.getAzeelCatchCount();
+    int random = new Random().nextInt(5 - visitedCount);
+    int flag = 0x1000;
+    while(random > -1) {
+      if((currentFlag & flag) == flag) {
+        flag <<= 1;
+        if(flag == 0x20000) flag = 0x1000;
+        continue;
+      }
+      if(random == 0) {
+        break;
+      }
+      random--;
+      flag <<= 1;
+      if(flag == 0x20000) flag = 0x1000;
+    }
+    CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), currentFlag | flag >> 12);
+  }
+
+  private int getAzeelCatchCount() {
+    return Long.bitCount(CONFIG.getConfig(TLOT_FLAGS_OTHER.get()) >>> 12);
   }
 }

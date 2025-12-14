@@ -28,7 +28,7 @@ public final class TlotFishBaitWeights {
   public static final RegistryDelegate<FishBaitWeight> GUITAR_MAGNETIC = REGISTRAR.register("guitar_magnetic", () -> new FishBaitWeight(TlotFish.GUITAR, TlotBait.MAGNETIC, 20));
   public static final RegistryDelegate<FishBaitWeight> ENDS_OF_THE_EARTH_MAGNETIC = REGISTRAR.register("ends_of_the_earth_magnetic", () -> new FishBaitWeight(TlotFish.ENDS_OF_THE_EARTH, TlotBait.MAGNETIC, 20));
 
-  public static final RegistryDelegate<FishBaitWeight> AZEEL_TRACKER_MAGNETIC = REGISTRAR.register("azeel_tracker_magnetic", () -> new FishBaitWeight(TlotFish.AZEEL_TRACKER, TlotBait.MAGNETIC, 30));
+  public static final RegistryDelegate<FishBaitWeight> AZEEL_TRACKER_MAGNETIC = REGISTRAR.register("azeel_tracker_magnetic", () -> new FishBaitWeight(TlotFish.AZEEL_TRACKER, TlotBait.MAGNETIC, 50));
 
   static void register(final RegisterFishBaitWeightEvent event) {
     REGISTRAR.registryEvent(event);

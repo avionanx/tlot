@@ -46,6 +46,7 @@ public class FishListScreen extends MenuScreen {
   public boolean isFishListScreenDisabled;
 
   private Bait selectedBait;
+  private final int visibleFishCount;
 
   public FishListScreen(final FishingHole fishingHole) {
     this.extraWidth = (int)getExtraWidth();
@@ -54,9 +55,9 @@ public class FishListScreen extends MenuScreen {
     this.fishingHole = fishingHole;
 
     this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
-
+    this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter(weight -> weight.fish.get().canBeCaught() && weight.fish.get().isHidden).count());
     this.headerBox = new UiBox("Fish List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, fishingHole.fish.size() * 16);
+    this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
 
     RENDERER.events().onResize(this::onResized);
   }
@@ -80,7 +81,7 @@ public class FishListScreen extends MenuScreen {
 
       final Fish fish = fishWeight.fish.get();
 
-      if(fish.isHidden) {
+      if(fish.isHidden || !fish.canBeCaught()) {
         continue;
       }
 
@@ -132,7 +133,7 @@ public class FishListScreen extends MenuScreen {
     this.updateDimensions();
 
     this.headerBox = new UiBox("Bait List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.fishingHole.fish.size() * 16);
+    this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
   }
 
   public void unload() {

@@ -28,25 +28,31 @@ public class FishAcquiredScreen extends MenuScreen {
   private final Fish fish;
   private final Runnable setCaughtScreenUnloaded;
 
+  private String acquiredMessage = "acquired_fish";
+
   public FishAcquiredScreen(final Fish fish, final Runnable setCaughtScreenUnloaded) {
     this.fish = fish;
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
     this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
 
     if(fish.legendaryIndex != -1) {
-      final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (1L << fish.legendaryIndex);
+      final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (1 << fish.legendaryIndex);
       CONFIG.setConfig(CATCH_FLAGS_CONFIG.get(), newFlags);
     }
 
     if(fish.getReward() instanceof final ItemStack itemReward) {
       if(fish.getRegistryId() == TlotFish.AZEEL_GLADIATOR.getId()) {
+        final long currentToOldLocationFlag = (CONFIG.getConfig(TLOT_FLAGS_OTHER.get()) & 0x1f) << 12;
         if((0x100 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x100) {
-          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x200L);
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x200 | currentToOldLocationFlag);
+          this.acquiredMessage = "azeel_escaped";
           return;
         } else if((0x200 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x200) {
-          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x300L);
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x300 | currentToOldLocationFlag);
+          this.acquiredMessage = "azeel_acquired";
         } else {
-          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x100L);
+          CONFIG.setConfig(TLOT_FLAGS_OTHER.get(), 0x100 | currentToOldLocationFlag);
+          this.acquiredMessage = "azeel_escaped";
           return;
         }
       }
@@ -73,7 +79,7 @@ public class FishAcquiredScreen extends MenuScreen {
     renderable.widthScale = 4.0f;
     renderable.heightScale_38 = 4.0f;
 
-    renderText((I18n.translate(getTranslationKey("acquired_fish"))), 160.0f, 60, UI_WHITE_CENTERED);
+    renderText((I18n.translate(getTranslationKey(this.acquiredMessage))), 160.0f, 60, UI_WHITE_CENTERED);
     renderText((I18n.translate(this.fish)), 160.0f, 165, UI_WHITE_CENTERED);
   }
 
