@@ -7,6 +7,7 @@ import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemIcon;
 import legend.game.types.EquipmentSlot;
 import legend.lodmod.LodMod;
+import lod.thelegendoftides.icons.FishIcon;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
 
@@ -17,7 +18,7 @@ public class TlotEquipments {
 
   // Model Swap Weapons
   // Dart
-  public static final RegistryDelegate<Equipment> LIGHTSABER = EQUIPMENT_REGISTRAR.register("lightsaber", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 35, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SWORD, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> LIGHTSABER = EQUIPMENT_REGISTRAR.register("lightsaber", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 35, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, new FishIcon(12), 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Alvitz
   public static final RegistryDelegate<Equipment> DRAGONSLAYER_SWORDSPEAR = EQUIPMENT_REGISTRAR.register("dragonslayer_swordspear", () -> new Equipment(200, 0x0, EquipmentSlot.WEAPON, 0x80, 0x40, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 50, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.SPEAR, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0));
   // Sharanda

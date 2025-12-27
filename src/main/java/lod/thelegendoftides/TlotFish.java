@@ -38,7 +38,7 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> AZEEL_TRACKER = REGISTRAR.register("azeel_tracker", () -> new RegularFish(new FishIcon(11), 20.0f, 0.0f, () -> new ItemStack(TlotItems.AZEEL_TRACKER.get())).setLegendary(11).setHidden());
 
   // Treasures
-  public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());
+  public static final RegistryDelegate<Fish> LIGHTSABER = REGISTRAR.register("lightsaber", () -> new TreasureFish(new FishIcon(12), 80.0f, 0.35f, TlotEquipments.LIGHTSABER).setLegendary(1).setHidden());
   public static final RegistryDelegate<Fish> DRAGONSLAYER_SWORDSPEAR = REGISTRAR.register("dragonslayer_swordspear", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.DRAGONSLAYER_SWORDSPEAR).setLegendary(2).setHidden());
   public static final RegistryDelegate<Fish> BIANCA = REGISTRAR.register("bianca", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.BIANCA).setLegendary(3).setHidden());
   public static final RegistryDelegate<Fish> ENERGY_SWORD = REGISTRAR.register("energy_sword", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.ENERGY_SWORD).setLegendary(4).setHidden());
