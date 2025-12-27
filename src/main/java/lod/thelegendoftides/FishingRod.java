@@ -36,9 +36,14 @@ public class FishingRod {
   private final GsCOORDINATE2 parent;
   public final GsCOORDINATE2 bobberCoord2 = new GsCOORDINATE2();
   public final MV bobberTransforms = new MV();
+  private final Vector3f rotation;
+  private final float scale;
 
-  public FishingRod(final GsCOORDINATE2 parent) {
+
+  public FishingRod(final GsCOORDINATE2 parent, final Vector3f rotation, final float scale) {
     this.parent = parent;
+    this.rotation = rotation;
+    this.scale = scale;
 
     // Initialize string
     this.initString();
@@ -132,7 +137,7 @@ public class FishingRod {
   }
 
   public void renderString() {
-    final Matrix4f transforms = new Matrix4f();
+    final Matrix4f transforms = new Matrix4f().rotateXYZ(this.rotation);
     final Vector2f start = new Vector2f();
     final Vector2f end = new Vector2f();
 
@@ -153,8 +158,8 @@ public class FishingRod {
     GsGetLw(this.parent, lw);
     GsSetLightMatrix(lw);
     lw
-      .rotateY(-MathHelper.HALF_PI)
-      .scale(800.0f)
+      .rotateXYZ(this.rotation)
+      .scale(this.scale)
     ;
 
     RENDERER.queueModel(this.rod, lw, QueuedModelStandard.class)

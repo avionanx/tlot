@@ -1,6 +1,7 @@
 package lod.thelegendoftides;
 
 import legend.core.AddRegistryEvent;
+import legend.core.MathHelper;
 import legend.core.QueuedModelStandard;
 import legend.core.gpu.Bpp;
 import legend.core.gte.MV;
@@ -206,7 +207,6 @@ public class Tlot {
 
   private int fishCaughtTicks;
   private int fishLostTicks;
-  private int holdingUpFishTicks;
   private boolean acquiredFishScreenCleared;
 
   private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
@@ -335,17 +335,35 @@ public class Tlot {
     this.player.model_148.coord2_14.coord.transfer.set(fishingStage.playerPosition);
     this.player.model_148.coord2_14.transforms.rotate.y = fishingStage.playerRotation;
 
-    // Hide player's weapon
-    this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
+    // Hide player's weapon except haschel'ss
+    if(player.charId_272 != 4) {
+      this.player.model_148.partInvisible_f4 |= 0x1L << this.player.getWeaponModelPart();
+    }
 
-    // Load animation of Dart holding up divine dragoon spirit during transformation
-    loadDrgnFileSync(0, "4232/0/1", data -> this.victoryAnimation = (TmdAnimationFile)((DeffPart.AnimatedTmdType)DeffPart.getDeffPart(List.of(data), 0)).anim_14);
+    if(player.charId_272 == 0) {
+      // Load animation of Dart holding up divine dragoon spirit during transformation
+      loadDrgnFileSync(0, "4232/0/1", data -> this.victoryAnimation = (TmdAnimationFile)((DeffPart.AnimatedTmdType)DeffPart.getDeffPart(List.of(data), 0)).anim_14);
+    } else {
+      ((Battle)currentEngineState_8004dd04).FUN_800c9e10(this.player.combatant_144, 0xf);
+      this.victoryAnimation = battleState_8006e398.getAnimationGlobalAsset(player.combatant_144, 0xf);
+    }
 
     if(this.fishingRod != null) {
       throw new IllegalStateException("Need to clean up after fishing");
     }
 
-    this.fishingRod = new FishingRod(this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04);
+    final Vector3f rotation = new Vector3f();
+    float scale = 800.0f;
+
+    switch(this.player.charId_272) {
+      case 0 -> rotation.set(0.0f, -MathHelper.HALF_PI, 0.0f);
+      case 3 -> rotation.set(0, 0, -MathHelper.HALF_PI);
+      case 4 -> rotation.set(MathHelper.PI, 0, -MathHelper.HALF_PI);
+      case 6 -> rotation.set(0, -MathHelper.HALF_PI, 0);
+      case 7 -> scale = 1600.0f;
+    }
+
+    this.fishingRod = new FishingRod(this.player.model_148.modelParts_00[this.player.getWeaponModelPart()].coord2_04, rotation, scale);
     if(this.currentFishingHole.fishingStage.get() == TlotFishingStages.VOCG.get()) {
       this.fishingRod.setGravity(-0.1f);
     }
@@ -597,17 +615,15 @@ public class Tlot {
         case FISH_CAUGHT -> {
           this.fishCaughtTicks++;
 
-          if(this.fishCaughtTicks >= this.victoryAnimation.totalFrames_0e * 2 - 1) {
-            this.holdingUpFishTicks = 0;
+          if(this.fishCaughtTicks >= this.victoryAnimation.totalFrames_0e * 2 - 1  || this.acquiredFishScreenCleared) {
             this.usingVictoryAnimation = false;
             this.state = FishingState.HOLDING_UP_FISH;
           }
         }
 
         case HOLDING_UP_FISH -> {
-          this.holdingUpFishTicks++;
 
-          if(this.holdingUpFishTicks > 50 && this.acquiredFishScreenCleared) {
+          if(this.acquiredFishScreenCleared) {
             this.acquiredFishScreenCleared = false;
             this.setIdleAnimation();
             this.showBaitScreen();
@@ -726,6 +742,7 @@ public class Tlot {
 
   private void setVictoryAnimation() {
     this.usingVictoryAnimation = true;
+    this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.victoryAnimation.loadIntoModel(this.player.model_148);
     this.player.model_148.animationState_9c = 2;
   }

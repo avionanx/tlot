@@ -8,8 +8,8 @@ import lod.thelegendoftides.TlotFish;
 import static legend.game.SItem.getXpToNextLevel;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 
-public class BlackBassItem extends FishItem {
-  public BlackBassItem(final int price) {
+public class WiseSalmonItem extends FishItem {
+  public WiseSalmonItem(final int price) {
     super(TlotFish.BLACK_BASS, price);
   }
 
@@ -24,7 +24,7 @@ public class BlackBassItem extends FishItem {
     response._00 = 9;
     int xp = gameState_800babc8.charData_32c[charId].xp_00;
     if(xp <= 999999) {
-      xp = xp + 100;
+      xp = xp + 800;
     } else {
       xp = 999999;
     }

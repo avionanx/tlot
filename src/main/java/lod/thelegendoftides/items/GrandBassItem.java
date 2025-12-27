@@ -25,7 +25,7 @@ public class GrandBassItem extends FishItem {
     response._00 = 9;
     int xp = gameState_800babc8.charData_32c[charId].xp_00;
     if(xp <= 999999) {
-      xp = xp + 500;
+      xp = xp + 400;
     } else {
       xp = 999999;
     }

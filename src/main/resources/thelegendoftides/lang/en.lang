@@ -48,9 +48,9 @@ thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 40 MP to all
 thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 500 HP, 75 SP, 40 MP to all
 
-thelegendoftides.items.rockhead_pufferfish.name=Rockhead Pufferfish
-thelegendoftides.items.rockhead_pufferfish.description=Deals scaling\nphysical damage\n[multi]
-thelegendoftides.items.rockhead_pufferfish.battle_description=Physical scaling attack [multi]
+thelegendoftides.items.rockhead_pufferfish.name=Rock Puffer
+thelegendoftides.items.rockhead_pufferfish.description=Deals physical\ndamage (scaling)(multi)
+thelegendoftides.items.rockhead_pufferfish.battle_description=Physical attack (scaling)(multi)
 
 thelegendoftides.items.prickleback.name=Prickleback
 thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25%% for\n3 turns
@@ -86,11 +86,11 @@ thelegendoftides.items.last_kraken_jr.battle_description=Summons a Cleone (repea
 
 thelegendoftides.items.azeel_gladiator.name=Azeel Gladiator
 thelegendoftides.items.azeel_gladiator.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
-thelegendoftides.items.azeel_gladiator.battle_description=Deals extreme phys. DMG (multi)(repeat)
+thelegendoftides.items.azeel_gladiator.battle_description=High PHY DMG (scaling)(multi)(repeat)
 
 thelegendoftides.items.azeel_tracker.name=Azeel Tracker
 thelegendoftides.items.azeel_tracker.description=A hastily constructed\nartifact that appears\nto track something..
-thelegendoftides.items.azeel_tracker.battle_description=Run tracker (repeat)
+thelegendoftides.items.azeel_tracker.battle_description=Run Azeel tracker (repeat)
 
 # Equipment
 thelegendoftides.equipment.lightsaber.name=Lightsaber
@@ -152,8 +152,8 @@ thelegendoftides.fish.grand_rainbow_trout.hint=
 thelegendoftides.fish.koi.name=Koi
 thelegendoftides.fish.koi.description=A Koi
 thelegendoftides.fish.koi.hint=
-thelegendoftides.fish.rockhead_pufferfish.name=Rockhead Pufferfish
-thelegendoftides.fish.rockhead_pufferfish.description=A Rockhead Pufferfish
+thelegendoftides.fish.rockhead_pufferfish.name=Rock Puffer
+thelegendoftides.fish.rockhead_pufferfish.description=A Rock Puffer
 thelegendoftides.fish.rockhead_pufferfish.hint=
 thelegendoftides.fish.prickleback.name=Prickleback
 thelegendoftides.fish.prickleback.description=A Prickleback
@@ -173,12 +173,15 @@ thelegendoftides.fish.goldenfish.hint=
 thelegendoftides.fish.grand_goldenfish.name=Grand Goldenfish
 thelegendoftides.fish.grand_goldenfish.description=A Grand Goldenfish
 thelegendoftides.fish.grand_goldenfish.hint=
-thelegendoftides.fish.stardustfish.name=Stardust Fish
-thelegendoftides.fish.stardustfish.description=A Stardust Fish
+thelegendoftides.fish.stardustfish.name=Stardustfish
+thelegendoftides.fish.stardustfish.description=A Stardustfish
 thelegendoftides.fish.stardustfish.hint=
 thelegendoftides.fish.azeel_gladiator.name=Azeel Gladiator
 thelegendoftides.fish.azeel_gladiator.description=An Azeel Gladiator
 thelegendoftides.fish.azeel_gladiator.hint=
+thelegendoftides.fish.azeel_tracker.name=Azeel Tracker
+thelegendoftides.fish.azeel_tracker.description=An Azeel Tracker
+thelegendoftides.fish.azeel_tracker.hint=
 thelegendoftides.fish.last_kraken_jr.name=Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.description=A Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.hint=

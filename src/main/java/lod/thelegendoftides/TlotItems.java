@@ -8,12 +8,14 @@ import lod.thelegendoftides.items.BaitBoxItem;
 import lod.thelegendoftides.items.BlackBassItem;
 import lod.thelegendoftides.items.CarpItem;
 import lod.thelegendoftides.items.GoldenfishItem;
+import lod.thelegendoftides.items.GooseItem;
 import lod.thelegendoftides.items.GrandBassItem;
 import lod.thelegendoftides.items.GrandCarpItem;
 import lod.thelegendoftides.items.GrandGoldenfishItem;
 import lod.thelegendoftides.items.GrandRainbowTroutItem;
 import lod.thelegendoftides.items.KoiItem;
 import lod.thelegendoftides.items.AzeelTrackerItem;
+import lod.thelegendoftides.items.MurkrayItem;
 import lod.thelegendoftides.items.PricklebackItem;
 import lod.thelegendoftides.items.RainbowTroutItem;
 import lod.thelegendoftides.items.RockheadPufferfishItem;
@@ -23,6 +25,7 @@ import lod.thelegendoftides.items.StardustFishItem;
 import lod.thelegendoftides.items.SturgeonItem;
 import lod.thelegendoftides.items.SwordfishItem;
 import lod.thelegendoftides.items.LastKrakenJrItem;
+import lod.thelegendoftides.items.WiseSalmonItem;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
 
@@ -42,6 +45,7 @@ public final class TlotItems {
   public static final RegistryDelegate<GrandCarpItem> GRAND_CARP = ITEM_REGISTRAR.register("grand_carp", () -> new GrandCarpItem(100));
   public static final RegistryDelegate<BlackBassItem> BLACK_BASS = ITEM_REGISTRAR.register("black_bass", () -> new BlackBassItem(40));
   public static final RegistryDelegate<GrandBassItem> GRAND_BASS = ITEM_REGISTRAR.register("grand_bass", () -> new GrandBassItem(100));
+  public static final RegistryDelegate<WiseSalmonItem> WISE_SALMON = ITEM_REGISTRAR.register("wise_salmon", () -> new WiseSalmonItem(800));
   public static final RegistryDelegate<RainbowTroutItem> RAINBOW_TROUT = ITEM_REGISTRAR.register("rainbow_trout", () -> new RainbowTroutItem(30));
   public static final RegistryDelegate<GrandRainbowTroutItem> GRAND_RAINBOW_TROUT = ITEM_REGISTRAR.register("grand_rainbow_trout", () -> new GrandRainbowTroutItem(100));
   public static final RegistryDelegate<RockheadPufferfishItem> ROCKHEAD_PUFFERFISH = ITEM_REGISTRAR.register("rockhead_pufferfish", () -> new RockheadPufferfishItem(50));
@@ -49,12 +53,14 @@ public final class TlotItems {
   public static final RegistryDelegate<PricklebackItem> PRICKLEBACK = ITEM_REGISTRAR.register("prickleback", () -> new PricklebackItem(50));
   public static final RegistryDelegate<SwordfishItem> SWORDFISH = ITEM_REGISTRAR.register("swordfish", () -> new SwordfishItem(50));
   public static final RegistryDelegate<SturgeonItem> STURGEON = ITEM_REGISTRAR.register("sturgeon", () -> new SturgeonItem(50));
+  public static final RegistryDelegate<MurkrayItem> MURKRAY = ITEM_REGISTRAR.register("murkray", () -> new MurkrayItem(50));
   public static final RegistryDelegate<SilverfishItem> SILVERFISH = ITEM_REGISTRAR.register("silverfish", () -> new SilverfishItem(150));
   public static final RegistryDelegate<GoldenfishItem> GOLDENFISH = ITEM_REGISTRAR.register("goldenfish", () -> new GoldenfishItem(300));
   public static final RegistryDelegate<GrandGoldenfishItem> GRAND_GOLDENFISH = ITEM_REGISTRAR.register("grand_goldenfish", () -> new GrandGoldenfishItem(500));
   public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", () -> new StardustFishItem(4000));
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", () -> new LastKrakenJrItem(800));
   public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", () -> new AzeelGladiatorItem(1000));
+  public static final RegistryDelegate<GooseItem> GOOSE = ITEM_REGISTRAR.register("goose", () -> new GooseItem(800));
 
   public static final RegistryDelegate<AzeelTrackerItem> AZEEL_TRACKER = ITEM_REGISTRAR.register("azeel_tracker", () -> new AzeelTrackerItem(0));
 
