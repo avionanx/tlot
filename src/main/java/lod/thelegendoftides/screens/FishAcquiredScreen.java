@@ -1,13 +1,13 @@
 package lod.thelegendoftides.screens;
 
 import legend.core.platform.input.InputAction;
-import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.types.Renderable58;
+import legend.game.ui.UiBox;
 import lod.thelegendoftides.Fish;
 import lod.thelegendoftides.TlotFish;
 import org.jetbrains.annotations.NotNull;

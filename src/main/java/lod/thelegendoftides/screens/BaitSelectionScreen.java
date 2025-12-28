@@ -2,7 +2,6 @@ package lod.thelegendoftides.screens;
 
 import legend.core.memory.types.TriConsumer;
 import legend.core.platform.Window;
-import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
 import legend.game.inventory.Inventory;
 import legend.game.inventory.ItemStack;
@@ -10,6 +9,7 @@ import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
+import legend.game.ui.UiBox;
 import lod.thelegendoftides.Bait;
 import lod.thelegendoftides.items.BaitItem;
 import org.legendofdragoon.modloader.registries.RegistryId;

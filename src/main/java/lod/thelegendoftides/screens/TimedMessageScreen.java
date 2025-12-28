@@ -2,10 +2,10 @@ package lod.thelegendoftides.screens;
 
 import legend.core.platform.Window;
 import legend.core.platform.input.InputAction;
-import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
+import legend.game.ui.UiBox;
 import org.jetbrains.annotations.NotNull;
 
 import static legend.core.GameEngine.RENDERER;

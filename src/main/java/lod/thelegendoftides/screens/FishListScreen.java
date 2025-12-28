@@ -2,7 +2,6 @@ package lod.thelegendoftides.screens;
 
 import legend.core.platform.Window;
 import legend.game.EngineState;
-import legend.game.combat.ui.UiBox;
 import legend.game.i18n.I18n;
 import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuScreen;
@@ -10,6 +9,7 @@ import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.submap.SMap;
 import legend.game.types.Renderable58;
+import legend.game.ui.UiBox;
 import lod.thelegendoftides.Bait;
 import lod.thelegendoftides.Fish;
 import lod.thelegendoftides.FishingHole;
