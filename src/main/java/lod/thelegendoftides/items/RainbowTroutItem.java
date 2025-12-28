@@ -41,10 +41,10 @@ public class RainbowTroutItem extends FishItem {
   @Override
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
-    response._00 = this.canTarget(stack, TargetType.ALL) ? 3 : 2;
-    response.value_04 = addHp(charId, 100);
+    addHp(charId, 100);
     addMp(charId, 20);
     addSp(charId, 35);
+    response.success();
   }
 
   @Override

@@ -36,9 +36,15 @@ thelegendoftides.items.grand_carp.battle_description=Recovers 750 HP to everyone
 
 thelegendoftides.items.black_bass.name=Black Bass
 thelegendoftides.items.black_bass.description=Grants 100 EXP
+thelegendoftides.items.black_bass.use=Granted 100 EXP
 
 thelegendoftides.items.grand_bass.name=Grand Bass
 thelegendoftides.items.grand_bass.description=Grants 500 EXP
+thelegendoftides.items.grand_bass.use=Granted 500 EXP
+
+thelegendoftides.items.wise_salmon.name=Wise Salmon
+thelegendoftides.items.wise_salmon.description=Grants 800 EXP
+thelegendoftides.items.wise_salmon.use=Granted 800 EXP
 
 thelegendoftides.items.rainbow_trout.name=Rainbow Trout
 thelegendoftides.items.rainbow_trout.description=Recovers 100 HP,\n35 SP, 20 MP to all

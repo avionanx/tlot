@@ -1,6 +1,7 @@
 package lod.thelegendoftides.items;
 
 import legend.core.memory.Method;
+import legend.game.i18n.I18n;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.UseItemResponse;
 import lod.thelegendoftides.TlotFish;
@@ -21,7 +22,6 @@ public class BlackBassItem extends FishItem {
   @Override
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
-    response._00 = 9;
     int xp = gameState_800babc8.charData_32c[charId].xp_00;
     if(xp <= 999999) {
       xp = xp + 100;
@@ -33,5 +33,7 @@ public class BlackBassItem extends FishItem {
     if(gameState_800babc8.charData_32c[charId].xp_00 >= getXpToNextLevel(charId) && gameState_800babc8.charData_32c[charId].level_12 < 60) {
       gameState_800babc8.charData_32c[charId].level_12++;
     }
+
+    response.success(I18n.translate(this.getTranslationKey("use")));
   }
 }
