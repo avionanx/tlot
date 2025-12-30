@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public final class FishIconUiType {
   private FishIconUiType() { }
 
-  private static final float TEXTURE_WIDTH = 32.0f * 13;
+  private static final float TEXTURE_WIDTH = 32.0f * 19;
   private static final float ICON_WIDTH = 32.0f;
   private static final float WIDTH_DIVIDER = ICON_WIDTH / TEXTURE_WIDTH;
 
@@ -44,6 +44,19 @@ public final class FishIconUiType {
     new UiPart(new Metrics[] {addIcon(11)}, 1),
     // Lightsaber
     new UiPart(new Metrics[] {addIcon(12)}, 1),
+    // Bianca
+    new UiPart(new Metrics[] {addIcon(13)}, 1),
+    // Dragonslayer Swordspear
+    new UiPart(new Metrics[] {addIcon(14)}, 1),
+    // Ends of the Earth
+    new UiPart(new Metrics[] {addIcon(15)}, 1),
+    // Energy Sword
+    new UiPart(new Metrics[] {addIcon(16)}, 1),
+    // Pufferfish Knuckles
+    new UiPart(new Metrics[] {addIcon(17)}, 1),
+    // Guitar
+    new UiPart(new Metrics[] {addIcon(18)}, 1),
+
   });
 
   private static Texture TEXTURE;
