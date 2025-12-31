@@ -423,13 +423,13 @@ public class Tlot {
     }
 
     final Equipment specialWeapon = switch(playerId) {
-      case 0 -> TlotEquipments.LIGHTSABER.get();
-      case 1, 5 -> TlotEquipments.DRAGONSLAYER_SWORDSPEAR.get();
+      case 0 -> TlotEquipments.GLOWSTICK.get();
+      case 1, 5 -> TlotEquipments.NAMELESS_SPEAR.get();
       case 2, 8 -> TlotEquipments.BIANCA.get();
       case 3 -> TlotEquipments.ENERGY_SWORD.get();
       case 4 -> TlotEquipments.PUFFERFISH_KNUCKLES.get();
       case 6 -> TlotEquipments.GUITAR.get();
-      case 7 -> TlotEquipments.ENDS_OF_THE_EARTH.get();
+      case 7 -> TlotEquipments.OVERSIZED_KEY.get();
       default -> null;
     };
     if(specialWeapon == null) return;

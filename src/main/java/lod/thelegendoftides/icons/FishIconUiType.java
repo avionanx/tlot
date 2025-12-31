@@ -42,13 +42,13 @@ public final class FishIconUiType {
     new UiPart(new Metrics[] {addIcon(10)}, 1),
     // Message Bottle
     new UiPart(new Metrics[] {addIcon(11)}, 1),
-    // Lightsaber
+    // Glowstick
     new UiPart(new Metrics[] {addIcon(12)}, 1),
     // Bianca
     new UiPart(new Metrics[] {addIcon(13)}, 1),
-    // Dragonslayer Swordspear
+    // Nameless Spear
     new UiPart(new Metrics[] {addIcon(14)}, 1),
-    // Ends of the Earth
+    // Oversized Key
     new UiPart(new Metrics[] {addIcon(15)}, 1),
     // Energy Sword
     new UiPart(new Metrics[] {addIcon(16)}, 1),

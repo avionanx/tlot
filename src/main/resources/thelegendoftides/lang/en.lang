@@ -99,11 +99,11 @@ thelegendoftides.items.azeel_tracker.description=A hastily constructed\nartifact
 thelegendoftides.items.azeel_tracker.battle_description=Run Azeel tracker (repeat)
 
 # Equipment
-thelegendoftides.equipment.lightsaber.name=Lightsaber
-thelegendoftides.equipment.lightsaber.description=Hello there
+thelegendoftides.equipment.glowstick.name=Glowstick
+thelegendoftides.equipment.glowstick.description=Hello there
 
-thelegendoftides.equipment.dragonslayer_swordspear.name=Dragonslayer Swordspear
-thelegendoftides.equipment.dragonslayer_swordspear.description=Praise the sun.
+thelegendoftides.equipment.nameless_spear.name=Nameless Spear
+thelegendoftides.equipment.nameless_spear.description=Praise the sun.
 
 thelegendoftides.equipment.bianca.name=Bianca
 thelegendoftides.equipment.bianca.description=A marvel of Dwarven\ncraftsmanship, but bears\nno smith's mark
@@ -117,8 +117,8 @@ thelegendoftides.equipment.pufferfish_knuckles.description=*blub blub to\nreceiv
 thelegendoftides.equipment.guitar.name=Guitar
 thelegendoftides.equipment.guitar.description=*through the fire\nand flames starts\nplaying*
 
-thelegendoftides.equipment.ends_of_the_earth.name=Ends of the Earth
-thelegendoftides.equipment.ends_of_the_earth.description=One day, Kongol\nset this right.
+thelegendoftides.equipment.oversized_key.name=Oversized Key
+thelegendoftides.equipment.oversized_key.description=One day, Kongol\nset this right.
 
 thelegendoftides.equipment.old_boots.name=Old Boots
 thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
@@ -192,13 +192,13 @@ thelegendoftides.fish.last_kraken_jr.name=Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.description=A Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.hint=
 
-thelegendoftides.fish.lightsaber.name=Lightsaber
-thelegendoftides.fish.dragonslayer_swordspear.name=Dragonslayer Swordspear
+thelegendoftides.fish.glowstick.name=Glowstick
+thelegendoftides.fish.nameless_spear.name=Nameless Spear
 thelegendoftides.fish.bianca.name=Bianca
 thelegendoftides.fish.energy_sword.name=Energy Sword
 thelegendoftides.fish.pufferfish_knuckles.name=Pufferfish Knuckles
 thelegendoftides.fish.guitar.name=Guitar
-thelegendoftides.fish.ends_of_the_earth.name=Ends of the Earth
+thelegendoftides.fish.oversized_key.name=Oversized Key
 
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring
