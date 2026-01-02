@@ -34,13 +34,17 @@ thelegendoftides.items.grand_carp.name=Grand Carp
 thelegendoftides.items.grand_carp.description=Recovers 750 HP\nto everyone
 thelegendoftides.items.grand_carp.battle_description=Recovers 750 HP to everyone
 
+thelegendoftides.items.mirage_carp.name=Mirage Carp
+thelegendoftides.items.mirage_carp.description=Recovers 1000 HP\nto everyone
+thelegendoftides.items.mirage_carp.battle_description=Recovers 1000 HP to everyone
+
 thelegendoftides.items.black_bass.name=Black Bass
 thelegendoftides.items.black_bass.description=Grants 100 EXP
 thelegendoftides.items.black_bass.use=Granted 100 EXP
 
 thelegendoftides.items.grand_bass.name=Grand Bass
-thelegendoftides.items.grand_bass.description=Grants 500 EXP
-thelegendoftides.items.grand_bass.use=Granted 500 EXP
+thelegendoftides.items.grand_bass.description=Grants 400 EXP
+thelegendoftides.items.grand_bass.use=Granted 400 EXP
 
 thelegendoftides.items.wise_salmon.name=Wise Salmon
 thelegendoftides.items.wise_salmon.description=Grants 800 EXP
@@ -54,13 +58,25 @@ thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 40 MP to all
 thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 500 HP, 75 SP, 40 MP to all
 
+thelegendoftides.items.mirage_trout.name=Mirage Trout
+thelegendoftides.items.mirage_trout.description=Recovers 750 HP,\n125 SP, 60 MP to all
+thelegendoftides.items.mirage_trout.battle_description=Recovers 750 HP, 125 SP, 60 MP to all
+
 thelegendoftides.items.rockhead_pufferfish.name=Rock Puffer
 thelegendoftides.items.rockhead_pufferfish.description=Deals physical\ndamage (scaling)(multi)
 thelegendoftides.items.rockhead_pufferfish.battle_description=Physical attack (scaling)(multi)
 
+thelegendoftides.items.argentfin.name=Argentfin
+thelegendoftides.items.argentfin.description=Deals light-based\nmagical damage.\nMay confuse target
+thelegendoftides.items.argentfin.battle_description=MAG light attack, 40% confusion chance
+
 thelegendoftides.items.prickleback.name=Prickleback
 thelegendoftides.items.prickleback.description=Increases DEF/MDEF\nby 25%% for\n3 turns
 thelegendoftides.items.prickleback.battle_description=Buffs DEF/MDEF by 25%% for 3 turns
+
+thelegendoftides.items.shadeseeker.name=Shadeseeker
+thelegendoftides.items.shadeseeker.description=Increases turn\nmeter by 220
+thelegendoftides.items.shadeseeker.battle_description=Increases turn meter by 220
 
 thelegendoftides.items.koi.name=Koi
 thelegendoftides.items.koi.description=Increases HP by\n25%% for 5 turns
@@ -73,6 +89,10 @@ thelegendoftides.items.swordfish.battle_description=Buffs AT/MAT by 25%% for 3 t
 thelegendoftides.items.sturgeon.name=Sturgeon
 thelegendoftides.items.sturgeon.description=Increases AV/MAV\nby 25 for\n3 turns
 thelegendoftides.items.sturgeon.battle_description=Buffs AV/MAV by 25 for 3 turns
+
+thelegendoftides.items.murkray.name=Murkray
+thelegendoftides.items.murkray.description=Reduces enemy acc.\nby 20% for 3 turns
+thelegendoftides.items.murkray.battle_description=Reduces enemy acc. by 20% for 3 turns
 
 thelegendoftides.items.silverfish.name=Silverfish
 thelegendoftides.items.silverfish.description=Expensive, shines\nunder the sun.
@@ -87,8 +107,12 @@ thelegendoftides.items.stardustfish.name=Stardustfish
 thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.
 
 thelegendoftides.items.last_kraken_jr.name=Last Kraken Jr.
-thelegendoftides.items.last_kraken_jr.description=Summons a Cleone\nto fight in your\nplace (repeat).
-thelegendoftides.items.last_kraken_jr.battle_description=Summons a Cleone (repeat)
+thelegendoftides.items.last_kraken_jr.description=Reduces all enemy\naccuracy by 100%\nfor 1 turn (repeat).
+thelegendoftides.items.last_kraken_jr.battle_description=Red. enemy acc. by 100% for 1 turn (repeat)
+
+thelegendoftides.items.goose.name=GOOSE
+thelegendoftides.items.goose.description=GOOSE...
+thelegendoftides.items.goose.battle_description=Annihilates EVERYONE
 
 thelegendoftides.items.azeel_gladiator.name=Azeel Gladiator
 thelegendoftides.items.azeel_gladiator.description=Deals extreme\nscaling physical\ndamage (multi)(repeat).
@@ -126,6 +150,9 @@ thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
 thelegendoftides.equipment.the_one_ring.name=The One Ring
 thelegendoftides.equipment.the_one_ring.description=Cast it into\nthe fire!\nDestroy it!
 
+thelegendoftides.equipment.orthos_prime.name=Orthos Prime
+thelegendoftides.equipment.orthos_prime.description=Look at them, they come\nto this place when they\nknow they are not pure. Tenno\nuse the keys, but they are\nmere trespassers. Only I, Vor,\nknow the true power of\nthe Void.
+
 # Bait
 thelegendoftides.bait.regular.name=Regular
 thelegendoftides.bait.sparkling.name=Sparkling
@@ -143,27 +170,45 @@ thelegendoftides.fish.silver_carp.hint=
 thelegendoftides.fish.grand_carp.name=Grand Carp
 thelegendoftides.fish.grand_carp.description=A Grand Carp
 thelegendoftides.fish.grand_carp.hint=
+thelegendoftides.fish.mirage_carp.name=Mirage Carp
+thelegendoftides.fish.mirage_carp.description=A Mirage Carp
+thelegendoftides.fish.mirage_carp.hint=
 thelegendoftides.fish.black_bass.name=Black Bass
 thelegendoftides.fish.black_bass.description=A Black Bass
 thelegendoftides.fish.black_bass.hint=
 thelegendoftides.fish.grand_bass.name=Grand Bass
 thelegendoftides.fish.grand_bass.description=A Grand Bass
 thelegendoftides.fish.grand_bass.hint=
+thelegendoftides.fish.wise_salmon.name=Wise Salmon
+thelegendoftides.fish.wise_salmon.description=A Wise Salmon
+thelegendoftides.fish.wise_salmon.hint=
 thelegendoftides.fish.rainbow_trout.name=Rainbow Trout
 thelegendoftides.fish.rainbow_trout.description=A Rainbow Trout
 thelegendoftides.fish.rainbow_trout.hint=
 thelegendoftides.fish.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.fish.grand_rainbow_trout.description=A Grand Rainbow Trout
 thelegendoftides.fish.grand_rainbow_trout.hint=
+thelegendoftides.fish.mirage_trout.name=Mirage Trout
+thelegendoftides.fish.mirage_trout.description=A Mirage Trout
+thelegendoftides.fish.mirage_trout.hint=
 thelegendoftides.fish.koi.name=Koi
 thelegendoftides.fish.koi.description=A Koi
 thelegendoftides.fish.koi.hint=
 thelegendoftides.fish.rockhead_pufferfish.name=Rock Puffer
 thelegendoftides.fish.rockhead_pufferfish.description=A Rock Puffer
 thelegendoftides.fish.rockhead_pufferfish.hint=
+thelegendoftides.fish.argentfin.name=Argentfin
+thelegendoftides.fish.argentfin.description=Argentfin
+thelegendoftides.fish.argentfin.hint=
 thelegendoftides.fish.prickleback.name=Prickleback
 thelegendoftides.fish.prickleback.description=A Prickleback
 thelegendoftides.fish.prickleback.hint=
+thelegendoftides.fish.murkray.name=Murkray
+thelegendoftides.fish.murkray.description=A Murkray
+thelegendoftides.fish.murkray.hint=
+thelegendoftides.fish.shadeseeker.name=Shadeseeker
+thelegendoftides.fish.shadeseeker.description=A Shadeseeker
+thelegendoftides.fish.shadeseeker.hint=
 thelegendoftides.fish.swordfish.name=Swordfish
 thelegendoftides.fish.swordfish.description=A Swordfish
 thelegendoftides.fish.swordfish.hint=
@@ -191,6 +236,9 @@ thelegendoftides.fish.azeel_tracker.hint=
 thelegendoftides.fish.last_kraken_jr.name=Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.description=A Last Kraken Jr.
 thelegendoftides.fish.last_kraken_jr.hint=
+thelegendoftides.fish.goose.name=Goose
+thelegendoftides.fish.goose.description=Death
+thelegendoftides.fish.goose.hint=
 
 thelegendoftides.fish.glowstick.name=Glowstick
 thelegendoftides.fish.nameless_spear.name=Nameless Spear
@@ -199,9 +247,13 @@ thelegendoftides.fish.energy_sword.name=Energy Sword
 thelegendoftides.fish.pufferfish_knuckles.name=Pufferfish Knuckles
 thelegendoftides.fish.guitar.name=Guitar
 thelegendoftides.fish.oversized_key.name=Oversized Key
+thelegendoftides.fish.orthos_prime.name=Orthos Prime
 
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring
+thelegendoftides.fish.thigh_highs.name=Thigh highs
+thelegendoftides.fish.giganto_skirt.name=Giganto Skirt
+thelegendoftides.fish.cat_ears.name=Cat Ears
 
 # Holes
 thelegendoftides.fishing_hole.nest_of_dragon_river.name=Nest of Dragon River

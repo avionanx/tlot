@@ -7,9 +7,9 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class MurkrayItem extends FishItem {
-  public MurkrayItem(final int price) {
-    super(TlotFish.MURKRAY, price);
+public class ShadeseekerItem extends FishItem {
+  public ShadeseekerItem(final int price) {
+    super(TlotFish.SHADESEEKER, price);
   }
 
   @Override
@@ -19,17 +19,17 @@ public class MurkrayItem extends FishItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ENEMIES;
+    return type == TargetType.ALLIES;
   }
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.NO_ELEMENT.get();
+    return LodMod.DARK_ELEMENT.get();
   }
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 1;
+    return 6;
   }
 
   @Override

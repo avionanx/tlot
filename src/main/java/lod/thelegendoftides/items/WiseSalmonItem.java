@@ -11,7 +11,7 @@ import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 
 public class WiseSalmonItem extends FishItem {
   public WiseSalmonItem(final int price) {
-    super(TlotFish.BLACK_BASS, price);
+    super(TlotFish.WISE_SALMON, price);
   }
 
   @Override

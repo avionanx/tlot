@@ -19,7 +19,7 @@ public class LastKrakenJrItem extends FishItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
+    return type == TargetType.ENEMIES || type == TargetType.ALL;
   }
 
   @Override
@@ -29,7 +29,7 @@ public class LastKrakenJrItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 6;
+    return 1;
   }
 
   @Override

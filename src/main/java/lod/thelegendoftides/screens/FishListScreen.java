@@ -4,6 +4,7 @@ import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.i18n.I18n;
 import legend.game.inventory.screens.FontOptions;
+import legend.game.inventory.screens.HorizontalAlign;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
@@ -31,7 +32,7 @@ import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishListScreen extends MenuScreen {
-  public static final FontOptions UI_GREY = new FontOptions().colour(TextColour.GREY);
+  public static final FontOptions UI_GOOD_BAIT = new FontOptions().colour(TextColour.YELLOW);
 
   private UiBox headerBox;
   private UiBox contentBox;
@@ -101,11 +102,10 @@ public class FishListScreen extends MenuScreen {
         icon.colour.zero();
       }
 
-      if(currentEngineState_8004dd04 instanceof SMap || TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) != 0) {
-        renderText(name, x + 9.0f, y + 1.5f, UI_WHITE);
+      if(TlotFishBaitWeights.getBaitWeightForFish(fish, this.selectedBait) > 10) {
+        renderText(name, x + 9.0f, y + 1.5f, UI_GOOD_BAIT);
       } else {
-        renderText(name, x + 9.0f, y + 1.5f, UI_GREY);
-        icon.colour.set(0.5f);
+        renderText(name, x + 9.0f, y + 1.5f, UI_WHITE);
       }
     }
 

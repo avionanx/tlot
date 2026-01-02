@@ -9,7 +9,7 @@ import lod.thelegendoftides.TlotFish;
 
 public class GooseItem extends FishItem {
   public GooseItem(final int price) {
-    super(TlotFish.AZEEL_GLADIATOR, price);
+    super(TlotFish.GOOSE, price);
   }
 
   @Override
@@ -30,11 +30,6 @@ public class GooseItem extends FishItem {
   @Override
   protected int getUseItemScriptEntrypoint() {
     return 1;
-  }
-
-  @Override
-  public boolean isRepeat(final ItemStack stack) {
-    return false;
   }
 
   @Override

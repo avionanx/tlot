@@ -1,5 +1,6 @@
 package lod.thelegendoftides.items;
 
+
 import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.inventory.ItemStack;
@@ -7,9 +8,9 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class MurkrayItem extends FishItem {
-  public MurkrayItem(final int price) {
-    super(TlotFish.MURKRAY, price);
+public class ArgentfinItem extends FishItem {
+  public ArgentfinItem(final int price) {
+    super(TlotFish.ARGENTFIN, price);
   }
 
   @Override
@@ -24,7 +25,7 @@ public class MurkrayItem extends FishItem {
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.NO_ELEMENT.get();
+    return LodMod.LIGHT_ELEMENT.get();
   }
 
   @Override

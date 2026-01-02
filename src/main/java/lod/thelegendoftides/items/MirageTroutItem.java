@@ -1,25 +1,31 @@
 package lod.thelegendoftides.items;
 
+import legend.core.memory.Method;
 import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.inventory.ItemStack;
+import legend.game.inventory.UseItemResponse;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class MurkrayItem extends FishItem {
-  public MurkrayItem(final int price) {
-    super(TlotFish.MURKRAY, price);
+import static legend.game.SItem.addHp;
+import static legend.game.SItem.addMp;
+import static legend.game.SItem.addSp;
+
+public class MirageTroutItem extends FishItem {
+  public MirageTroutItem(final int price) {
+    super(TlotFish.MIRAGE_TROUT, price);
   }
 
   @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
-    return location == UsageLocation.BATTLE;
+    return true;
   }
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ENEMIES;
+    return type == TargetType.ALLIES || type == TargetType.ALL;
   }
 
   @Override
@@ -29,7 +35,21 @@ public class MurkrayItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 1;
+    return 2;
+  }
+
+  @Override
+  @Method(0x80022d88L)
+  public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
+    addHp(charId, 750);
+    addMp(charId, 60);
+    addSp(charId, 125);
+    response.success();
+  }
+
+  @Override
+  public boolean alwaysHits(final ItemStack stack) {
+    return true;
   }
 
   @Override
