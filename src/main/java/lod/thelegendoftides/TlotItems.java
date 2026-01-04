@@ -45,32 +45,32 @@ public final class TlotItems {
 
   // Fish
   public static final RegistryDelegate<CarpItem> CARP = ITEM_REGISTRAR.register("carp", CarpItem::new);
-  public static final RegistryDelegate<SilverCarpItem> SILVER_CARP = ITEM_REGISTRAR.register("silver_carp", () -> new SilverCarpItem());
-  public static final RegistryDelegate<GrandCarpItem> GRAND_CARP = ITEM_REGISTRAR.register("grand_carp", () -> new GrandCarpItem());
-  public static final RegistryDelegate<MirageCarpItem> MIRAGE_CARP = ITEM_REGISTRAR.register("mirage_carp", () -> new MirageCarpItem());
-  public static final RegistryDelegate<BlackBassItem> BLACK_BASS = ITEM_REGISTRAR.register("black_bass", () -> new BlackBassItem());
-  public static final RegistryDelegate<GrandBassItem> GRAND_BASS = ITEM_REGISTRAR.register("grand_bass", () -> new GrandBassItem());
-  public static final RegistryDelegate<WiseSalmonItem> WISE_SALMON = ITEM_REGISTRAR.register("wise_salmon", () -> new WiseSalmonItem());
-  public static final RegistryDelegate<RainbowTroutItem> RAINBOW_TROUT = ITEM_REGISTRAR.register("rainbow_trout", () -> new RainbowTroutItem());
-  public static final RegistryDelegate<GrandRainbowTroutItem> GRAND_RAINBOW_TROUT = ITEM_REGISTRAR.register("grand_rainbow_trout", () -> new GrandRainbowTroutItem());
-  public static final RegistryDelegate<MirageTroutItem> MIRAGE_TROUT = ITEM_REGISTRAR.register("mirage_trout", () -> new MirageTroutItem());
-  public static final RegistryDelegate<RockheadPufferfishItem> ROCKHEAD_PUFFERFISH = ITEM_REGISTRAR.register("rockhead_pufferfish", () -> new RockheadPufferfishItem());
+  public static final RegistryDelegate<SilverCarpItem> SILVER_CARP = ITEM_REGISTRAR.register("silver_carp", SilverCarpItem::new);
+  public static final RegistryDelegate<GrandCarpItem> GRAND_CARP = ITEM_REGISTRAR.register("grand_carp", GrandCarpItem::new);
+  public static final RegistryDelegate<MirageCarpItem> MIRAGE_CARP = ITEM_REGISTRAR.register("mirage_carp", MirageCarpItem::new);
+  public static final RegistryDelegate<BlackBassItem> BLACK_BASS = ITEM_REGISTRAR.register("black_bass", BlackBassItem::new);
+  public static final RegistryDelegate<GrandBassItem> GRAND_BASS = ITEM_REGISTRAR.register("grand_bass", GrandBassItem::new);
+  public static final RegistryDelegate<WiseSalmonItem> WISE_SALMON = ITEM_REGISTRAR.register("wise_salmon", WiseSalmonItem::new);
+  public static final RegistryDelegate<RainbowTroutItem> RAINBOW_TROUT = ITEM_REGISTRAR.register("rainbow_trout", RainbowTroutItem::new);
+  public static final RegistryDelegate<GrandRainbowTroutItem> GRAND_RAINBOW_TROUT = ITEM_REGISTRAR.register("grand_rainbow_trout", GrandRainbowTroutItem::new);
+  public static final RegistryDelegate<MirageTroutItem> MIRAGE_TROUT = ITEM_REGISTRAR.register("mirage_trout", MirageTroutItem::new);
+  public static final RegistryDelegate<RockheadPufferfishItem> ROCKHEAD_PUFFERFISH = ITEM_REGISTRAR.register("rockhead_pufferfish", RockheadPufferfishItem::new);
   public static final RegistryDelegate<ArgentfinItem> ARGENTFIN = ITEM_REGISTRAR.register("argentfin", ArgentfinItem::new);
-  public static final RegistryDelegate<KoiItem> KOI = ITEM_REGISTRAR.register("koi", () -> new KoiItem());
-  public static final RegistryDelegate<PricklebackItem> PRICKLEBACK = ITEM_REGISTRAR.register("prickleback", () -> new PricklebackItem());
-  public static final RegistryDelegate<SwordfishItem> SWORDFISH = ITEM_REGISTRAR.register("swordfish", () -> new SwordfishItem());
-  public static final RegistryDelegate<SturgeonItem> STURGEON = ITEM_REGISTRAR.register("sturgeon", () -> new SturgeonItem());
-  public static final RegistryDelegate<ShadeseekerItem> SHADESEEKER = ITEM_REGISTRAR.register("shadeseeker", () -> new ShadeseekerItem());
-  public static final RegistryDelegate<MurkrayItem> MURKRAY = ITEM_REGISTRAR.register("murkray", () -> new MurkrayItem());
-  public static final RegistryDelegate<SilverfishItem> SILVERFISH = ITEM_REGISTRAR.register("silverfish", () -> new SilverfishItem());
-  public static final RegistryDelegate<GoldenfishItem> GOLDENFISH = ITEM_REGISTRAR.register("goldenfish", () -> new GoldenfishItem());
-  public static final RegistryDelegate<GrandGoldenfishItem> GRAND_GOLDENFISH = ITEM_REGISTRAR.register("grand_goldenfish", () -> new GrandGoldenfishItem());
-  public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", () -> new StardustFishItem());
-  public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", () -> new LastKrakenJrItem());
-  public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", () -> new AzeelGladiatorItem());
-  public static final RegistryDelegate<GooseItem> GOOSE = ITEM_REGISTRAR.register("goose", () -> new GooseItem());
+  public static final RegistryDelegate<KoiItem> KOI = ITEM_REGISTRAR.register("koi", KoiItem::new);
+  public static final RegistryDelegate<PricklebackItem> PRICKLEBACK = ITEM_REGISTRAR.register("prickleback", PricklebackItem::new);
+  public static final RegistryDelegate<SwordfishItem> SWORDFISH = ITEM_REGISTRAR.register("swordfish", SwordfishItem::new);
+  public static final RegistryDelegate<SturgeonItem> STURGEON = ITEM_REGISTRAR.register("sturgeon", SturgeonItem::new);
+  public static final RegistryDelegate<ShadeseekerItem> SHADESEEKER = ITEM_REGISTRAR.register("shadeseeker", ShadeseekerItem::new);
+  public static final RegistryDelegate<MurkrayItem> MURKRAY = ITEM_REGISTRAR.register("murkray", MurkrayItem::new);
+  public static final RegistryDelegate<SilverfishItem> SILVERFISH = ITEM_REGISTRAR.register("silverfish", SilverfishItem::new);
+  public static final RegistryDelegate<GoldenfishItem> GOLDENFISH = ITEM_REGISTRAR.register("goldenfish", GoldenfishItem::new);
+  public static final RegistryDelegate<GrandGoldenfishItem> GRAND_GOLDENFISH = ITEM_REGISTRAR.register("grand_goldenfish", GrandGoldenfishItem::new);
+  public static final RegistryDelegate<StardustFishItem> STARDUSTFISH = ITEM_REGISTRAR.register("stardustfish", StardustFishItem::new);
+  public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", LastKrakenJrItem::new);
+  public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", AzeelGladiatorItem::new);
+  public static final RegistryDelegate<GooseItem> GOOSE = ITEM_REGISTRAR.register("goose", GooseItem::new);
 
-  public static final RegistryDelegate<AzeelTrackerItem> AZEEL_TRACKER = ITEM_REGISTRAR.register("azeel_tracker", () -> new AzeelTrackerItem());
+  public static final RegistryDelegate<AzeelTrackerItem> AZEEL_TRACKER = ITEM_REGISTRAR.register("azeel_tracker", AzeelTrackerItem::new);
 
   static void register(final ItemRegistryEvent event) {
     ITEM_REGISTRAR.registryEvent(event);
