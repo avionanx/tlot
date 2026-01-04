@@ -22,7 +22,6 @@ import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
 import legend.game.combat.bent.PlayerBattleEntity;
-import legend.game.combat.deff.DeffPackage;
 import legend.game.combat.deff.DeffPart;
 import legend.game.combat.deff.RegisterDeffsEvent;
 import legend.game.combat.effects.AdditionSparksEffect08;
@@ -134,7 +133,6 @@ public class Tlot {
   public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
   public static final Registry<FishingHolePrerequisites> FISHING_HOLE_PREREQUISITES_REGISTRY = new FishingHolePrerequisitesRegistry();
   public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
-  public static final Registrar<DeffPackage, RegisterDeffsEvent> TIDES_DEFF_REGISTRAR = new Registrar<>(REGISTRIES.deff, MOD_ID);
 
   /**
    * <ul>
@@ -891,25 +889,7 @@ public class Tlot {
 
   @EventListener
   public void deffRegistry(final RegisterDeffsEvent event) {
-    TIDES_DEFF_REGISTRAR.register("rockhead_pufferfish", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("koi", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("swordfish", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("sturgeon", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("prickleback", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("carp", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("silver_carp", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("grand_carp", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("mirage_carp", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("rainbow_trout", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("grand_rainbow_trout", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("mirage_trout", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("azeel_gladiator", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("azeel_tracker", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("goose", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("last_kraken_jr", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("murkray", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.register("shadeseeker", TidesItemDeffPackage::new);
-    TIDES_DEFF_REGISTRAR.registryEvent(event);
+    TlotDeffs.register(event);
   }
 
   @EventListener
