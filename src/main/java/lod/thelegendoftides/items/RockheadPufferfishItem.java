@@ -9,11 +9,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class RockheadPufferfishItem extends FishItem {
-  public RockheadPufferfishItem(final int price) {
-    super(TlotFish.ROCKHEAD_PUFFERFISH, price);
+  public RockheadPufferfishItem() {
+    super(TlotFish.ROCKHEAD_PUFFERFISH);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

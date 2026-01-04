@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class AzeelGladiatorItem extends FishItem {
-  public AzeelGladiatorItem(final int price) {
-    super(TlotFish.AZEEL_GLADIATOR, price);
+  public AzeelGladiatorItem() {
+    super(TlotFish.AZEEL_GLADIATOR);
   }
 
   @Override
+  int getUnitPrice() {
+   return 1200;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

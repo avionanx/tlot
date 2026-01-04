@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class FishItem extends BattleItem {
+public abstract class FishItem extends BattleItem {
   public final Supplier<Fish> fish;
 
-  public FishItem(final Supplier<Fish> fish, final int price) {
-    super(null, price);
+  public FishItem(final Supplier<Fish> fish) {
+    super(null, 0);
     this.fish = fish;
   }
 
@@ -25,6 +25,13 @@ public class FishItem extends BattleItem {
   public int getMaxStackSize(@NotNull ItemStack stack) {
     return 5;
   }
+
+  @Override
+  public int getSellPrice(final ItemStack stack) {
+   return this.getUnitPrice() * stack.getSize();
+  }
+
+  abstract int getUnitPrice();
 
   @Override
   public boolean canBeUsed(@NotNull final ItemStack stack, @NotNull final UsageLocation location) {

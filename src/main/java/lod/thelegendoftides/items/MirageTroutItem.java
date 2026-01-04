@@ -14,11 +14,16 @@ import static legend.game.SItem.addMp;
 import static legend.game.SItem.addSp;
 
 public class MirageTroutItem extends FishItem {
-  public MirageTroutItem(final int price) {
-    super(TlotFish.MIRAGE_TROUT, price);
+  public MirageTroutItem() {
+    super(TlotFish.MIRAGE_TROUT);
   }
 
-  @Override
+ @Override
+ int getUnitPrice() {
+  return 80;
+ }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return true;
   }

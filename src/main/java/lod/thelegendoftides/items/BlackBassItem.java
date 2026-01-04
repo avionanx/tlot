@@ -10,11 +10,16 @@ import static legend.game.SItem.getXpToNextLevel;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 
 public class BlackBassItem extends FishItem {
-  public BlackBassItem(final int price) {
-    super(TlotFish.BLACK_BASS, price);
+  public BlackBassItem() {
+    super(TlotFish.BLACK_BASS);
   }
 
   @Override
+  int getUnitPrice() {
+   return 30;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.MENU;
   }

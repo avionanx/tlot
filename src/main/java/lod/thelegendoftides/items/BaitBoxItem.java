@@ -11,11 +11,13 @@ import java.util.function.Supplier;
 public class BaitBoxItem extends Item implements BaitItem {
   private final Supplier<Bait> bait;
   private final int uses;
+  private final int unitPrice;
 
-  public BaitBoxItem(final Supplier<Bait> bait, final int uses, final int price) {
-    super(ItemIcon.BAG, price);
+  public BaitBoxItem(final Supplier<Bait> bait, final int uses, final int unitPrice) {
+    super(ItemIcon.BAG, 0);
     this.bait = bait;
     this.uses = uses;
+    this.unitPrice = unitPrice;
   }
 
   @Override
@@ -46,5 +48,15 @@ public class BaitBoxItem extends Item implements BaitItem {
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
     return false;
+  }
+
+  @Override
+  public int getSellPrice(final ItemStack stack) {
+   return this.unitPrice * stack.getSize() * stack.getCurrentDurability() / stack.getMaxDurability();
+  }
+
+  @Override
+  public int getBuyPrice(final ItemStack stack) {
+   return this.unitPrice * stack.getCurrentDurability();
   }
 }

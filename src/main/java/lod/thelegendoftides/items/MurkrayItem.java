@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class MurkrayItem extends FishItem {
-  public MurkrayItem(final int price) {
-    super(TlotFish.MURKRAY, price);
+  public MurkrayItem() {
+    super(TlotFish.MURKRAY);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

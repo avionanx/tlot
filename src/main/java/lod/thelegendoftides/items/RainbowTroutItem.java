@@ -14,11 +14,16 @@ import static legend.game.SItem.addMp;
 import static legend.game.SItem.addSp;
 
 public class RainbowTroutItem extends FishItem {
-  public RainbowTroutItem(final int price) {
-    super(TlotFish.RAINBOW_TROUT, price);
+  public RainbowTroutItem() {
+    super(TlotFish.RAINBOW_TROUT);
   }
 
   @Override
+  int getUnitPrice() {
+   return 20;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return true;
   }

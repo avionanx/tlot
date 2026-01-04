@@ -12,11 +12,16 @@ import lod.thelegendoftides.TlotFish;
 import static legend.game.SItem.addHp;
 
 public class MirageCarpItem extends FishItem {
-  public MirageCarpItem(final int price) {
-    super(TlotFish.MIRAGE_CARP, price);
+  public MirageCarpItem() {
+    super(TlotFish.MIRAGE_CARP);
   }
 
   @Override
+  int getUnitPrice() {
+   return 80;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return true;
   }

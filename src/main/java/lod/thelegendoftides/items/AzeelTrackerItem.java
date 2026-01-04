@@ -14,11 +14,16 @@ import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
 
 
 public class AzeelTrackerItem extends FishItem {
-  public AzeelTrackerItem(int price) {
-    super(TlotFish.AZEEL_TRACKER, price);
+  public AzeelTrackerItem() {
+    super(TlotFish.AZEEL_TRACKER);
   }
 
   @Override
+  int getUnitPrice() {
+   return 108;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

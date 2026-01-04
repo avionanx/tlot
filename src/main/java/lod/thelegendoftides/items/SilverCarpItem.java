@@ -12,11 +12,16 @@ import lod.thelegendoftides.TlotFish;
 import static legend.game.SItem.addHp;
 
 public class SilverCarpItem extends FishItem {
-  public SilverCarpItem(final int price) {
-    super(TlotFish.SILVER_CARP, price);
+  public SilverCarpItem() {
+    super(TlotFish.SILVER_CARP);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return true;
   }

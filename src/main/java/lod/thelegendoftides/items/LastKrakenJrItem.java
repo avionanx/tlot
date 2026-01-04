@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class LastKrakenJrItem extends FishItem {
-  public LastKrakenJrItem(final int price) {
-    super(TlotFish.LAST_KRAKEN_JR, price);
+  public LastKrakenJrItem() {
+    super(TlotFish.LAST_KRAKEN_JR);
   }
 
-  @Override
+ @Override
+ int getUnitPrice() {
+  return 800;
+ }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

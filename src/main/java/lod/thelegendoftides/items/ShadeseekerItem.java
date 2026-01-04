@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class ShadeseekerItem extends FishItem {
-  public ShadeseekerItem(final int price) {
-    super(TlotFish.SHADESEEKER, price);
+  public ShadeseekerItem() {
+    super(TlotFish.SHADESEEKER);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }
@@ -29,7 +34,7 @@ public class ShadeseekerItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 6;
+    return 2;
   }
 
   @Override

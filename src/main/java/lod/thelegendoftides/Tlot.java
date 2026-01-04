@@ -948,18 +948,18 @@ public class Tlot {
     if(event.shop.shopType_00 == 0) return;
 
     switch(event.shop.getRegistryId().entryId()) {
-      case "forest_item_shop" -> {
-        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4), TlotItems.REGULAR_BAIT_BOX.get().getPrice(null) / 8));
+      case "forest_item_shop", "hellena_01_item_shop", "volcano_item_shop" -> {
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4))));
       }
       case "serdio_item_shop", "lohan_item_shop", "fletz_item_shop",
            "donau_item_shop", "queen_fury_item_shop", "wingly_forest_item_shop",
-           "hellena_01_item_shop", "hellena_02_item_shop",
+           "hellena_02_item_shop",
            "fueno_item_shop", "furni_item_shop", "deningrad_item_shop",
            "kazas_item_shop", "ulara_item_shop", "rouge_item_shop" -> {
-        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1), TlotItems.REGULAR_BAIT_BOX.get().getPrice(null)));
-        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1), TlotItems.INFUSED_BAIT_BOX.get().getPrice(null)));
-        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1), TlotItems.SPARKLING_BAIT_BOX.get().getPrice(null)));
-        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1), TlotItems.MAGNETIC_BAIT_BOX.get().getPrice(null)));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1), TlotItems.INFUSED_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1), TlotItems.SPARKLING_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1), TlotItems.MAGNETIC_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1))));
       }
     }
   }

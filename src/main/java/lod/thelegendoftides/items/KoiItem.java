@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class KoiItem extends FishItem {
-  public KoiItem(final int price) {
-    super(TlotFish.KOI, price);
+  public KoiItem() {
+    super(TlotFish.KOI);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

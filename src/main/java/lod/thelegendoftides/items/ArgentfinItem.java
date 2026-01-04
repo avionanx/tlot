@@ -9,11 +9,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class ArgentfinItem extends FishItem {
-  public ArgentfinItem(final int price) {
-    super(TlotFish.ARGENTFIN, price);
+  public ArgentfinItem() {
+    super(TlotFish.ARGENTFIN);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

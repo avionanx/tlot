@@ -8,11 +8,16 @@ import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
 public class PricklebackItem extends FishItem {
-  public PricklebackItem(final int price) {
-    super(TlotFish.PRICKLEBACK, price);
+  public PricklebackItem() {
+    super(TlotFish.PRICKLEBACK);
   }
 
   @Override
+  int getUnitPrice() {
+   return 40;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

@@ -10,11 +10,16 @@ import static legend.game.SItem.getXpToNextLevel;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 
 public class WiseSalmonItem extends FishItem {
-  public WiseSalmonItem(final int price) {
-    super(TlotFish.WISE_SALMON, price);
+  public WiseSalmonItem() {
+    super(TlotFish.WISE_SALMON);
   }
 
   @Override
+  int getUnitPrice() {
+   return 100;
+  }
+
+ @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.MENU;
   }
