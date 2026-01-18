@@ -52,7 +52,7 @@ public class BaitBoxItem extends Item implements BaitItem {
 
   @Override
   public int getSellPrice(final ItemStack stack) {
-   return this.unitPrice * stack.getSize() * stack.getCurrentDurability() / stack.getMaxDurability();
+   return this.unitPrice * stack.getCurrentDurability() / stack.getMaxDurability();
   }
 
   @Override

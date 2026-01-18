@@ -28,7 +28,7 @@ public abstract class FishItem extends BattleItem {
 
   @Override
   public int getSellPrice(final ItemStack stack) {
-   return this.getUnitPrice() * stack.getSize();
+   return this.getUnitPrice();
   }
 
   abstract int getUnitPrice();

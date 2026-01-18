@@ -91,8 +91,8 @@ thelegendoftides.items.sturgeon.description=Increases AV/MAV\nby 25 for\n3 turns
 thelegendoftides.items.sturgeon.battle_description=Buffs AV/MAV by 25 for 3 turns
 
 thelegendoftides.items.murkray.name=Murkray
-thelegendoftides.items.murkray.description=Reduces enemy acc.\nby 20% for 3 turns
-thelegendoftides.items.murkray.battle_description=Reduces enemy acc. by 20% for 3 turns
+thelegendoftides.items.murkray.description=Reduces enemy acc.\nby 20%% for 3 turns
+thelegendoftides.items.murkray.battle_description=Reduces enemy acc. by 20%% for 3 turns
 
 thelegendoftides.items.silverfish.name=Silverfish
 thelegendoftides.items.silverfish.description=Expensive, shines\nunder the sun.
@@ -107,8 +107,8 @@ thelegendoftides.items.stardustfish.name=Stardustfish
 thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.
 
 thelegendoftides.items.last_kraken_jr.name=Last Kraken Jr.
-thelegendoftides.items.last_kraken_jr.description=Reduces all enemy\naccuracy by 100%\nfor 1 turn (repeat).
-thelegendoftides.items.last_kraken_jr.battle_description=Red. enemy acc. by 100% for 1 turn (repeat)
+thelegendoftides.items.last_kraken_jr.description=Reduces all enemy\naccuracy by 100%%\nfor 1 turn (repeat).
+thelegendoftides.items.last_kraken_jr.battle_description=Red. enemy acc. by 100%% for 1 turn (repeat)
 
 thelegendoftides.items.goose.name=GOOSE
 thelegendoftides.items.goose.description=GOOSE...
@@ -143,6 +143,9 @@ thelegendoftides.equipment.guitar.description=*through the fire\nand flames star
 
 thelegendoftides.equipment.oversized_key.name=Oversized Key
 thelegendoftides.equipment.oversized_key.description=One day, Kongol\nset this right.
+
+thelegendoftides.equipment.magis_boots.name=Magi's Boots
+thelegendoftides.equipment.magis_boots.description=Restores 5%% HP\n on turn start
 
 thelegendoftides.equipment.old_boots.name=Old Boots
 thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
@@ -249,6 +252,7 @@ thelegendoftides.fish.guitar.name=Guitar
 thelegendoftides.fish.oversized_key.name=Oversized Key
 thelegendoftides.fish.orthos_prime.name=Orthos Prime
 
+thelegendoftides.fish.magis_boots.name=Magi's Boots
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring
 thelegendoftides.fish.thigh_highs.name=Thigh highs

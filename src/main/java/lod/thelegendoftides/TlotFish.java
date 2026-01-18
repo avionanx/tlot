@@ -45,18 +45,19 @@ public final class TlotFish {
   public static final RegistryDelegate<Fish> GLOWSTICK = REGISTRAR.register("glowstick", () -> new TreasureFish(new FishIcon(12), 80.0f, 0.35f, TlotEquipments.GLOWSTICK).setLegendary(1).setHidden());
   public static final RegistryDelegate<Fish> NAMELESS_SPEAR = REGISTRAR.register("nameless_spear", () -> new TreasureFish(new FishIcon(13), 80.0f, 0.35f, TlotEquipments.NAMELESS_SPEAR).setLegendary(2).setHidden());
   public static final RegistryDelegate<Fish> BIANCA = REGISTRAR.register("bianca", () -> new TreasureFish(new FishIcon(14), 80.0f, 0.35f, TlotEquipments.BIANCA).setLegendary(3).setHidden());
-  public static final RegistryDelegate<Fish> ENERGY_SWORD = REGISTRAR.register("energy_sword", () -> new TreasureFish(new FishIcon(15), 80.0f, 0.35f, TlotEquipments.ENERGY_SWORD).setLegendary(4).setHidden());
-  public static final RegistryDelegate<Fish> PUFFERFISH_KNUCKLES = REGISTRAR.register("pufferfish_knuckles", () -> new TreasureFish(new FishIcon(16), 80.0f, 0.35f, TlotEquipments.PUFFERFISH_KNUCKLES).setLegendary(12).setHidden());
-  public static final RegistryDelegate<Fish> GUITAR = REGISTRAR.register("guitar", () -> new TreasureFish(new FishIcon(17), 80.0f, 0.35f, TlotEquipments.GUITAR).setLegendary(5).setHidden());
-  public static final RegistryDelegate<Fish> OVERSIZED_KEY = REGISTRAR.register("oversized_key", () -> new TreasureFish(new FishIcon(18), 80.0f, 0.35f, TlotEquipments.OVERSIZED_KEY).setLegendary(6).setHidden());
+  public static final RegistryDelegate<Fish> ENERGY_SWORD = REGISTRAR.register("energy_sword", () -> new TreasureFish(new FishIcon(16), 80.0f, 0.35f, TlotEquipments.ENERGY_SWORD).setLegendary(4).setHidden());
+  public static final RegistryDelegate<Fish> PUFFERFISH_KNUCKLES = REGISTRAR.register("pufferfish_knuckles", () -> new TreasureFish(new FishIcon(17), 80.0f, 0.35f, TlotEquipments.PUFFERFISH_KNUCKLES).setLegendary(12).setHidden());
+  public static final RegistryDelegate<Fish> GUITAR = REGISTRAR.register("guitar", () -> new TreasureFish(new FishIcon(18), 80.0f, 0.35f, TlotEquipments.GUITAR).setLegendary(5).setHidden());
+  public static final RegistryDelegate<Fish> OVERSIZED_KEY = REGISTRAR.register("oversized_key", () -> new TreasureFish(new FishIcon(15), 80.0f, 0.35f, TlotEquipments.OVERSIZED_KEY).setLegendary(6).setHidden());
 
-  public static final RegistryDelegate<Fish> OLD_BOOTS = REGISTRAR.register("old_boots", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.OLD_BOOTS).setLegendary(7).setHidden());
-  public static final RegistryDelegate<Fish> THE_ONE_RING = REGISTRAR.register("the_one_ring", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.THE_ONE_RING).setLegendary(8).setHidden());
+  public static final RegistryDelegate<Fish> MAGIS_BOOTS = REGISTRAR.register("magis_boots", () -> new TreasureFish(ItemIcon.BOOTS, 80.0f, 0.35f, TlotEquipments.MAGIS_BOOTS).setLegendary(18).setHidden());
+  public static final RegistryDelegate<Fish> OLD_BOOTS = REGISTRAR.register("old_boots", () -> new TreasureFish(ItemIcon.BOOTS, 80.0f, 0.35f, TlotEquipments.OLD_BOOTS).setLegendary(7).setHidden());
+  public static final RegistryDelegate<Fish> THE_ONE_RING = REGISTRAR.register("the_one_ring", () -> new TreasureFish(ItemIcon.RING, 80.0f, 0.35f, TlotEquipments.THE_ONE_RING).setLegendary(8).setHidden());
 
   public static final RegistryDelegate<Fish> ORTHOS_PRIME = REGISTRAR.register("orthos_prime", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.ORTHOS_PRIME).setLegendary(13).setHidden());
-  public static final RegistryDelegate<Fish> GIGANTO_SKIRT = REGISTRAR.register("giganto_skirt", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.GIGANTO_SKIRT).setLegendary(14).setHidden());
-  public static final RegistryDelegate<Fish> THIGH_HIGHS = REGISTRAR.register("thigh_highs", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.THIGH_HIGHS).setLegendary(15).setHidden());
-  public static final RegistryDelegate<Fish> CAT_EARS = REGISTRAR.register("cat_ears", () -> new TreasureFish(new FishIcon(0), 80.0f, 0.35f, TlotEquipments.CAT_EARS).setLegendary(16).setHidden());
+  public static final RegistryDelegate<Fish> GIGANTO_SKIRT = REGISTRAR.register("giganto_skirt", () -> new TreasureFish(ItemIcon.RED_DRESS, 80.0f, 0.35f, TlotEquipments.GIGANTO_SKIRT).setLegendary(14).setHidden());
+  public static final RegistryDelegate<Fish> THIGH_HIGHS = REGISTRAR.register("thigh_highs", () -> new TreasureFish(ItemIcon.KNEEPIECE, 80.0f, 0.35f, TlotEquipments.THIGH_HIGHS).setLegendary(15).setHidden());
+  public static final RegistryDelegate<Fish> CAT_EARS = REGISTRAR.register("cat_ears", () -> new TreasureFish(ItemIcon.HAIRBAND, 80.0f, 0.35f, TlotEquipments.CAT_EARS).setLegendary(16).setHidden());
 
   // Misc
   public static final RegistryDelegate<Fish> COMMON_TRASH = REGISTRAR.register("common_trash", () -> new RandomRewardFish(ItemIcon.SACK, 20.0f, 0.0f, () -> new ItemStack(LodItems.HEALING_POTION.get()), () -> new ItemStack(LodItems.CHARM_POTION.get())).setHidden());

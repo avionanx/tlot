@@ -695,10 +695,12 @@ public class Tlot {
       SCRIPTS.pause();
       this.menuStack.pushScreen(new FishBookScreen());
     } else if(
-      event.action == INPUT_ACTION_SMAP_INTERACT.get() &&
-      currentEngineState_8004dd04 instanceof SMap &&
-      !gameState_800babc8.indicatorsDisabled_4e3 &&
-      this.fishListScreen != null
+      event.action == INPUT_ACTION_SMAP_INTERACT.get()
+      && currentEngineState_8004dd04 instanceof SMap
+      && !gameState_800babc8.indicatorsDisabled_4e3
+      && this.fishListScreen != null
+      && gameState_800babc8.charIds_88[0] != 2
+      && gameState_800babc8.charIds_88[0] != 8
     ) {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
