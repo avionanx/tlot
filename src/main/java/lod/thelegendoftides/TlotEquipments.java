@@ -40,7 +40,7 @@ public class TlotEquipments {
 
   public static final RegistryDelegate<Equipment> GIGANTO_SKIRT = EQUIPMENT_REGISTRAR.register("giganto_skirt", () -> new Equipment(200, 0x0, EquipmentSlot.ARMOUR, 0x80, 0x20, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.RED_DRESS, 20, 0, 100, 0, 50, 0, 0, 0, 20, 0, 0, 0, 0x0));
   public static final RegistryDelegate<Equipment> THIGH_HIGHS = EQUIPMENT_REGISTRAR.register("thigh_highs", () -> new Equipment(200, 0x0, EquipmentSlot.BOOTS, 0x80, 0x80, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 0, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.KNEEPIECE, 40, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0, 0, 0x0));
-  public static final RegistryDelegate<Equipment> CAT_EARS = EQUIPMENT_REGISTRAR.register("cat_ears", () -> new Equipment(200, 0x0, EquipmentSlot.HELMET, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 20, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.HELM, 10, 0, 20, 0, 0, 0, 0, 20, 20, 0, 0, 0, 0x0));
+  public static final RegistryDelegate<Equipment> CAT_EARS = EQUIPMENT_REGISTRAR.register("cat_ears", () -> new Equipment(200, 0x0, EquipmentSlot.HELMET, 0x80, 0x4, LodMod.NO_ELEMENT.get(), 0, new ElementSet(), new ElementSet(), 0x0, 0, 20, 0, 0, 0, 0, 0, 0, 0, false, false, false, false, 0, 0, 0, 0, 0, ItemIcon.HELM, 10, 0, 20, 0, 0, 100, 100, 20, 20, 0, 0, 0, 0x0));
 
   static void register(final EquipmentRegistryEvent event) {
     EQUIPMENT_REGISTRAR.registryEvent(event);
