@@ -135,6 +135,9 @@ thelegendoftides.equipment.bianca.description=A marvel of Dwarven\ncraftsmanship
 thelegendoftides.equipment.energy_sword.name=Energy Sword
 thelegendoftides.equipment.energy_sword.description=You no longer\nneed a weapon
 
+thelegendoftides.equipment.kernviter.name=Kernviter
+thelegendoftides.equipment.kernviter.description=Grants demonic strength
+
 thelegendoftides.equipment.pufferfish_knuckles.name=Pufferfish
 thelegendoftides.equipment.pufferfish_knuckles.description=*blub blub to\nreceive your blub\nblub...*
 
@@ -155,6 +158,15 @@ thelegendoftides.equipment.the_one_ring.description=Cast it into\nthe fire!\nDes
 
 thelegendoftides.equipment.orthos_prime.name=Orthos Prime
 thelegendoftides.equipment.orthos_prime.description=Look at them, they come\nto this place when they\nknow they are not pure. Tenno\nuse the keys, but they are\nmere trespassers. Only I, Vor,\nknow the true power of\nthe Void.
+
+thelegendoftides.equipment.thigh_highs.name=Thigh highs
+thelegendoftides.equipment.thigh_highs.description=Dart uses arch btw
+
+thelegendoftides.equipment.giganto_skirt.name=Giganto Skirt
+thelegendoftides.equipment.giganto_skirt.description=Kongol Dating Sim when
+
+thelegendoftides.equipment.cat_ears.name=Cat Ears
+thelegendoftides.equipment.cat_ears.name=Rose literally wears\nthese. It is canon.
 
 # Bait
 thelegendoftides.bait.regular.name=Regular
@@ -251,7 +263,7 @@ thelegendoftides.fish.pufferfish_knuckles.name=Pufferfish Knuckles
 thelegendoftides.fish.guitar.name=Guitar
 thelegendoftides.fish.oversized_key.name=Oversized Key
 thelegendoftides.fish.orthos_prime.name=Orthos Prime
-
+thelegendoftides.fish.kernviter.name=Kernviter
 thelegendoftides.fish.magis_boots.name=Magi's Boots
 thelegendoftides.fish.old_boots.name=Old Boots
 thelegendoftides.fish.the_one_ring.name=The One Ring

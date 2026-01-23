@@ -393,6 +393,10 @@ public class Tlot {
     }
 
     switch(player.charId_272) {
+      case 0 -> {
+        modelPartIndex = isDragoon ? 18 : 14;
+        partFlags = isDragoon ? 0x1L << 0x12 : 0x1L << 14;
+      }
       case 2, 8 -> {
         modelPartIndex = isDragoon ? 0 : 2;
         partFlags = isDragoon ? 0L : 0x1L << 2 | 0x1L << 4 | 0x1L << 3;

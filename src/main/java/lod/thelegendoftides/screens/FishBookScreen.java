@@ -18,6 +18,7 @@ import lod.thelegendoftides.Fish;
 import lod.thelegendoftides.FishBaitWeight;
 import lod.thelegendoftides.FishingHole;
 import lod.thelegendoftides.Tlot;
+import lod.thelegendoftides.TlotFishingHolePrerequisites;
 import org.jetbrains.annotations.NotNull;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
@@ -181,6 +182,9 @@ public class FishBookScreen extends MenuScreen {
       final List<String> locations = new ArrayList<>();
       for(final RegistryId holeId : FISHING_HOLE_REGISTRY) {
         final FishingHole hole = FISHING_HOLE_REGISTRY.getEntry(holeId).get();
+
+        // Don't display azeel info
+        if(hole.prerequisities != TlotFishingHolePrerequisites.NONE) continue;
 
         for(int fishIndex = 0; fishIndex < hole.fish.size(); fishIndex++) {
           if(hole.fish.get(fishIndex).fish.get() == fish) {
