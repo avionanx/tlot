@@ -1,6 +1,6 @@
 # grab your rod and get gooning
 
-Requires [Severed Chains](https://github.com/Legend-of-Dragoon-Modding/Severed-Chains) devbuild.
+Requires [Severed Chains](https://legendofdragoon.org/projects/severed-chains/) devbuild.
 
 To install the mod:
 - Head to releases page, grab the latest release
