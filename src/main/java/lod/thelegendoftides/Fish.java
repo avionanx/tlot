@@ -38,6 +38,6 @@ public abstract class Fish extends RegistryEntry {
   public abstract InventoryEntry getReward();
 
   public boolean canBeCaught() {
-    return this.legendaryIndex < 0 || ((this.legendaryIndex) & (1L << CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()))) == 0;
+    return this.legendaryIndex < 0 || (((1L << this.legendaryIndex) & (CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()))) == 0);
   }
 }
