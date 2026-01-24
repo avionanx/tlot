@@ -13,6 +13,7 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
+import legend.game.EngineStateEnum;
 import legend.game.SItem;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
@@ -43,6 +44,7 @@ import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.battle.CombatantModelLoadedEvent;
+import legend.game.modding.events.engine.EngineStateChangeEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
@@ -446,12 +448,6 @@ public class Tlot {
   }
 
   @EventListener
-  public void onBattleEnded(final BattleEndedEvent event) {
-    this.specialWeaponList.values().forEach(SpecialWeapon::unload);
-    this.specialWeaponList.clear();
-  }
-
-  @EventListener
   public void renderLoop(final RenderEvent event) {
     if(this.isRenderingTooManyItemsScreen) {
       if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
@@ -711,6 +707,14 @@ public class Tlot {
 
       SBtld.startEncounter(new Encounter(this.currentFishingHole.musicIndex, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
+    }
+  }
+
+  @EventListener
+  public void engineStateChangedHandler(final EngineStateChangeEvent event) {
+    if(event.oldEngineState == EngineStateEnum.COMBAT_06) {
+      this.specialWeaponList.values().forEach(SpecialWeapon::unload);
+      this.specialWeaponList.clear();
     }
   }
 
