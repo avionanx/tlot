@@ -43,11 +43,14 @@ public final class TlotFishBaitWeights {
   }
 
   public static int getBaitWeightForFish(final Fish fish, final Bait bait) {
+    if(!fish.canBeCaught()) {
+      return 0;
+    }
+
     for(final RegistryId id : Tlot.FISH_BAIT_WEIGHT_REGISTRY) {
       final FishBaitWeight weight = Tlot.FISH_BAIT_WEIGHT_REGISTRY.getEntry(id).get();
 
       if(weight.fish.get() == fish && weight.bait.get() == bait) {
-        if(!weight.fish.get().canBeCaught()) return 0;
         return weight.weight;
       }
     }

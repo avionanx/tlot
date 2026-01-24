@@ -43,8 +43,8 @@ public final class TlotFish {
 
   // Treasures
   public static final RegistryDelegate<Fish> GLOWSTICK = REGISTRAR.register("glowstick", () -> new TreasureFish(new FishIcon(12), 80.0f, 0.35f, TlotEquipments.GLOWSTICK).setLegendary(1).setHidden());
-  public static final RegistryDelegate<Fish> NAMELESS_SPEAR = REGISTRAR.register("nameless_spear", () -> new TreasureFish(new FishIcon(13), 80.0f, 0.35f, TlotEquipments.NAMELESS_SPEAR).setLegendary(2).setHidden());
-  public static final RegistryDelegate<Fish> BIANCA = REGISTRAR.register("bianca", () -> new TreasureFish(new FishIcon(14), 80.0f, 0.35f, TlotEquipments.BIANCA).setLegendary(3).setHidden());
+  public static final RegistryDelegate<Fish> NAMELESS_SPEAR = REGISTRAR.register("nameless_spear", () -> new TreasureFish(new FishIcon(14), 80.0f, 0.35f, TlotEquipments.NAMELESS_SPEAR).setLegendary(2).setHidden());
+  public static final RegistryDelegate<Fish> BIANCA = REGISTRAR.register("bianca", () -> new TreasureFish(new FishIcon(13), 80.0f, 0.35f, TlotEquipments.BIANCA).setLegendary(3).setHidden());
   public static final RegistryDelegate<Fish> ENERGY_SWORD = REGISTRAR.register("energy_sword", () -> new TreasureFish(new FishIcon(16), 80.0f, 0.35f, TlotEquipments.ENERGY_SWORD).setLegendary(4).setHidden());
   public static final RegistryDelegate<Fish> PUFFERFISH_KNUCKLES = REGISTRAR.register("pufferfish_knuckles", () -> new TreasureFish(new FishIcon(17), 80.0f, 0.35f, TlotEquipments.PUFFERFISH_KNUCKLES).setLegendary(12).setHidden());
   public static final RegistryDelegate<Fish> GUITAR = REGISTRAR.register("guitar", () -> new TreasureFish(new FishIcon(18), 80.0f, 0.35f, TlotEquipments.GUITAR).setLegendary(5).setHidden());
