@@ -71,12 +71,12 @@ public class GlbLoader {
               final int vertexIndex = face.mIndices().get(i);
               final AIVector3D vertex = vertices.get(vertexIndex);
               final AIVector3D normal = normals.get(vertexIndex);
-              final AIColor4D colour = colours.get(vertexIndex);
               final AIVector3D uv = uvs.get(vertexIndex);
               
               this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
               this.builder.normal(normal.x(), normal.y(), normal.z());
               if(this.texture == null) {
+                final AIColor4D colour = colours.get(vertexIndex);
                 this.builder.rgb(colour.r() * 2.0f, colour.g() * 2.0f, colour.b() * 2.0f);
               } else {
                 this.builder.rgb(2.0f, 2.0f, 2.0f);

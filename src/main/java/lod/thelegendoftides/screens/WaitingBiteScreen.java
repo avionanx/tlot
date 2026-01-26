@@ -28,16 +28,16 @@ public class WaitingBiteScreen extends MenuScreen {
 
   @Override
   protected void render() {
-    frames--;
+    this.frames--;
 
-    if(frames == 60) {
+    if(this.frames == 60) {
       if(this.fish != null) {
         playSound(0x0, 0x25, 0, 0);
         this.onFishNibbling.run();
       } else {
         this.deferAction(this::noBites);
       }
-    } else if(frames == 0) {
+    } else if(this.frames == 0) {
       playSound(0x0, 0x28, 0, 0);
       this.deferAction(this::failed);
     }
@@ -45,11 +45,11 @@ public class WaitingBiteScreen extends MenuScreen {
 
   @Override
   protected InputPropagation inputActionPressed(@NotNull InputAction action, boolean repeat) {
-    if(action != INPUT_ACTION_MENU_CONFIRM.get() && !repeat) {
+    if(action != INPUT_ACTION_MENU_CONFIRM.get()) {
       return InputPropagation.PROPAGATE;
     }
 
-    if(frames <= 60) {
+    if(this.frames <= 60) {
       this.deferAction(this::succeeded);
     } else {
       this.deferAction(this::failed);

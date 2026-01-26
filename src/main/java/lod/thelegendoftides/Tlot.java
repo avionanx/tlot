@@ -88,6 +88,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -426,19 +427,23 @@ public class Tlot {
       return;
     }
 
-    final Equipment specialWeapon = switch(playerId) {
-      case 0 -> TlotEquipments.GLOWSTICK.get();
-      case 1, 5 -> TlotEquipments.NAMELESS_SPEAR.get();
-      case 2, 8 -> TlotEquipments.BIANCA.get();
-      case 3 -> TlotEquipments.ENERGY_SWORD.get();
-      case 4 -> TlotEquipments.PUFFERFISH_KNUCKLES.get();
-      case 6 -> TlotEquipments.GUITAR.get();
-      case 7 -> TlotEquipments.OVERSIZED_KEY.get();
+    final List<Equipment> specialWeapons = switch(playerId) {
+      case 0 -> List.of(TlotEquipments.GLOWSTICK.get());
+      case 1, 5 -> List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
+      case 2, 8 -> List.of(TlotEquipments.BIANCA.get());
+      case 3 -> List.of(TlotEquipments.ENERGY_SWORD.get());
+      case 4 -> List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
+      case 6 -> List.of(TlotEquipments.GUITAR.get());
+      case 7 -> List.of(TlotEquipments.OVERSIZED_KEY.get());
       default -> null;
     };
-    if(specialWeapon == null) return;
 
-    if(gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == specialWeapon) {
+    if(specialWeapons == null) return;
+    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == equip).findFirst();
+
+    if(weapon.isPresent()) {
+      final Equipment specialWeapon = weapon.get();
+
       player.model_148.partInvisible_f4 |= partFlags;
       this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
       if(playerId == 4) {
