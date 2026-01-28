@@ -14,7 +14,6 @@ import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
 import legend.game.EngineStateEnum;
-import legend.game.SItem;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
@@ -31,6 +30,7 @@ import legend.game.combat.effects.EffectManagerParams;
 import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
+import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
@@ -38,10 +38,8 @@ import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.inventory.screens.ShopScreen;
-import legend.game.inventory.screens.TooManyItemsScreen;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
-import legend.game.modding.events.battle.BattleEndedEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.battle.CombatantModelLoadedEvent;
 import legend.game.modding.events.engine.EngineStateChangeEvent;
@@ -62,6 +60,7 @@ import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
+import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
@@ -113,7 +112,6 @@ import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
-import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
@@ -211,7 +209,6 @@ public class Tlot {
   private boolean acquiredFishScreenCleared;
 
   private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
-  private boolean isRenderingTooManyItemsScreen;
 
   public Tlot() {
     isFishEncounter = false;
@@ -251,6 +248,11 @@ public class Tlot {
   @EventListener
   public void registerEquipments(final EquipmentRegistryEvent event) {
     TlotEquipments.register(event);
+  }
+
+  @EventListener
+  public void registerPostBattleActions(final RegisterPostBattleActionsEvent event) {
+    TlotPostBattleActions.register(event);
   }
 
   @EventListener
@@ -454,13 +456,6 @@ public class Tlot {
 
   @EventListener
   public void renderLoop(final RenderEvent event) {
-    if(this.isRenderingTooManyItemsScreen) {
-      if(whichMenu_800bdc38 == WhichMenu.NONE_0) {
-        postBattleAction_800bc974 = 5;
-        this.isRenderingTooManyItemsScreen = false;
-      }
-      return;
-    }
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
     this.specialWeaponList.values().forEach(SpecialWeapon::render);
@@ -710,7 +705,7 @@ public class Tlot {
       isFishEncounter = true;
       this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new Encounter(this.currentFishingHole.musicIndex, 0, 0, 0, 0, 0, 0, 0, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+      SBtld.startEncounter(new FishEncounter(this.currentFishingHole.musicIndex, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
       ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
     }
   }
@@ -784,11 +779,9 @@ public class Tlot {
   private void returnToSubmapFromFishing() {
     this.stopFishing();
     if(itemOverflow.isEmpty()) {
-      postBattleAction_800bc974 = 5;
+      ((Battle)currentEngineState_8004dd04).postBattleAction_800bc974 = LodPostBattleActions.MERCHANT.get().inst();
     } else {
-      SItem.menuStack.pushScreen(new TooManyItemsScreen());
-      this.isRenderingTooManyItemsScreen = true;
-      whichMenu_800bdc38 = WhichMenu.RENDER_NEW_MENU;
+      ((Battle)currentEngineState_8004dd04).postBattleAction_800bc974 = TlotPostBattleActions.TOO_MANY_ITEMS.get().inst();
     }
   }
 
