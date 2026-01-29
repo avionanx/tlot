@@ -112,6 +112,7 @@ import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
+import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
@@ -779,9 +780,9 @@ public class Tlot {
   private void returnToSubmapFromFishing() {
     this.stopFishing();
     if(itemOverflow.isEmpty()) {
-      ((Battle)currentEngineState_8004dd04).postBattleAction_800bc974 = LodPostBattleActions.MERCHANT.get().inst();
+      postBattleAction_800bc974 = LodPostBattleActions.MERCHANT.get().inst();
     } else {
-      ((Battle)currentEngineState_8004dd04).postBattleAction_800bc974 = TlotPostBattleActions.TOO_MANY_ITEMS.get().inst();
+      postBattleAction_800bc974 = TlotPostBattleActions.TOO_MANY_ITEMS.get().inst();
     }
   }
 
