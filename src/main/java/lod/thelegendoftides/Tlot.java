@@ -120,7 +120,7 @@ import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
-@Mod(id = Tlot.MOD_ID, version = "3.0.0")
+@Mod(id = Tlot.MOD_ID, version = "^3.0.0")
 public class Tlot {
   public static final String MOD_ID = "thelegendoftides";
 
