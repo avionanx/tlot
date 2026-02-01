@@ -35,7 +35,7 @@ public class ArgentfinItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 1;
+    return 33;
   }
 
   @Override

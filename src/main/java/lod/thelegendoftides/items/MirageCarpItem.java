@@ -38,7 +38,7 @@ public class MirageCarpItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 2;
+    return 34;
   }
 
   @Override

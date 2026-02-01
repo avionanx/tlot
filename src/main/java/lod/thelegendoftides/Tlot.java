@@ -844,13 +844,13 @@ public class Tlot {
     loadAdditions();
     charData.selectedAddition_19 = oldAddition;
 
-    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(charData, additionStats));
+    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(gameState_800babc8, charData, additionStats));
     this.loadingAnimIndex = 16 + hitIndex;
 
-    this.activeAdditionHit = randomAddition.getHit(charData, additionStats, hitIndex);
+    this.activeAdditionHit = randomAddition.getHit(gameState_800babc8, charData, additionStats, hitIndex);
     this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
-    randomAddition.loadAnimations(charData, additionStats, this::onAnimationsLoaded);
+    randomAddition.loadAnimations(gameState_800babc8, charData, additionStats, this::onAnimationsLoaded);
     this.additionScreen.addHit();
   }
 

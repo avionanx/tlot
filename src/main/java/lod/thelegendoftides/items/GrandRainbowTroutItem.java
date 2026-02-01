@@ -40,7 +40,7 @@ public class GrandRainbowTroutItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 2;
+    return 34;
   }
 
   @Override

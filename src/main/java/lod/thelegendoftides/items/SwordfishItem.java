@@ -34,7 +34,7 @@ public class SwordfishItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 6;
+    return 38;
   }
 
   @Override
