@@ -14,7 +14,7 @@ public abstract class Fish extends RegistryEntry {
   /** How quickly this fish pulls away */
   public final float strength;
   /** If legendary, bit index of CATCH_FLAGS, otherwise -1 */
-  public int legendaryIndex;
+  public int legendaryFlag;
   /** Whether fish is shown in fishlistscreen or book */
   public boolean isHidden;
 
@@ -22,7 +22,7 @@ public abstract class Fish extends RegistryEntry {
     this.icon = icon;
     this.stamina = stamina;
     this.strength = strength;
-    this.legendaryIndex = -1;
+    this.legendaryFlag = -1;
   }
 
   public Fish setHidden() {
@@ -31,13 +31,13 @@ public abstract class Fish extends RegistryEntry {
   }
 
   public Fish setLegendary(final int index) {
-    this.legendaryIndex = 1 << index;
+    this.legendaryFlag = 1 << index;
     return this;
   }
 
   public abstract InventoryEntry getReward();
 
   public boolean canBeCaught() {
-    return this.legendaryIndex < 0 || (((1L << this.legendaryIndex) & (CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()))) == 0);
+    return this.legendaryFlag < 0 || ((this.legendaryFlag & (CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()))) == 0);
   }
 }

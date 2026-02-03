@@ -35,8 +35,8 @@ public class FishAcquiredScreen extends MenuScreen {
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
     this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
 
-    if(fish.legendaryIndex != -1) {
-      final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (1 << fish.legendaryIndex);
+    if(fish.legendaryFlag != -1) {
+      final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (fish.legendaryFlag);
       CONFIG.setConfig(CATCH_FLAGS_CONFIG.get(), newFlags);
     }
 
