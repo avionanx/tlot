@@ -94,6 +94,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.EVENTS;
@@ -188,6 +189,7 @@ public class Tlot {
   private boolean usingVictoryAnimation;
 
   private int loadingAnimIndex = -1;
+  private AtomicBoolean animationUsed = new AtomicBoolean();
   private int animationFrames;
 
   private float bobberHorizontalAcceleration;
@@ -400,7 +402,8 @@ public class Tlot {
 
     //TODO nuke this and canRender
     if(isDragoon) {
-      this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = false;
+      if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
+        this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = false;
       return;
     } else {
       if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
@@ -518,7 +521,7 @@ public class Tlot {
   }
 
   private void renderFishing() {
-    if(this.loadingAnimIndex != -1) {
+    if(this.animationUsed.get()) {
       // Wait for animation to finish loading and then load it into the player
       final TmdAnimationFile asset = battleState_8006e398.getAnimationGlobalAsset(this.player.combatant_144, this.loadingAnimIndex);
 
@@ -526,6 +529,7 @@ public class Tlot {
         asset.loadIntoModel(this.player.model_148);
         this.animationFrames = asset.totalFrames_0e;
         this.loadingAnimIndex = -1;
+        this.animationUsed.set(false);
       }
     } else {
       switch(this.state) {
@@ -757,6 +761,7 @@ public class Tlot {
     this.battle.attackAnimationsLoaded(files, this.player.combatant_144, false, this.player.combatant_144.charSlot_19c);
     // Finish asset loading - some animations need to be decompressed
     this.battle.FUN_800c9e10(this.player.combatant_144, this.loadingAnimIndex);
+    this.animationUsed.set(true);
   }
 
   private void loadStandardAnimations() {
@@ -766,16 +771,19 @@ public class Tlot {
   private void setIdleAnimation() {
     this.playerState.clearFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 0;
+    this.animationUsed.set(true);
   }
 
   private void setHurtAnimation() {
     this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 1;
+    this.animationUsed.set(true);
   }
 
   private void setThrowAnimation() {
     this.playerState.setFlag(FLAG_ANIMATE_ONCE);
     this.loadingAnimIndex = 7;
+    this.animationUsed.set(true);
   }
 
   private void setVictoryAnimation() {
