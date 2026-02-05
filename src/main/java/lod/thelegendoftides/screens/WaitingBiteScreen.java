@@ -6,8 +6,8 @@ import legend.game.inventory.screens.MenuScreen;
 import lod.thelegendoftides.Fish;
 import org.jetbrains.annotations.NotNull;
 
-import static legend.game.Audio.playSound;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
+import static legend.game.sound.Audio.playMenuSound;
 
 public class WaitingBiteScreen extends MenuScreen {
   private final Runnable onFishNibbling;
@@ -32,13 +32,13 @@ public class WaitingBiteScreen extends MenuScreen {
 
     if(this.frames == 60) {
       if(this.fish != null) {
-        playSound(0x0, 0x25, 0, 0);
+        playMenuSound(37);
         this.onFishNibbling.run();
       } else {
         this.deferAction(this::noBites);
       }
     } else if(this.frames == 0) {
-      playSound(0x0, 0x28, 0, 0);
+      playMenuSound(40);
       this.deferAction(this::failed);
     }
   }
@@ -59,19 +59,19 @@ public class WaitingBiteScreen extends MenuScreen {
   }
 
   private void succeeded() {
-    playSound(0x0, 0x26, 0, 0);
+    playMenuSound(38);
     this.getStack().popScreen();
     this.onFishHooked.run();
   }
 
   private void noBites() {
-    playSound(0x0, 0x28, 0, 0);
+    playMenuSound(40);
     this.getStack().popScreen();
     this.onNoFishBiting.run();
   }
 
   private void failed() {
-    playSound(0x0, 0x28, 0, 0);
+    playMenuSound(40);
     this.getStack().popScreen();
     this.onFishEscaped.run();
   }

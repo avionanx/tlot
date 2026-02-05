@@ -13,7 +13,8 @@ import legend.core.platform.input.InputActionRegistryEvent;
 import legend.core.platform.input.InputKey;
 import legend.core.platform.input.ScancodeInputActivation;
 import legend.game.EngineState;
-import legend.game.EngineStateEnum;
+import legend.game.SItem;
+import legend.game.Text;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
@@ -36,8 +37,10 @@ import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
+import legend.game.inventory.screens.FontOptions;
 import legend.game.inventory.screens.MenuStack;
 import legend.game.inventory.screens.ShopScreen;
+import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
@@ -60,6 +63,7 @@ import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
+import legend.lodmod.LodEngineStateTypes;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
@@ -96,7 +100,6 @@ import static legend.core.GameEngine.EVENTS;
 import static legend.core.GameEngine.REGISTRIES;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
-import static legend.game.Audio.playSound;
 import static legend.game.DrgnFiles.loadDrgnDir;
 import static legend.game.DrgnFiles.loadDrgnFileSync;
 import static legend.game.EngineStates.currentEngineState_8004dd04;
@@ -113,11 +116,14 @@ import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
+import static legend.game.Text.textZ_800bdf00;
 import static legend.game.combat.SBtld.loadAdditions;
 import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
+import static legend.game.sound.Audio.playMenuSound;
+import static legend.game.sound.Audio.playSound;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
 @Mod(id = Tlot.MOD_ID, version = "^3.0.0")
@@ -153,6 +159,7 @@ public class Tlot {
    */
   public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
 
+  private static final FontOptions CENTERED = new FontOptions().set(SItem.UI_WHITE_CENTERED).shadowColour(TextColour.BLACK);
 
   private final Random rand = new Random();
 
@@ -210,6 +217,9 @@ public class Tlot {
   private boolean acquiredFishScreenCleared;
 
   private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
+
+  private String errorText;
+  private int errorTicks;
 
   public Tlot() {
     isFishEncounter = false;
@@ -303,12 +313,11 @@ public class Tlot {
 
     SCRIPTS.getState(5).pause();
     SCRIPTS.getState(6).pause();
-    if(gameState_800babc8.charIds_88[1] != -1) {
-      SCRIPTS.getState(7).setFlag(FLAG_HIDE).pause();
+
+    for(int i = 1; i < gameState_800babc8.charIds_88.size(); i++) {
+      SCRIPTS.getState(6 + i).setFlag(FLAG_HIDE).pause();
     }
-    if(gameState_800babc8.charIds_88[2] != -1) {
-      SCRIPTS.getState(8).setFlag(FLAG_HIDE).pause();
-    }
+
     SCRIPTS.getState(11).pause();
     SCRIPTS.getState(11).setFlag(FLAG_HIDE);
 
@@ -493,6 +502,19 @@ public class Tlot {
     }
 
     this.menuStack.render();
+
+    synchronized(this) {
+      if(this.errorText != null) {
+        final int oldZ = textZ_800bdf00;
+        textZ_800bdf00 = 4;
+        Text.renderText(this.errorText, RENDERER.getNativeWidth() / 2.0f, 40.0f, CENTERED);
+        textZ_800bdf00 = oldZ;
+
+        if(this.errorTicks-- == 0) {
+          this.errorText = null;
+        }
+      }
+    }
   }
 
   private void renderFishing() {
@@ -579,7 +601,7 @@ public class Tlot {
           this.additionTicks--;
 
           for(final AdditionSound sound : this.activeAdditionHit.sounds) {
-            playSound(1, sound.soundIndex, sound.initialDelay, 0);
+            playSound(this.player.soundFile, sound.soundIndex, sound.initialDelay, 0);
           }
 
           this.state = FishingState.REELING;
@@ -593,7 +615,7 @@ public class Tlot {
             this.player.model_148.animationState_9c = 2; // pause
             this.loadRandomAdditionHit();
             for(final AdditionSound sound : this.activeAdditionHit.sounds) {
-              playSound(1, sound.soundIndex, sound.initialDelay, 0);
+              playSound(this.player.soundFile, sound.soundIndex, sound.initialDelay, 0);
             }
           }
         }
@@ -700,20 +722,27 @@ public class Tlot {
       && currentEngineState_8004dd04 instanceof SMap
       && !gameState_800babc8.indicatorsDisabled_4e3
       && this.fishListScreen != null
-      && gameState_800babc8.charIds_88[0] != 2
-      && gameState_800babc8.charIds_88[0] != 8
     ) {
-      isFishEncounter = true;
-      this.fishListScreen.isFishListScreenDisabled = true;
+      if(CHARACTER_ADDITIONS[gameState_800babc8.charIds_88.getFirst()].length != 0) {
+        isFishEncounter = true;
+        this.fishListScreen.isFishListScreenDisabled = true;
 
-      SBtld.startEncounter(new FishEncounter(this.currentFishingHole.musicIndex, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
-      ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
+        SBtld.startEncounter(new FishEncounter(this.currentFishingHole.musicIndex, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+        ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
+      } else {
+        playMenuSound(40);
+
+        synchronized(this) {
+          this.errorText = "Can't fish with archers";
+          this.errorTicks = 120;
+        }
+      }
     }
   }
 
   @EventListener
   public void engineStateChangedHandler(final EngineStateChangeEvent event) {
-    if(event.oldEngineState == EngineStateEnum.COMBAT_06) {
+    if(event.oldEngineState == LodEngineStateTypes.BATTLE.get()) {
       this.specialWeaponList.values().forEach(SpecialWeapon::unload);
       this.specialWeaponList.clear();
     }
@@ -789,7 +818,7 @@ public class Tlot {
   private void cast() {
     this.fishingRod.bobberCoord2.set(this.player.model_148.modelParts_00[this.player.getRightHandModelPart()].coord2_04);
     this.fishingRod.initString();
-    playSound(0x0, 0x15, 0x10, 0);
+    playMenuSound(21, 16, 0);
     this.loadAnimations(4031 + this.player.charId_272 * 8);
     this.setThrowAnimation();
     this.castingTicks = 0;
@@ -878,7 +907,7 @@ public class Tlot {
   private void fishLostCallback() {
     this.menuStack.popScreen();
     this.setHurtAnimation();
-    playSound(1, 6, 0, 0); // hurt
+    playSound(this.player.soundFile, 6, 0, 0); // hurt
     this.fishLostTicks = 0;
     this.state = FishingState.FISH_LOST;
     this.menuStack.pushScreen(new TimedMessageScreen("message_fish_escaped", 20));

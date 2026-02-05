@@ -4,7 +4,6 @@ import legend.game.combat.Battle;
 import legend.game.combat.encounters.Encounter;
 import legend.lodmod.LodPostBattleActions;
 
-import static legend.game.Audio.playVictoryMusic;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 
 public class FishEncounter extends Encounter {
@@ -15,6 +14,6 @@ public class FishEncounter extends Encounter {
   @Override
   public void onBattleWon(final Battle battle) {
     postBattleAction_800bc974 = LodPostBattleActions.MERCHANT.get().inst();
-    playVictoryMusic();
+    battle.playVictoryMusic();
   }
 }

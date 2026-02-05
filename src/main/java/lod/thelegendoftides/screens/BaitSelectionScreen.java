@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static legend.core.GameEngine.RENDERER;
-import static legend.game.Audio.playMenuSound;
 import static legend.game.SItem.UI_WHITE;
 import static legend.game.Text.renderText;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
+import static legend.game.sound.Audio.playMenuSound;
 import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
