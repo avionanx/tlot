@@ -1,0 +1,38 @@
+--- original
++++ modified
+@@ -2719,31 +2719,11 @@
+ data 0xfa
+ data 0xffffff9c
+ data 0xfffffce0
++#include char_utils.txt
+ LABEL_289:
+-mov var[17][1], stor[24]
+-mov var[17][2], stor[25]
+-jmp_cmp !=, 0x4, stor[24], inl[:LABEL_290]
+-mov stor[25], var[17][1]
+-mov stor[25], stor[24]
+-jmp inl[:LABEL_291]
+-LABEL_290:
+-jmp_cmp !=, 0x4, stor[25], inl[:LABEL_293]
+-LABEL_291:
+-mov 0x6, stor[25]
+-jmp_cmp !=, stor[25], stor[24], inl[:LABEL_292]
+-mov 0x2, stor[25]
+-LABEL_292:
+-mov stor[25], var[17][2]
+-LABEL_293:
+-andor 0x40, 0x23, var[115 + 0]
+-andor 0x40, 0x0, var[115 + 1]
+-andor 0x40, 0x3, var[115 + 2]
+-andor 0x40, 0x3, var[115 + 3]
+-andor 0x40, 0x0, var[115 + 4]
+-andor 0x40, 0x3, var[115 + 5]
+-andor 0x40, 0x3, var[115 + 6]
+-andor 0x40, 0x0, var[115 + 7]
+-andor 0x40, 0x0, var[115 + 8]
++and 0x40, var[115 + 4]
++mov 4, stor[34]
++gosub inl[:REMOVE_CHAR_FROM_ACTIVE_PARTY_AND_REPLACE_WITH_NEXT]
+ return
+ LABEL_294:
+ gosub inl[:LABEL_56]

@@ -1,0 +1,11 @@
+--- original
++++ modified
+@@ -433,7 +433,7 @@
+ mov 0xa, stor[31]
+ wait stor[31]
+ call 99, 0x0
+-call 97, 0x5
++call 97, 0x0
+ LABEL_42:
+ call 100, stor[30]
+ call 195, stor[24], stor[31]

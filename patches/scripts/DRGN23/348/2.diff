@@ -1,0 +1,12 @@
+--- original
++++ modified
+@@ -642,7 +642,9 @@
+ call 292, stor[0], 0x500
+ call 102, var[64][0], stor[8], stor[9], stor[10]
+ jmp_cmp ==, stor[8], 0xf0, inl[:LABEL_39]
++jmp_cmp ==, stor[8], 0xf1, inl[:LABEL_39]
+ jmp_cmp ==, stor[8], 0xffffff3c, inl[:LABEL_40]
++jmp_cmp ==, stor[8], 0xffffff3b, inl[:LABEL_40]
+ jmp_cmp ==, stor[8], 0xfffffef5, inl[:LABEL_41]
+ jmp_cmp ==, stor[8], 0x6f, inl[:LABEL_42]
+ jmp_cmp ==, stor[8], 0xd1, inl[:LABEL_43]

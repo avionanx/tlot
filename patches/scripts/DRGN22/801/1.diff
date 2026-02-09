@@ -1,0 +1,52 @@
+--- original
++++ modified
+@@ -1245,42 +1245,15 @@
+ call 101, stor[24], 0xfffffefc, 0x2c, 0x1f4
+ call 103, stor[24], 0x0, 0x0, 0x0
+ jmp inl[:LABEL_56]
++#include char_utils.txt
+ LABEL_148:
+-mov var[17][1], stor[24]
+-mov var[17][2], stor[25]
+-jmp_cmp !=, 0x4, stor[24], inl[:LABEL_149]
+-mov stor[25], var[17][1]
+-mov stor[25], stor[24]
+-jmp inl[:LABEL_150]
+-LABEL_149:
+-jmp_cmp !=, 0x4, stor[25], inl[:LABEL_152]
+-LABEL_150:
+-mov 0x6, stor[25]
+-jmp_cmp !=, stor[25], stor[24], inl[:LABEL_151]
+-mov 0x2, stor[25]
+-LABEL_151:
+-mov stor[25], var[17][2]
+-LABEL_152:
+-andor 0x40, 0x23, var[115 + 0]
+-andor 0x40, 0x0, var[115 + 1]
+-andor 0x40, 0x3, var[115 + 2]
+-andor 0x40, 0x3, var[115 + 3]
+-andor 0x40, 0x0, var[115 + 4]
+-andor 0x40, 0x3, var[115 + 5]
+-andor 0x40, 0x3, var[115 + 6]
+-andor 0x40, 0x0, var[115 + 7]
+-andor 0x40, 0x0, var[115 + 8]
++mov 4, stor[34]
++gosub inl[:REMOVE_CHAR_FROM_ACTIVE_PARTY_AND_REPLACE_WITH_NEXT]
++mov 4, stor[34]
++gosub inl[:TEMPORARILY_REMOVE_CHAR_FROM_PARTY]
+ return
+ LABEL_153:
+-andor 0x40, 0x23, var[115 + 0]
+-andor 0x40, 0x0, var[115 + 1]
+-andor 0x40, 0x3, var[115 + 2]
+-andor 0x40, 0x3, var[115 + 3]
+-andor 0x40, 0x3, var[115 + 5]
+-andor 0x40, 0x3, var[115 + 6]
+-andor 0x40, 0x0, var[115 + 8]
+-andor 0x40, 0x3, var[115 + 4]
+-andor 0x40, 0x3, var[115 + 7]
++gosub inl[:RESTORE_ALL_TEMPORARILY_REMOVED_CHARS]
++or 0x3, var[115 + 7]
+ mov 0x4, var[17][1]
+ mov 0x7, var[17][2]
+ return
