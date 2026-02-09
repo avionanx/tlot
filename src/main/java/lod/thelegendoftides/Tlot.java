@@ -34,6 +34,7 @@ import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
+import legend.game.inventory.GoodsRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.WhichMenu;
@@ -64,6 +65,7 @@ import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
 import legend.lodmod.LodEngineStateTypes;
+import legend.lodmod.LodGoods;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
@@ -936,6 +938,11 @@ public class Tlot {
   @EventListener
   public void deffRegistry(final RegisterDeffsEvent event) {
     TlotDeffs.register(event);
+  }
+
+  @EventListener
+  public void registerGoods(final GoodsRegistryEvent event) {
+    TlotGoods.register(event);
   }
 
   @EventListener
