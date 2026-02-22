@@ -28,14 +28,14 @@ public final class TlotFishBaitWeights {
   public static final RegistryDelegate<FishBaitWeight> PUFFERFISH_KNUCKLES_MAGNETIC = REGISTRAR.register("pufferfish_gauntlets_magnetic", () -> new FishBaitWeight(TlotFish.PUFFERFISH_KNUCKLES, TlotBait.MAGNETIC, 80));
   public static final RegistryDelegate<FishBaitWeight> GUITAR_MAGNETIC = REGISTRAR.register("guitar_magnetic", () -> new FishBaitWeight(TlotFish.GUITAR, TlotBait.MAGNETIC, 80));
   public static final RegistryDelegate<FishBaitWeight> OVERSIZED_KEY_MAGNETIC = REGISTRAR.register("oversized_key_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> ORTHOS_PRIME_MAGNETIC = REGISTRAR.register("orthos_prime_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> ORTHOS_PRIME_MAGNETIC = REGISTRAR.register("orthos_prime_magnetic", () -> new FishBaitWeight(TlotFish.ORTHOS_PRIME, TlotBait.MAGNETIC, 80));
 
-  public static final RegistryDelegate<FishBaitWeight> MAGIS_BOOTS_MAGNETIC = REGISTRAR.register("magis_boots_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> OLD_BOOTS_MAGNETIC = REGISTRAR.register("old_boots_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> THE_ONE_RING_MAGNETIC = REGISTRAR.register("the_one_ring_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> GIGANTO_SKIRT_MAGNETIC = REGISTRAR.register("giganto_skirt_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> THIGH_HIGHS_MAGNETIC = REGISTRAR.register("thigh_highs_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
-  public static final RegistryDelegate<FishBaitWeight> CAT_EARS_MAGNETIC = REGISTRAR.register("cat_ears_magnetic", () -> new FishBaitWeight(TlotFish.OVERSIZED_KEY, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> MAGIS_BOOTS_MAGNETIC = REGISTRAR.register("magis_boots_magnetic", () -> new FishBaitWeight(TlotFish.MAGIS_BOOTS, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> OLD_BOOTS_MAGNETIC = REGISTRAR.register("old_boots_magnetic", () -> new FishBaitWeight(TlotFish.OLD_BOOTS, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> THE_ONE_RING_MAGNETIC = REGISTRAR.register("the_one_ring_magnetic", () -> new FishBaitWeight(TlotFish.THE_ONE_RING, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> GIGANTO_SKIRT_MAGNETIC = REGISTRAR.register("giganto_skirt_magnetic", () -> new FishBaitWeight(TlotFish.GIGANTO_SKIRT, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> THIGH_HIGHS_MAGNETIC = REGISTRAR.register("thigh_highs_magnetic", () -> new FishBaitWeight(TlotFish.THIGH_HIGHS, TlotBait.MAGNETIC, 80));
+  public static final RegistryDelegate<FishBaitWeight> CAT_EARS_MAGNETIC = REGISTRAR.register("cat_ears_magnetic", () -> new FishBaitWeight(TlotFish.CAT_EARS, TlotBait.MAGNETIC, 80));
 
   public static final RegistryDelegate<FishBaitWeight> AZEEL_TRACKER_MAGNETIC = REGISTRAR.register("azeel_tracker_magnetic", () -> new FishBaitWeight(TlotFish.AZEEL_TRACKER, TlotBait.MAGNETIC, 200));
 
