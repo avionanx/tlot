@@ -19,14 +19,14 @@ import static legend.game.Graphics.GsSetLightMatrix;
 import static legend.game.Graphics.lightColourMatrix_800c3508;
 import static legend.game.Graphics.lightDirectionMatrix_800c34e8;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_1;
-import static legend.game.combat.bent.BattleEntity27c.FLAG_200;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_MONSTER_SUB_PART;
 
 public class SpecialWeapon {
   private GsCOORDINATE2 parent;
   private final Obj model;
   private final int scriptStateIndex;
-  private Texture texture;
+  private final Texture texture;
   private Model124 bentModel;
   private final Vector3f dragoonRotation = new Vector3f();
   public boolean canRender = true;
@@ -35,7 +35,7 @@ public class SpecialWeapon {
     this.parent = parent;
     this.scriptStateIndex = 6 + charSlot;
     this.bentModel = bentModel;
-    
+
     final GlbLoader loader = new GlbLoader(id.entryId(), Path.of("mods", "tlot", "models", id.entryId() + ".glb"));
     this.model = loader.build();
     this.texture = loader.texture;
@@ -52,16 +52,16 @@ public class SpecialWeapon {
     this.parent = parent;
     this.bentModel = bentModel;
   }
-  
+
   public void withDragoonRotation(final Vector3f newRotation) {
     this.dragoonRotation.set(newRotation);
   }
-  
+
   public void render() {
-    if(!this.canRender || (SCRIPTS.getState(this.scriptStateIndex).hasAnyFlag(FLAG_200 | FLAG_HIDE | FLAG_1))) {
+    if(!this.canRender || (SCRIPTS.getState(this.scriptStateIndex).hasAnyFlag(FLAG_MONSTER_SUB_PART | FLAG_HIDE | FLAG_1))) {
       return;
     }
-    
+
     this.parent.flg = 0;
 
     final MV lw = new MV();
@@ -72,15 +72,15 @@ public class SpecialWeapon {
       .rotateX(this.dragoonRotation.x)
       .rotateY(this.dragoonRotation.y)
       .rotateZ(this.dragoonRotation.z)
-      ;
+    ;
 
     final var queuedModel = RENDERER.queueModel(this.model, lw, QueuedModelStandard.class)
-      .depthOffset(bentModel.zOffset_a0)
-         .lightDirection(lightDirectionMatrix_800c34e8)
-         .lightColour(lightColourMatrix_800c3508)
-          .backgroundColour(GTE.backgroundColour)
+      .depthOffset(this.bentModel.zOffset_a0)
+      .lightDirection(lightDirectionMatrix_800c34e8)
+      .lightColour(lightColourMatrix_800c3508)
+      .backgroundColour(GTE.backgroundColour)
     ;
-    
+
     if(this.texture != null) {
       queuedModel.texture(this.texture);
     }

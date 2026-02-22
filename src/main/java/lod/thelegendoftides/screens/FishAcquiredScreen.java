@@ -33,7 +33,7 @@ public class FishAcquiredScreen extends MenuScreen {
   public FishAcquiredScreen(final Fish fish, final Runnable setCaughtScreenUnloaded) {
     this.fish = fish;
     this.setCaughtScreenUnloaded = setCaughtScreenUnloaded;
-    this.contentBox = new UiBox("Fish Capture Screen BG", 80, 60, 160, 120);
+    this.contentBox = new UiBox(80, 60, 160, 120);
 
     if(fish.legendaryFlag != -1) {
       final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (fish.legendaryFlag);
@@ -95,7 +95,6 @@ public class FishAcquiredScreen extends MenuScreen {
 
   public void unload() {
     this.getStack().popScreen();
-    this.contentBox.delete();
     this.setCaughtScreenUnloaded.run();
   }
 }

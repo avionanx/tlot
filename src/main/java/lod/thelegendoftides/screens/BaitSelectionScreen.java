@@ -31,9 +31,9 @@ import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class BaitSelectionScreen extends MenuScreen {
   private final List<Button> menuButtons = new ArrayList<>();
-  private UiBox headerBox;
-  private UiBox contentBox;
-  private UiBox hotkeyBox;
+  private final UiBox headerBox;
+  private final UiBox contentBox;
+  private final UiBox hotkeyBox;
 
   private int extraWidth;
 
@@ -77,9 +77,10 @@ public class BaitSelectionScreen extends MenuScreen {
       });
     });
 
-    this.headerBox = new UiBox("Bait List Header", 20 - this.extraWidth / 2, 18, 100, 14);
-    this.contentBox = new UiBox("Bait List Content", 20 - this.extraWidth / 2, 40, 100, 80);
-    this.hotkeyBox = new UiBox("Hotkey BG", 8 - this.extraWidth / 2, 226, 304 + this.extraWidth, 10);
+    this.headerBox = new UiBox(20 - this.extraWidth / 2, 18, 100, 14);
+    this.contentBox = new UiBox(20 - this.extraWidth / 2, 40, 100, 80);
+    this.hotkeyBox = new UiBox(8 - this.extraWidth / 2, 226, 304 + this.extraWidth, 10);
+    this.hotkeyBox.setZ(140);
 
     if(baits.isEmpty()) {
       this.addButton(I18n.translate(getTranslationKey("message_no_bait")), () -> {});
@@ -96,19 +97,16 @@ public class BaitSelectionScreen extends MenuScreen {
   }
 
   private void onResized(final Window window, final int x, final int y) {
-    this.headerBox.delete();
-    this.contentBox.delete();
-    this.hotkeyBox.delete();
-
     this.extraWidth = (int)getExtraWidth();
 
     for(int i = 0; i < this.menuButtons.size(); i++) {
       this.menuButtons.get(i).setPos(30 - this.extraWidth / 2, 40 + i * 14);
     }
 
-    this.headerBox = new UiBox("Bait List Header", 20 - this.extraWidth / 2, 18, 100, 14);
-    this.contentBox = new UiBox("Bait List Content", 20 - this.extraWidth / 2, 40, 100, 80);
-    this.hotkeyBox = new UiBox("Hotkey BG", 8 - this.extraWidth / 2, 226, 304 + this.extraWidth, 10);
+    this.headerBox.setPos(20 - this.extraWidth / 2, 18);
+    this.contentBox.setPos(20 - this.extraWidth / 2, 40);
+    this.hotkeyBox.setPos(8 - this.extraWidth / 2, 226);
+    this.hotkeyBox.setSize(304 + this.extraWidth, 10);
   }
 
   @Override
@@ -121,9 +119,6 @@ public class BaitSelectionScreen extends MenuScreen {
 
   private void unload() {
     this.getStack().popScreen();
-    this.headerBox.delete();
-    this.contentBox.delete();
-    this.hotkeyBox.delete();
 
     RENDERER.events().removeOnResize(this::onResized);
   }

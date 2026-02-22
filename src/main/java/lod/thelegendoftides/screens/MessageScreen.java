@@ -16,7 +16,7 @@ import static lod.thelegendoftides.Tlot.getExtraWidth;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class MessageScreen extends MenuScreen {
-    private UiBox backgroundBox;
+    private final UiBox backgroundBox;
     private final String message;
     private int extraWidth;
 
@@ -24,23 +24,21 @@ public class MessageScreen extends MenuScreen {
         this.message = I18n.translate(getTranslationKey(messageKey));
 
         this.extraWidth = (int)getExtraWidth();
-        this.backgroundBox = new UiBox("Message BG", 8 - this.extraWidth / 2, 20, 304 + this.extraWidth, 10);
+        this.backgroundBox = new UiBox(8 - this.extraWidth / 2, 20, 304 + this.extraWidth, 10);
 
         RENDERER.window().events().onResize(this::onResized);
     }
 
     private void onResized(final Window window, final int x, final int y) {
-        this.backgroundBox.delete();
-
         this.extraWidth = (int)getExtraWidth();
-        this.backgroundBox = new UiBox("Message BG", 8 - this.extraWidth / 2, 20, 304 + this.extraWidth, 10);
+        this.backgroundBox.setPos(8 - this.extraWidth / 2, 20);
+        this.backgroundBox.setSize(304 + this.extraWidth, 10);
 
         RENDERER.window().events().onResize(this::onResized);
     }
 
     private void unloadMessage() {
         this.getStack().popScreen();
-        this.backgroundBox.delete();
         RENDERER.window().events().removeOnResize(this::onResized);
     }
 

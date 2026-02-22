@@ -4,11 +4,9 @@ import legend.core.platform.Window;
 import legend.game.EngineState;
 import legend.game.i18n.I18n;
 import legend.game.inventory.screens.FontOptions;
-import legend.game.inventory.screens.HorizontalAlign;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
-import legend.game.submap.SMap;
 import legend.game.types.Renderable58;
 import legend.game.ui.UiBox;
 import lod.thelegendoftides.Bait;
@@ -22,7 +20,6 @@ import java.util.Set;
 
 import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.RENDERER;
-import static legend.game.EngineStates.currentEngineState_8004dd04;
 import static legend.game.Graphics.displayHeight_1f8003e4;
 import static legend.game.Graphics.displayWidth_1f8003e0;
 import static legend.game.SItem.UI_WHITE;
@@ -34,8 +31,8 @@ import static lod.thelegendoftides.Tlot.getTranslationKey;
 public class FishListScreen extends MenuScreen {
   public static final FontOptions UI_GOOD_BAIT = new FontOptions().colour(TextColour.YELLOW);
 
-  private UiBox headerBox;
-  private UiBox contentBox;
+  private final UiBox headerBox;
+  private final UiBox contentBox;
 
   public final FishingHole fishingHole;
 
@@ -57,8 +54,8 @@ public class FishListScreen extends MenuScreen {
 
     this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
     this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter(weight -> weight.fish.get().canBeCaught() && !weight.fish.get().isHidden).count());
-    this.headerBox = new UiBox("Fish List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Fish List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
+    this.headerBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
+    this.contentBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
 
     RENDERER.events().onResize(this::onResized);
   }
@@ -126,20 +123,14 @@ public class FishListScreen extends MenuScreen {
   }
 
   public void onResized(final Window window, final int x, final int y) {
-    this.headerBox.delete();
-    this.contentBox.delete();
-
     this.extraWidth = (int)getExtraWidth();
     this.updateDimensions();
 
-    this.headerBox = new UiBox("Bait List Header", (int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
-    this.contentBox = new UiBox("Bait List Content", (int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
+    this.headerBox.setPos((int)(this.fullWidth - 110 * this.ratio), 18);
+    this.contentBox.setPos((int)(this.fullWidth - 110 * this.ratio), 40);
   }
 
   public void unload() {
-    this.headerBox.delete();
-    this.contentBox.delete();
-
     RENDERER.events().removeOnResize(this::onResized);
   }
 }
