@@ -21,6 +21,8 @@ thelegendoftides.items.infused_bait_box.name=Infused Bait Box
 thelegendoftides.items.infused_bait_box.description=Holds 10. Efficient\nfor catching\nmagical fish
 thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
+thelegendoftides.items.dragonic_bait_box.name=Funky Bait Box
+thelegendoftides.items.dragonic_bait_box.description=Holds 1. Dabas found\nthese on his\mining adventures.
 
 thelegendoftides.items.carp.name=Carp
 thelegendoftides.items.carp.description=Recovers 100 HP\nto everyone
@@ -102,6 +104,15 @@ thelegendoftides.items.goldenfish.description=Grown silverfish,\nmore expensive.
 
 thelegendoftides.items.grand_goldenfish.name=Grand Goldenfish
 thelegendoftides.items.grand_goldenfish.description=Worth a fortune
+
+thelegendoftides.items.stardustfish.name=Stardustfish
+thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.
+
+thelegendoftides.items.bottle_o_horrors.name=Bottle O' Horrors
+thelegendoftides.items.bottle_o_horrors.description=DO NOT OPEN.\nI REPEAT.\nDO NOT OPEN.
+
+thelegendoftides.items.bottle_o_love.name=Bottle O' Love
+thelegendoftides.items.bottle_o_love.description=Increases MaxHP by\n25% until end\nof battle.
 
 thelegendoftides.items.stardustfish.name=Stardustfish
 thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.

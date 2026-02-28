@@ -42,8 +42,7 @@ public final class TlotItems {
   public static final RegistryDelegate<BaitBoxItem> SPARKLING_BAIT_BOX = ITEM_REGISTRAR.register("sparkling_bait_box", () -> new BaitBoxItem(TlotBait.SPARKLING, 10, 20));
   public static final RegistryDelegate<BaitBoxItem> INFUSED_BAIT_BOX = ITEM_REGISTRAR.register("infused_bait_box", () -> new BaitBoxItem(TlotBait.INFUSED, 10, 10));
   public static final RegistryDelegate<BaitBoxItem> MAGNETIC_BAIT_BOX = ITEM_REGISTRAR.register("magnetic_bait_box", () -> new BaitBoxItem(TlotBait.MAGNETIC, 5, 40));
-
-  public static final RegistryDelegate<BaitBoxItem> DRAGONIC_BAIT_BOX = ITEM_REGISTRAR.register("dragonic_bait_box", () -> new BaitBoxItem(TlotBait.DRAGONIC, 10, 0));
+  public static final RegistryDelegate<BaitBoxItem> DRAGONIC_BAIT_BOX = ITEM_REGISTRAR.register("dragonic_bait_box", () -> new BaitBoxItem(TlotBait.DRAGONIC, 1, 50));
 
   // Fish
   public static final RegistryDelegate<CarpItem> CARP = ITEM_REGISTRAR.register("carp", CarpItem::new);
@@ -71,6 +70,13 @@ public final class TlotItems {
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", LastKrakenJrItem::new);
   public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", AzeelGladiatorItem::new);
   public static final RegistryDelegate<GooseItem> GOOSE = ITEM_REGISTRAR.register("goose", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> BOTTLE_O_HORRORS = ITEM_REGISTRAR.register("bottle_o_horrors", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> BOTTLE_O_LOVE = ITEM_REGISTRAR.register("bottle_o_love", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> PETRICHOR = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> VOIDFIN = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> AURCIS = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> NIGHTFIN = ITEM_REGISTRAR.register("nightfin", GooseItem::new);
+  public static final RegistryDelegate<GooseItem> MAGMA_EATER = ITEM_REGISTRAR.register("magma_eater", GooseItem::new);
 
   public static final RegistryDelegate<AzeelTrackerItem> AZEEL_TRACKER = ITEM_REGISTRAR.register("azeel_tracker", AzeelTrackerItem::new);
 

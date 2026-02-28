@@ -13,7 +13,8 @@ public final class TlotGoods {
 
   private static final Registrar<Good, GoodsRegistryEvent> REGISTRAR = new Registrar<>(REGISTRIES.goods, Tlot.MOD_ID);
 
-  private static final RegistryDelegate<Good> DRAGONI = REGISTRAR.register("dragoni", () -> new Good(1000, ItemIcon.YELLOW_POTION));
+  public static final RegistryDelegate<Good> DRAGONI = REGISTRAR.register("dragoni", () -> new Good(1000, ItemIcon.YELLOW_POTION));
+  public static final RegistryDelegate<Good> AURCIS = REGISTRAR.register("aurcis", () -> new Good(2000, ItemIcon.SKULL));
 
   static void register(final GoodsRegistryEvent event) {
     REGISTRAR.registryEvent(event);

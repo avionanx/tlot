@@ -1,56 +1,40 @@
 package lod.thelegendoftides.items;
 
-import legend.core.memory.Method;
 import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.inventory.ItemStack;
-import legend.game.inventory.UseItemResponse;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-import static legend.game.SItem.addHp;
-
-public class CarpItem extends FishItem {
-  public CarpItem() {
-    super(TlotFish.CARP);
+public class MagmaEaterItem extends FishItem {
+  public MagmaEaterItem() {
+    super(TlotFish.MAGMA_EATER);
   }
 
   @Override
   int getUnitPrice() {
-   return 20;
+   return 40;
   }
 
  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
-    return true;
+    return location == UsageLocation.BATTLE;
   }
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES || type == TargetType.ALL;
+    return type == TargetType.ENEMIES;
   }
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.NO_ELEMENT.get();
+    return LodMod.FIRE_ELEMENT.get();
   }
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 34;
-  }
-
-  @Override
-  @Method(0x80022d88L)
-  public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
-    addHp(charId, 100);
-    response.success();
-  }
-
-  @Override
-  public boolean alwaysHits(final ItemStack stack) {
-    return true;
+    return 33;
   }
 
   @Override

@@ -52,8 +52,10 @@ import legend.game.modding.events.input.InputReleasedEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
+import legend.game.modding.events.submap.SubmapLoadEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
+import legend.game.scripting.ScriptFile;
 import legend.game.scripting.ScriptState;
 import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
@@ -305,6 +307,14 @@ public class Tlot {
     this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut).stream().filter(FishingHole::canFish).toList();
     for(final FishingHole hole : this.currentCutFishingHoles) {
       this.fishingIndicators.add(new FishingIndicator(hole.indicatorPosition));
+    }
+  }
+
+  @EventListener
+  public void submapLoadHandler(final SubmapLoadEvent event) throws IOException {
+    if(submapCut_80052c30 == 141) {
+        final FileData replacement = Loader.loadFile(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/smap/%s/%s".formatted(submapCut_80052c30, 1)));
+        event.submapObjects.getFirst().script = new ScriptFile("SOBJ0 Replacement", replacement.getBytes());
     }
   }
 
@@ -981,6 +991,9 @@ public class Tlot {
     if(event.shop.shopType_00 == 0) return;
 
     switch(event.shop.getRegistryId().entryId()) {
+      case "" -> {
+        // event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.DRAGONIC_BAIT_BOX.get(), 1), TlotItems.DRAGONIC_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.DRAGONIC_BAIT_BOX.get(), 1))));
+      }
       case "forest_item_shop", "hellena_01_item_shop", "volcano_item_shop" -> {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4))));
       }
