@@ -7,9 +7,9 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class VoidfinItem extends FishItem {
-  public VoidfinItem() {
-    super(TlotFish.VOIDFIN);
+public class FishPrime extends FishItem {
+  public FishPrime() {
+    super(TlotFish.FISH_PRIME);
   }
 
   @Override
@@ -29,12 +29,12 @@ public class VoidfinItem extends FishItem {
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.DARK_ELEMENT.get();
+    return LodMod.NO_ELEMENT.get();
   }
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 33;
+    return 38;
   }
 
   @Override

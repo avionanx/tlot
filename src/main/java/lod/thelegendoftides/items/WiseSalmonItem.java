@@ -19,7 +19,7 @@ public class WiseSalmonItem extends FishItem {
    return 100;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.MENU;
   }

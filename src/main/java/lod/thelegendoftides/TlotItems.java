@@ -7,6 +7,8 @@ import lod.thelegendoftides.items.ArgentfinItem;
 import lod.thelegendoftides.items.AzeelGladiatorItem;
 import lod.thelegendoftides.items.BaitBoxItem;
 import lod.thelegendoftides.items.BlackBassItem;
+import lod.thelegendoftides.items.BottleOHorrors;
+import lod.thelegendoftides.items.BottleOLove;
 import lod.thelegendoftides.items.CarpItem;
 import lod.thelegendoftides.items.GoldenfishItem;
 import lod.thelegendoftides.items.GooseItem;
@@ -70,11 +72,9 @@ public final class TlotItems {
   public static final RegistryDelegate<LastKrakenJrItem> LAST_KRAKEN_JR = ITEM_REGISTRAR.register("last_kraken_jr", LastKrakenJrItem::new);
   public static final RegistryDelegate<AzeelGladiatorItem> AZEEL_GLADIATOR = ITEM_REGISTRAR.register("azeel_gladiator", AzeelGladiatorItem::new);
   public static final RegistryDelegate<GooseItem> GOOSE = ITEM_REGISTRAR.register("goose", GooseItem::new);
-  public static final RegistryDelegate<GooseItem> BOTTLE_O_HORRORS = ITEM_REGISTRAR.register("bottle_o_horrors", GooseItem::new);
-  public static final RegistryDelegate<GooseItem> BOTTLE_O_LOVE = ITEM_REGISTRAR.register("bottle_o_love", GooseItem::new);
+  public static final RegistryDelegate<BottleOHorrors> BOTTLE_O_HORRORS = ITEM_REGISTRAR.register("bottle_o_horrors", BottleOHorrors::new);
+  public static final RegistryDelegate<BottleOLove> BOTTLE_O_LOVE = ITEM_REGISTRAR.register("bottle_o_love", BottleOLove::new);
   public static final RegistryDelegate<GooseItem> PETRICHOR = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
-  public static final RegistryDelegate<GooseItem> VOIDFIN = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
-  public static final RegistryDelegate<GooseItem> AURCIS = ITEM_REGISTRAR.register("petrichor", GooseItem::new);
   public static final RegistryDelegate<GooseItem> NIGHTFIN = ITEM_REGISTRAR.register("nightfin", GooseItem::new);
   public static final RegistryDelegate<GooseItem> MAGMA_EATER = ITEM_REGISTRAR.register("magma_eater", GooseItem::new);
 

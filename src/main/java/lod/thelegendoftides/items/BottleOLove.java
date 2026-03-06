@@ -17,7 +17,7 @@ public class BottleOLove extends FishItem {
    return 200;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }
@@ -35,6 +35,11 @@ public class BottleOLove extends FishItem {
   @Override
   protected int getUseItemScriptEntrypoint() {
     return 38;
+  }
+
+  @Override
+  public boolean isRepeat(final ItemStack stack) {
+    return true;
   }
 
   @Override

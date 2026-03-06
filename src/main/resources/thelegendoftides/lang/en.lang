@@ -112,7 +112,8 @@ thelegendoftides.items.bottle_o_horrors.name=Bottle O' Horrors
 thelegendoftides.items.bottle_o_horrors.description=DO NOT OPEN.\nI REPEAT.\nDO NOT OPEN.
 
 thelegendoftides.items.bottle_o_love.name=Bottle O' Love
-thelegendoftides.items.bottle_o_love.description=Increases MaxHP by\n25% until end\nof battle.
+thelegendoftides.items.bottle_o_love.description=Increases Max HP by\n30%% until end of battle
+thelegendoftides.items.bottle_o_love.battle_description=Buffs HP by 30%% until battle end
 
 thelegendoftides.items.stardustfish.name=Stardustfish
 thelegendoftides.items.stardustfish.description=Legendary,\nextremely expensive.

@@ -17,7 +17,7 @@ public class AzeelGladiatorItem extends FishItem {
    return 1200;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }
