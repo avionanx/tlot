@@ -455,12 +455,12 @@ public class Tlot {
     }
 
     final List<Equipment> specialWeapons = switch(playerId) {
-      case 0 -> List.of(TlotEquipments.GLOWSTICK.get());
+      case 0 -> List.of(TlotEquipments.GLOWSTICK.get(), TlotEquipments.LIVART.get(), TlotEquipments.BRILLANTE.get(), TlotEquipments.ERICCIL.get());
       case 1, 5 -> List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
       case 2, 8 -> List.of(TlotEquipments.BIANCA.get());
-      case 3 -> List.of(TlotEquipments.ENERGY_SWORD.get());
+      case 3 -> List.of(TlotEquipments.ENERGY_SWORD.get(), TlotEquipments.KERNVITER.get());
       case 4 -> List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
-      case 6 -> List.of(TlotEquipments.GUITAR.get());
+      case 6 -> List.of(TlotEquipments.GUITAR.get(), TlotEquipments.PRETTIEST_HAMMER.get());
       case 7 -> List.of(TlotEquipments.OVERSIZED_KEY.get());
       default -> null;
     };

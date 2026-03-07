@@ -138,6 +138,15 @@ thelegendoftides.items.azeel_tracker.battle_description=Run Azeel tracker (repea
 thelegendoftides.equipment.glowstick.name=Glowstick
 thelegendoftides.equipment.glowstick.description=Hello there
 
+thelegendoftides.equipment.livart.name=Livart
+thelegendoftides.equipment.livart.description=A sword forged of\nblue esmelas
+
+thelegendoftides.equipment.brillante.name=Brillante
+thelegendoftides.equipment.brillante.description=A sword forged of\nred esmelas
+
+thelegendoftides.equipment.ericcil.name=Ericcil
+thelegendoftides.equipment.ericcil.description=A sword forged of\ngold esmelas
+
 thelegendoftides.equipment.nameless_spear.name=Nameless Spear
 thelegendoftides.equipment.nameless_spear.description=Praise the sun.
 
@@ -268,6 +277,9 @@ thelegendoftides.fish.goose.description=Death
 thelegendoftides.fish.goose.hint=
 
 thelegendoftides.fish.glowstick.name=Glowstick
+thelegendoftides.fish.livart.name=Livart
+thelegendoftides.fish.brillante.name=Brillante
+thelegendoftides.fish.ericcil.name=Ericcil
 thelegendoftides.fish.nameless_spear.name=Nameless Spear
 thelegendoftides.fish.bianca.name=Bianca
 thelegendoftides.fish.energy_sword.name=Energy Sword
