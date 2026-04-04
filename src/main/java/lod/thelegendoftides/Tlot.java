@@ -991,9 +991,6 @@ public class Tlot {
     if(event.shop.shopType_00 == 0) return;
 
     switch(event.shop.getRegistryId().entryId()) {
-      case "" -> {
-        // event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.DRAGONIC_BAIT_BOX.get(), 1), TlotItems.DRAGONIC_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.DRAGONIC_BAIT_BOX.get(), 1))));
-      }
       case "forest_item_shop", "hellena_01_item_shop", "volcano_item_shop" -> {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4))));
       }

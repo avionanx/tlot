@@ -14,6 +14,7 @@ public final class TlotDeffs {
   private static final Registrar<DeffPackage, RegisterDeffsEvent> REGISTRAR = new Registrar<>(REGISTRIES.deff, MOD_ID);
 
   public static final RegistryDelegate<DeffPackage> ROCKHEAD_PUFFERFISH = REGISTRAR.register("rockhead_pufferfish",TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> ARGENTFIN = REGISTRAR.register("argentfin",TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> KOI = REGISTRAR.register("koi", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> SWORDFISH = REGISTRAR.register("swordfish", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> STURGEON = REGISTRAR.register("sturgeon", TidesItemDeffPackage::new);
@@ -30,6 +31,8 @@ public final class TlotDeffs {
   public static final RegistryDelegate<DeffPackage> GOOSE = REGISTRAR.register("goose", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> LAST_KRAKEN_JR = REGISTRAR.register("last_kraken_jr", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> MURKRAY = REGISTRAR.register("murkray", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> MAGMA_EATER = REGISTRAR.register("magma_eater", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> THUNDER_JELLY = REGISTRAR.register("thunder_jelly", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> SHADESEEKER = REGISTRAR.register("shadeseeker", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> BOTTLE_O_LOVE = REGISTRAR.register("bottle_o_love", TidesItemDeffPackage::new);
 

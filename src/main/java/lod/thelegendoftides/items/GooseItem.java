@@ -29,7 +29,7 @@ public class GooseItem extends FishItem {
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.NO_ELEMENT.get();
+    return LodMod.DIVINE_ELEMENT.get();
   }
 
   @Override

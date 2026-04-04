@@ -7,9 +7,9 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
-public class ThunderousJellyItem extends FishItem {
-  public ThunderousJellyItem() {
-    super(TlotFish.THUNDEROUS_JELLY);
+public class ThunderJellyItem extends FishItem {
+  public ThunderJellyItem() {
+    super(TlotFish.THUNDER_JELLY);
   }
 
   @Override
