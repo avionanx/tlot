@@ -129,6 +129,7 @@ import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.sound.Audio.playSound;
+import static legend.game.sound.Audio.unloadSoundFile;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
 @Mod(id = Tlot.MOD_ID, version = "^3.0.0")
@@ -146,6 +147,7 @@ public class Tlot {
   public static final Registry<FishingHole> FISHING_HOLE_REGISTRY = new FishingHoleRegistry();
   public static final Registry<FishingHolePrerequisites> FISHING_HOLE_PREREQUISITES_REGISTRY = new FishingHolePrerequisitesRegistry();
   public static final Registry<FishingStage> FISHING_STAGE_REGISTRY = new FishingStageRegistry();
+  public static final Registry<FishingMusic> FISHING_MUSIC_REGISTRY = new FishingMusicRegistry();
 
   /**
    * <ul>
@@ -242,6 +244,7 @@ public class Tlot {
     event.addRegistry(FISH_REGISTRY, RegisterFishEvent::new);
     event.addRegistry(FISH_BAIT_WEIGHT_REGISTRY, RegisterFishBaitWeightEvent::new);
     event.addRegistry(FISHING_STAGE_REGISTRY, RegisterFishingStageEvent::new);
+    event.addRegistry(FISHING_MUSIC_REGISTRY, RegisterFishingMusicEvent::new);
     event.addRegistry(FISHING_HOLE_REGISTRY, RegisterFishingHoleEvent::new);
     event.addRegistry(FISHING_HOLE_PREREQUISITES_REGISTRY, RegisterFishingHolePrerequisitiesEvent::new);
   }
@@ -280,6 +283,11 @@ public class Tlot {
   @EventListener
   public void registerFish(final RegisterFishEvent event) {
     TlotFish.register(event);
+  }
+
+  @EventListener
+  public void registerMusic(final RegisterFishingMusicEvent event) {
+    TlotFishingMusic.register(event);
   }
 
   @EventListener
@@ -344,6 +352,8 @@ public class Tlot {
 
     this.battle.battleInitialCameraMovementFinished_800c66a8 = true;
     camera.resetCameraMovement();
+
+    this.currentFishingHole.fishingMusic.get().playMusic();
 
     final FishingStage fishingStage = this.currentFishingHole.fishingStage.get();
 
@@ -743,7 +753,7 @@ public class Tlot {
         isFishEncounter = true;
         this.fishListScreen.isFishListScreenDisabled = true;
 
-        SBtld.startEncounter(new FishEncounter(this.currentFishingHole.musicIndex, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+        SBtld.startEncounter(new FishEncounter(01, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
         ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
       } else {
         playMenuSound(40);
