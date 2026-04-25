@@ -18,7 +18,8 @@ import legend.game.Text;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
-import legend.game.additions.CharacterAdditionStats;
+import legend.game.characters.CharacterAdditionInfo;
+import legend.game.characters.CharacterData2c;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -59,13 +60,11 @@ import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
-import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
 import legend.lodmod.LodEngineStateTypes;
-import legend.lodmod.LodGoods;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
@@ -394,7 +393,7 @@ public class Tlot {
 
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
-    final int playerId = (event.combatant.charIndex_1a2 - 0x200) / 2;
+    final int playerId = (event.combatant.charIndex_1a2 - 0x200) >>> 1;
 
     final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
     final int modelPartIndex;
@@ -456,7 +455,7 @@ public class Tlot {
     };
 
     if(specialWeapons == null) return;
-    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == equip).findFirst();
+    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> gameState_800babc8.charData_32c.get(playerId).getEquipment(EquipmentSlot.WEAPON) == equip).findFirst();
 
     if(weapon.isPresent()) {
       final Equipment specialWeapon = weapon.get();
@@ -871,25 +870,24 @@ public class Tlot {
   }
 
   private void loadRandomAdditionHit() {
-    final int charId = this.player.charId_272;
-    final CharacterData2c charData = gameState_800babc8.charData_32c[charId];
-    final RegistryDelegate<Addition>[] charAdditions = CHARACTER_ADDITIONS[charId];
-    final int additionCount = charAdditions.length;
-    final Addition randomAddition = charAdditions[this.rand.nextInt(additionCount)].get();
-    final CharacterAdditionStats additionStats = charData.additionStats.get(randomAddition.getRegistryId());
+    final CharacterData2c character = this.player.character;
+    final List<RegistryId> charAdditions = new ArrayList<>(character.getAllAdditions());
+    final RegistryId randomAdditionId = charAdditions.get(this.rand.nextInt(charAdditions.size()));
+    final Addition randomAddition = REGISTRIES.additions.getEntry(randomAdditionId).get();
+    final CharacterAdditionInfo additionInfo = character.getAdditionInfo(randomAdditionId);
 
-    final RegistryId oldAddition = charData.selectedAddition_19;
-    charData.selectedAddition_19 = randomAddition.getRegistryId();
+    final RegistryId oldAddition = character.selectedAddition_19;
+    character.selectedAddition_19 = randomAdditionId;
     loadAdditions();
-    charData.selectedAddition_19 = oldAddition;
+    character.selectedAddition_19 = oldAddition;
 
-    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(gameState_800babc8, charData, additionStats));
+    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(character, additionInfo));
     this.loadingAnimIndex = 16 + hitIndex;
 
-    this.activeAdditionHit = randomAddition.getHit(gameState_800babc8, charData, additionStats, hitIndex);
+    this.activeAdditionHit = randomAddition.getHit(character, additionInfo, hitIndex);
     this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
-    randomAddition.loadAnimations(gameState_800babc8, charData, additionStats, this::onAnimationsLoaded);
+    randomAddition.loadAnimations(character, additionInfo, this::onAnimationsLoaded);
     this.additionScreen.addHit();
   }
 
