@@ -35,6 +35,8 @@ import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
+import legend.game.inventory.EquipmentTypes;
+import legend.game.inventory.GatherEquipmentTypesEvent;
 import legend.game.inventory.GoodsRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
@@ -262,6 +264,33 @@ public class Tlot {
   @EventListener
   public void registerEquipments(final EquipmentRegistryEvent event) {
     TlotEquipments.register(event);
+  }
+
+  @EventListener
+  public void addEquipmentTypes(final GatherEquipmentTypesEvent event) {
+    event.add(TlotEquipments.GLOWSTICK.get(), EquipmentTypes.LONGSWORD);
+
+    event.add(TlotEquipments.NAMELESS_SPEAR.get(), EquipmentTypes.POLEARM);
+    event.add(TlotEquipments.ORTHOS_PRIME.get(), EquipmentTypes.POLEARM);
+
+    event.add(TlotEquipments.BIANCA.get(), EquipmentTypes.BOW);
+
+    event.add(TlotEquipments.ENERGY_SWORD.get(), EquipmentTypes.SHORTSWORD);
+    event.add(TlotEquipments.KERNVITER.get(), EquipmentTypes.SHORTSWORD);
+
+    event.add(TlotEquipments.PUFFERFISH_KNUCKLES.get(), EquipmentTypes.HAND);
+
+    event.add(TlotEquipments.GUITAR.get(), EquipmentTypes.HAMMER);
+
+    event.add(TlotEquipments.OVERSIZED_KEY.get(), EquipmentTypes.AXE);
+
+    event.add(TlotEquipments.MAGIS_BOOTS.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.OLD_BOOTS.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.THE_ONE_RING.get(), EquipmentTypes.NEUTRAL);
+
+    event.add(TlotEquipments.GIGANTO_SKIRT.get(), EquipmentTypes.KONGOL);
+    event.add(TlotEquipments.THIGH_HIGHS.get(), EquipmentTypes.DART);
+    event.add(TlotEquipments.CAT_EARS.get(), EquipmentTypes.ROSE);
   }
 
   @EventListener
