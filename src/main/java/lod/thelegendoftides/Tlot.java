@@ -20,6 +20,7 @@ import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
 import legend.game.characters.CharacterAdditionInfo;
 import legend.game.characters.CharacterData2c;
+import legend.game.characters.CharacterTemplate;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -66,6 +67,7 @@ import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
+import legend.lodmod.LodCharacterTemplates;
 import legend.lodmod.LodEngineStateTypes;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
@@ -422,7 +424,7 @@ public class Tlot {
 
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
-    final int playerId = (event.combatant.charIndex_1a2 - 0x200) >>> 1;
+    final CharacterTemplate template = player.character.template;
 
     final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
     final int modelPartIndex;
@@ -464,7 +466,7 @@ public class Tlot {
     if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
       this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
       this.specialWeaponList.get(event.combatant.charSlot_19c).withDragoonRotation(dragoonRotation);
-      if(playerId == 4) {
+      if(template == LodCharacterTemplates.HASCHEL.get()) {
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).withDragoonRotation(dragoonRotation);
       }
@@ -472,26 +474,34 @@ public class Tlot {
       return;
     }
 
-    final List<Equipment> specialWeapons = switch(playerId) {
-      case 0 -> List.of(TlotEquipments.GLOWSTICK.get());
-      case 1, 5 -> List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
-      case 2, 8 -> List.of(TlotEquipments.BIANCA.get());
-      case 3 -> List.of(TlotEquipments.ENERGY_SWORD.get());
-      case 4 -> List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
-      case 6 -> List.of(TlotEquipments.GUITAR.get());
-      case 7 -> List.of(TlotEquipments.OVERSIZED_KEY.get());
-      default -> null;
-    };
+    final List<Equipment> specialWeapons;
+    if(template == LodCharacterTemplates.DART.get()) {
+      specialWeapons = List.of(TlotEquipments.GLOWSTICK.get());
+    } else if(template == LodCharacterTemplates.LAVITZ.get() || template == LodCharacterTemplates.ALBERT.get()) {
+      specialWeapons = List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
+    } else if(template == LodCharacterTemplates.SHANA.get() || template == LodCharacterTemplates.MIRANDA.get()) {
+      specialWeapons = List.of(TlotEquipments.BIANCA.get());
+    } else if(template == LodCharacterTemplates.ROSE.get()) {
+      specialWeapons = List.of(TlotEquipments.ENERGY_SWORD.get());
+    } else if(template == LodCharacterTemplates.HASCHEL.get()) {
+      specialWeapons = List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
+    } else if(template == LodCharacterTemplates.MERU.get()) {
+      specialWeapons = List.of(TlotEquipments.GUITAR.get());
+    } else if(template == LodCharacterTemplates.KONGOL.get()) {
+      specialWeapons = List.of(TlotEquipments.OVERSIZED_KEY.get());
+    } else {
+      specialWeapons = null;
+    }
 
     if(specialWeapons == null) return;
-    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> gameState_800babc8.charData_32c.get(playerId).getEquipment(EquipmentSlot.WEAPON) == equip).findFirst();
+    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> player.character.getEquipment(EquipmentSlot.WEAPON) == equip).findFirst();
 
     if(weapon.isPresent()) {
       final Equipment specialWeapon = weapon.get();
 
       player.model_148.partInvisible_f4 |= partFlags;
       this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
-      if(playerId == 4) {
+      if(template == LodCharacterTemplates.HASCHEL.get()) {
         this.specialWeaponList.put(event.combatant.charSlot_19c + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
       }
     }
