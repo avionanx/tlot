@@ -12,8 +12,8 @@ public class RandomRewardFish extends Fish {
   private final Supplier<ItemStack>[] rewardPool;
 
   @SafeVarargs
-  public RandomRewardFish(final ItemIcon icon, final float stamina, final float strength, final Supplier<ItemStack>... rewardPool) {
-    super(icon, stamina, strength);
+  public RandomRewardFish(final ItemIcon icon, final float stamina, final float strength, final int xp,final Supplier<ItemStack>... rewardPool) {
+    super(icon, stamina, strength, xp);
     this.rewardPool = rewardPool;
   }
 

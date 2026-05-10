@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 public class RegularFish extends Fish {
   private final Supplier<ItemStack> reward;
 
-  public RegularFish(final FishIcon icon, final float stamina, final float strength, final Supplier<ItemStack> reward) {
-    super(icon, stamina, strength);
+  public RegularFish(final FishIcon icon, final float stamina, final float strength, final int xp, final Supplier<ItemStack> reward) {
+    super(icon, stamina, strength, xp);
     this.reward = reward;
   }
 

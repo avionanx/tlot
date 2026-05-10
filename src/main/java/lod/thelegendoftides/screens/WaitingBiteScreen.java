@@ -50,7 +50,7 @@ public class WaitingBiteScreen extends MenuScreen {
       return InputPropagation.PROPAGATE;
     }
 
-    if(this.frames <= 60) {
+    if(this.frames <= TlotLevelHelpers.TLOT_WAITING_WINDOW()) {
       this.deferAction(this::succeeded);
     } else {
       this.deferAction(this::failed);

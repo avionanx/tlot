@@ -17,11 +17,13 @@ public abstract class Fish extends RegistryEntry {
   public int legendaryFlag;
   /** Whether fish is shown in fishlistscreen or book */
   public boolean isHidden;
+  public int xp;
 
-  public Fish(final ItemIcon icon, final float stamina, final float strength) {
+  public Fish(final ItemIcon icon, final float stamina, final float strength, final int xp) {
     this.icon = icon;
     this.stamina = stamina;
     this.strength = strength;
+    this.xp = xp;
     this.legendaryFlag = -1;
   }
 

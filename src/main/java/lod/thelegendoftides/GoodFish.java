@@ -10,8 +10,8 @@ import java.util.function.Supplier;
 public class GoodFish extends Fish {
   private final Supplier<Good> reward;
 
-  public GoodFish(final ItemIcon icon, final float stamina, final float strength, final Supplier<Good> reward) {
-    super(icon, stamina, strength);
+  public GoodFish(final ItemIcon icon, final float stamina, final float strength, final int xp, final Supplier<Good> reward) {
+    super(icon, stamina, strength, xp);
     this.reward = reward;
   }
 

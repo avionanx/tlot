@@ -74,6 +74,7 @@ import legend.lodmod.LodEngineStateTypes;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
+import lod.thelegendoftides.configs.XPConfig;
 import lod.thelegendoftides.icons.FishIconUiType;
 import lod.thelegendoftides.screens.AdditionOverlayScreen;
 import lod.thelegendoftides.screens.BaitSelectionScreen;
@@ -168,6 +169,7 @@ public class Tlot {
    * </ul>
    */
   public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
+  public static final RegistryDelegate<XPConfig> TLOT_XP = TIDES_CONFIG_REGISTRAR.register("tlot_xp", XPConfig::new);
 
   private static final FontOptions CENTERED = new FontOptions().set(SItem.UI_WHITE_CENTERED).shadowColour(TextColour.BLACK);
 
