@@ -4,6 +4,7 @@ import legend.core.platform.input.InputAction;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import lod.thelegendoftides.Fish;
+import lod.thelegendoftides.TlotLevelHelpers;
 import org.jetbrains.annotations.NotNull;
 
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
@@ -30,7 +31,7 @@ public class WaitingBiteScreen extends MenuScreen {
   protected void render() {
     this.frames--;
 
-    if(this.frames == 60) {
+    if(this.frames == TlotLevelHelpers.TLOT_WAITING_WINDOW()) {
       if(this.fish != null) {
         playMenuSound(37);
         this.onFishNibbling.run();

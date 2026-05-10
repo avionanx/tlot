@@ -5,11 +5,16 @@ import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
 import legend.game.inventory.ItemStack;
 import legend.game.inventory.UseItemResponse;
+import legend.game.modding.events.inventory.GatherAttackItemsEvent;
+import legend.game.scripting.FlowControl;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
+import lod.thelegendoftides.TlotItems;
 
+import static legend.core.GameEngine.EVENTS;
 import static legend.game.SItem.addHp;
+import static legend.game.combat.Battle.seed_800fa754;
 
 public class DorminItem extends FishItem {
   public DorminItem() {
@@ -21,14 +26,14 @@ public class DorminItem extends FishItem {
    return 20;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ALLIES;
+    return type == TargetType.ENEMIES;
   }
 
   @Override
@@ -37,18 +42,23 @@ public class DorminItem extends FishItem {
   }
 
   @Override
-  protected int getUseItemScriptEntrypoint() {
-    return 34;
-  }
-
-  @Override
-  public boolean alwaysHits(final ItemStack stack) {
+  public boolean isRepeat(final ItemStack stack) {
     return true;
   }
 
   @Override
-  protected void useItemScriptLoaded(final ScriptState<BattleEntity27c> user, final int targetBentIndex) {
-    user.setStor(28, targetBentIndex);
-    user.setStor(30, user.index);
+  public FlowControl useInBattle(final ItemStack stack, final ScriptState<BattleEntity27c> user, final int targetBentIndex) {
+    final ItemStack[] stacks = {
+      new ItemStack(TlotItems.SUNSET.get()),
+      new ItemStack(TlotItems.THUNDER_HAMMER.get()),
+      new ItemStack(TlotItems.ICEHENGE.get()),
+      new ItemStack(TlotItems.TORNADO.get()),
+    };
+    final ItemStack selected = stacks[seed_800fa754.nextInt(stacks.length)];
+
+    user.innerStruct_00.item_d4 = selected;
+    user.registryIds[0] = selected.getItem().getRegistryId();
+
+    return selected.useInBattle(user, selected.canTarget(TargetType.ALL) ? -1 : targetBentIndex);
   }
 }

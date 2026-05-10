@@ -17,6 +17,7 @@ import lod.thelegendoftides.items.GrandBassItem;
 import lod.thelegendoftides.items.GrandCarpItem;
 import lod.thelegendoftides.items.GrandGoldenfishItem;
 import lod.thelegendoftides.items.GrandRainbowTroutItem;
+import lod.thelegendoftides.items.IcehengeItem;
 import lod.thelegendoftides.items.KoiItem;
 import lod.thelegendoftides.items.AzeelTrackerItem;
 import lod.thelegendoftides.items.MagmaEaterItem;
@@ -32,9 +33,12 @@ import lod.thelegendoftides.items.SilverCarpItem;
 import lod.thelegendoftides.items.SilverfishItem;
 import lod.thelegendoftides.items.StardustFishItem;
 import lod.thelegendoftides.items.SturgeonItem;
+import lod.thelegendoftides.items.SunsetItem;
 import lod.thelegendoftides.items.SwordfishItem;
 import lod.thelegendoftides.items.LastKrakenJrItem;
+import lod.thelegendoftides.items.ThunderHammerItem;
 import lod.thelegendoftides.items.ThunderJellyItem;
+import lod.thelegendoftides.items.TornadoItem;
 import lod.thelegendoftides.items.WiseSalmonItem;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
@@ -79,9 +83,13 @@ public final class TlotItems {
   public static final RegistryDelegate<BottleOHorrors> BOTTLE_O_HORRORS = ITEM_REGISTRAR.register("bottle_o_horrors", BottleOHorrors::new);
   public static final RegistryDelegate<BottleOLove> BOTTLE_O_LOVE = ITEM_REGISTRAR.register("bottle_o_love", BottleOLove::new);
   public static final RegistryDelegate<PetrichorItem> PETRICHOR = ITEM_REGISTRAR.register("petrichor", PetrichorItem::new);
-  public static final RegistryDelegate<DorminItem> DORMIN = ITEM_REGISTRAR.register("dormin", DorminItem::new);
   public static final RegistryDelegate<MagmaEaterItem> MAGMA_EATER = ITEM_REGISTRAR.register("magma_eater", MagmaEaterItem::new);
   public static final RegistryDelegate<ThunderJellyItem> THUNDER_JELLY = ITEM_REGISTRAR.register("thunder_jelly", ThunderJellyItem::new);
+
+  public static final RegistryDelegate<SunsetItem> SUNSET = ITEM_REGISTRAR.register("sunset", SunsetItem::new);
+  public static final RegistryDelegate<ThunderHammerItem> THUNDER_HAMMER = ITEM_REGISTRAR.register("thunder_hammer", ThunderHammerItem::new);
+  public static final RegistryDelegate<IcehengeItem> ICEHENGE = ITEM_REGISTRAR.register("icehenge", IcehengeItem::new);
+  public static final RegistryDelegate<TornadoItem> TORNADO = ITEM_REGISTRAR.register("tornado", TornadoItem::new);
 
   public static final RegistryDelegate<AzeelTrackerItem> AZEEL_TRACKER = ITEM_REGISTRAR.register("azeel_tracker", AzeelTrackerItem::new);
 

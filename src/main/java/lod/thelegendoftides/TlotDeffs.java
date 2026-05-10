@@ -35,6 +35,10 @@ public final class TlotDeffs {
   public static final RegistryDelegate<DeffPackage> THUNDER_JELLY = REGISTRAR.register("thunder_jelly", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> SHADESEEKER = REGISTRAR.register("shadeseeker", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> BOTTLE_O_LOVE = REGISTRAR.register("bottle_o_love", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> SUNSET = REGISTRAR.register("sunset", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> THUNDER_HAMMER = REGISTRAR.register("thunder_hammer", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> ICEHENGE = REGISTRAR.register("icehenge", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> TORNADO = REGISTRAR.register("tornado", TidesItemDeffPackage::new);
 
   static void register(final RegisterDeffsEvent event) {
     REGISTRAR.registryEvent(event);

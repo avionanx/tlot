@@ -18,7 +18,9 @@ import legend.game.Text;
 import legend.game.additions.Addition;
 import legend.game.additions.AdditionHitProperties10;
 import legend.game.additions.AdditionSound;
-import legend.game.additions.CharacterAdditionStats;
+import legend.game.characters.CharacterAdditionInfo;
+import legend.game.characters.CharacterData2c;
+import legend.game.characters.CharacterTemplate;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -34,6 +36,8 @@ import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
+import legend.game.inventory.EquipmentTypes;
+import legend.game.inventory.GatherEquipmentTypesEvent;
 import legend.game.inventory.GoodsRegistryEvent;
 import legend.game.inventory.ItemRegistryEvent;
 import legend.game.inventory.ItemStack;
@@ -61,13 +65,12 @@ import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
-import legend.game.types.CharacterData2c;
 import legend.game.types.EquipmentSlot;
 import legend.game.types.TmdAnimationFile;
 import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
+import legend.lodmod.LodCharacterTemplates;
 import legend.lodmod.LodEngineStateTypes;
-import legend.lodmod.LodGoods;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
@@ -271,6 +274,33 @@ public class Tlot {
   }
 
   @EventListener
+  public void addEquipmentTypes(final GatherEquipmentTypesEvent event) {
+    event.add(TlotEquipments.GLOWSTICK.get(), EquipmentTypes.LONGSWORD);
+
+    event.add(TlotEquipments.NAMELESS_SPEAR.get(), EquipmentTypes.POLEARM);
+    event.add(TlotEquipments.ORTHOS_PRIME.get(), EquipmentTypes.POLEARM);
+
+    event.add(TlotEquipments.BIANCA.get(), EquipmentTypes.BOW);
+
+    event.add(TlotEquipments.ENERGY_SWORD.get(), EquipmentTypes.SHORTSWORD);
+    event.add(TlotEquipments.KERNVITER.get(), EquipmentTypes.SHORTSWORD);
+
+    event.add(TlotEquipments.PUFFERFISH_KNUCKLES.get(), EquipmentTypes.HAND);
+
+    event.add(TlotEquipments.GUITAR.get(), EquipmentTypes.HAMMER);
+
+    event.add(TlotEquipments.OVERSIZED_KEY.get(), EquipmentTypes.AXE);
+
+    event.add(TlotEquipments.MAGIS_BOOTS.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.OLD_BOOTS.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.THE_ONE_RING.get(), EquipmentTypes.NEUTRAL);
+
+    event.add(TlotEquipments.GIGANTO_SKIRT.get(), EquipmentTypes.KONGOL);
+    event.add(TlotEquipments.THIGH_HIGHS.get(), EquipmentTypes.DART);
+    event.add(TlotEquipments.CAT_EARS.get(), EquipmentTypes.ROSE);
+  }
+
+  @EventListener
   public void registerPostBattleActions(final RegisterPostBattleActionsEvent event) {
     TlotPostBattleActions.register(event);
   }
@@ -414,7 +444,7 @@ public class Tlot {
 
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
-    final int playerId = (event.combatant.charIndex_1a2 - 0x200) / 2;
+    final CharacterTemplate template = player.character.template;
 
     final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
     final int modelPartIndex;
@@ -456,7 +486,7 @@ public class Tlot {
     if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
       this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
       this.specialWeaponList.get(event.combatant.charSlot_19c).withDragoonRotation(dragoonRotation);
-      if(playerId == 4) {
+      if(template == LodCharacterTemplates.HASCHEL.get()) {
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
         this.specialWeaponList.get(event.combatant.charSlot_19c + 10).withDragoonRotation(dragoonRotation);
       }
@@ -464,26 +494,34 @@ public class Tlot {
       return;
     }
 
-    final List<Equipment> specialWeapons = switch(playerId) {
-      case 0 -> List.of(TlotEquipments.GLOWSTICK.get(), TlotEquipments.LIVART.get(), TlotEquipments.BRILLANTE.get(), TlotEquipments.ERICCIL.get());
-      case 1, 5 -> List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
-      case 2, 8 -> List.of(TlotEquipments.BIANCA.get());
-      case 3 -> List.of(TlotEquipments.ENERGY_SWORD.get(), TlotEquipments.KERNVITER.get());
-      case 4 -> List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
-      case 6 -> List.of(TlotEquipments.GUITAR.get(), TlotEquipments.PRETTIEST_HAMMER.get());
-      case 7 -> List.of(TlotEquipments.OVERSIZED_KEY.get());
-      default -> null;
-    };
+    final List<Equipment> specialWeapons;
+    if(template == LodCharacterTemplates.DART.get()) {
+      specialWeapons = List.of(TlotEquipments.GLOWSTICK.get(), TlotEquipments.LIVART.get(), TlotEquipments.BRILLANTE.get(), TlotEquipments.ERICCIL.get());
+    } else if(template == LodCharacterTemplates.LAVITZ.get() || template == LodCharacterTemplates.ALBERT.get()) {
+      specialWeapons = List.of(TlotEquipments.NAMELESS_SPEAR.get(), TlotEquipments.ORTHOS_PRIME.get());
+    } else if(template == LodCharacterTemplates.SHANA.get() || template == LodCharacterTemplates.MIRANDA.get()) {
+      specialWeapons = List.of(TlotEquipments.BIANCA.get());
+    } else if(template == LodCharacterTemplates.ROSE.get()) {
+      specialWeapons = List.of(TlotEquipments.ENERGY_SWORD.get(), TlotEquipments.KERNVITER.get());
+    } else if(template == LodCharacterTemplates.HASCHEL.get()) {
+      specialWeapons = List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
+    } else if(template == LodCharacterTemplates.MERU.get()) {
+      specialWeapons = List.of(TlotEquipments.GUITAR.get(), TlotEquipments.PRETTIEST_HAMMER.get());
+    } else if(template == LodCharacterTemplates.KONGOL.get()) {
+      specialWeapons = List.of(TlotEquipments.OVERSIZED_KEY.get());
+    } else {
+      specialWeapons = null;
+    }
 
     if(specialWeapons == null) return;
-    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> gameState_800babc8.charData_32c[playerId].equipment_14.get(EquipmentSlot.WEAPON) == equip).findFirst();
+    final Optional<Equipment> weapon = specialWeapons.stream().filter(equip -> player.character.getEquipment(EquipmentSlot.WEAPON) == equip).findFirst();
 
     if(weapon.isPresent()) {
       final Equipment specialWeapon = weapon.get();
 
       player.model_148.partInvisible_f4 |= partFlags;
       this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
-      if(playerId == 4) {
+      if(template == LodCharacterTemplates.HASCHEL.get()) {
         this.specialWeaponList.put(event.combatant.charSlot_19c + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
       }
     }
@@ -891,25 +929,24 @@ public class Tlot {
   }
 
   private void loadRandomAdditionHit() {
-    final int charId = this.player.charId_272;
-    final CharacterData2c charData = gameState_800babc8.charData_32c[charId];
-    final RegistryDelegate<Addition>[] charAdditions = CHARACTER_ADDITIONS[charId];
-    final int additionCount = charAdditions.length;
-    final Addition randomAddition = charAdditions[this.rand.nextInt(additionCount)].get();
-    final CharacterAdditionStats additionStats = charData.additionStats.get(randomAddition.getRegistryId());
+    final CharacterData2c character = this.player.character;
+    final List<RegistryId> charAdditions = new ArrayList<>(character.getAllAdditions());
+    final RegistryId randomAdditionId = charAdditions.get(this.rand.nextInt(charAdditions.size()));
+    final Addition randomAddition = REGISTRIES.additions.getEntry(randomAdditionId).get();
+    final CharacterAdditionInfo additionInfo = character.getAdditionInfo(randomAdditionId);
 
-    final RegistryId oldAddition = charData.selectedAddition_19;
-    charData.selectedAddition_19 = randomAddition.getRegistryId();
+    final RegistryId oldAddition = character.selectedAddition_19;
+    character.selectedAddition_19 = randomAdditionId;
     loadAdditions();
-    charData.selectedAddition_19 = oldAddition;
+    character.selectedAddition_19 = oldAddition;
 
-    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(gameState_800babc8, charData, additionStats));
+    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(character, additionInfo));
     this.loadingAnimIndex = 16 + hitIndex;
 
-    this.activeAdditionHit = randomAddition.getHit(gameState_800babc8, charData, additionStats, hitIndex);
+    this.activeAdditionHit = randomAddition.getHit(character, additionInfo, hitIndex);
     this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
-    randomAddition.loadAnimations(gameState_800babc8, charData, additionStats, this::onAnimationsLoaded);
+    randomAddition.loadAnimations(character, additionInfo, this::onAnimationsLoaded);
     this.additionScreen.addHit();
   }
 
