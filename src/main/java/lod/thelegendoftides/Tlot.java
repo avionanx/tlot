@@ -817,7 +817,8 @@ public class Tlot {
   }
 
   private void loadAnimations(final int fileIndex) {
-    loadDrgnDir(0, fileIndex, this::onAnimationsLoaded);
+    loadDrgnDir(0, fileIndex)
+      .thenAccept(this::onAnimationsLoaded);
   }
 
   private void onAnimationsLoaded(final List<FileData> files) {
@@ -950,7 +951,10 @@ public class Tlot {
     this.activeAdditionHit = randomAddition.getHit(character, additionInfo, hitIndex);
     this.additionTicks = this.activeAdditionHit.totalFrames_01;
 
-    randomAddition.loadAnimations(character, additionInfo, this::onAnimationsLoaded);
+    randomAddition
+      .loadAnimations(character, additionInfo)
+      .thenAccept(this::onAnimationsLoaded);
+
     this.additionScreen.addHit();
   }
 
