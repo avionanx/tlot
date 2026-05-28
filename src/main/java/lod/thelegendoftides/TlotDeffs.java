@@ -29,6 +29,7 @@ public final class TlotDeffs {
   public static final RegistryDelegate<DeffPackage> AZEEL_GLADIATOR = REGISTRAR.register("azeel_gladiator", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> AZEEL_TRACKER = REGISTRAR.register("azeel_tracker", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> GOOSE = REGISTRAR.register("goose", TidesItemDeffPackage::new);
+  public static final RegistryDelegate<DeffPackage> PETRICHOR = REGISTRAR.register("petrichor", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> LAST_KRAKEN_JR = REGISTRAR.register("last_kraken_jr", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> MURKRAY = REGISTRAR.register("murkray", TidesItemDeffPackage::new);
   public static final RegistryDelegate<DeffPackage> MAGMA_EATER = REGISTRAR.register("magma_eater", TidesItemDeffPackage::new);

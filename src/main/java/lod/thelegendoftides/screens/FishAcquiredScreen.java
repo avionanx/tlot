@@ -26,6 +26,7 @@ import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.CATCH_FLAGS_CONFIG;
 import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
+import static lod.thelegendoftides.Tlot.TLOT_NUM_FISH_CAUGHT;
 import static lod.thelegendoftides.Tlot.TLOT_XP;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
@@ -45,6 +46,9 @@ public class FishAcquiredScreen extends MenuScreen {
       final long newFlags = CONFIG.getConfig(CATCH_FLAGS_CONFIG.get()) | (fish.legendaryFlag);
       CONFIG.setConfig(CATCH_FLAGS_CONFIG.get(), newFlags);
     }
+
+    // Increment num caught by 1
+    CONFIG.setConfig(TLOT_NUM_FISH_CAUGHT.get(), CONFIG.getConfig(TLOT_NUM_FISH_CAUGHT.get()) + 1);
 
     // TODO render level up text
     final int oldLevel = TlotLevelHelpers.TLOT_GET_LEVEL();
