@@ -355,7 +355,7 @@ public class Tlot {
   @EventListener
   public void submapLoadHandler(final SubmapLoadEvent event) throws IOException {
     if(submapCut_80052c30 == 141) {
-        final FileData replacement = Loader.loadFile(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/smap/%s/%s".formatted(submapCut_80052c30, 1)));
+        final FileData replacement = Loader.loadFileSync(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/smap/%s/%s".formatted(submapCut_80052c30, 1)));
         event.submapObjects.getFirst().script = new ScriptFile("SOBJ0 Replacement", replacement.getBytes());
     }
   }

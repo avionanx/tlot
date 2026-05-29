@@ -42,4 +42,9 @@ public class PetrichorItem extends FishItem {
     user.setStor(28, targetBentIndex);
     user.setStor(30, user.index);
   }
+
+  @Override
+  public boolean isRepeat(final ItemStack stack) {
+    return true;
+  }
 }

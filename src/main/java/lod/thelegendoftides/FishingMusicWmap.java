@@ -6,8 +6,7 @@ import legend.game.unpacker.FileData;
 import java.util.List;
 
 import static legend.core.GameEngine.AUDIO_THREAD;
-import static legend.game.DrgnFiles.loadDrgnDir;
-import static legend.game.sound.Audio.loadingAudioFiles_800bcf78;
+import static legend.game.DrgnFiles.loadDrgnDirSync;
 import static legend.game.sound.Audio.playMusicPackage;
 import static legend.game.sound.Audio.unloadSoundFile;
 
@@ -25,7 +24,7 @@ public class FishingMusicWmap extends FishingMusic {
     }
 
     unloadSoundFile(8);
-    loadDrgnDir(0, fileIndex, files -> this.musicFilesLoadedCallback(files, fileIndex, true));
+    loadDrgnDirSync(0, fileIndex, files -> this.musicFilesLoadedCallback(files, fileIndex, true));
   }
 
   @Override
