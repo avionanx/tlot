@@ -8,10 +8,16 @@ import legend.game.inventory.ItemStack;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import legend.lodmod.items.BattleItem;
+import lod.thelegendoftides.TlotFish;
 
-public class ThunderHammerItem extends BattleItem {
-  public ThunderHammerItem() {
-    super(ItemIcon.MAGIC, 0);
+public class EndinessSerpentItem extends FishItem {
+  public EndinessSerpentItem() {
+    super(TlotFish.ENDINESS_SERPENT);
+  }
+
+  @Override
+  int getUnitPrice() {
+    return 100;
   }
 
   @Override
@@ -21,12 +27,12 @@ public class ThunderHammerItem extends BattleItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ENEMIES;
+    return type == TargetType.ENEMIES || type == TargetType.ALL;
   }
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.THUNDER_ELEMENT.get();
+    return LodMod.WATER_ELEMENT.get();
   }
 
   @Override

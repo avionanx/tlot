@@ -14,10 +14,10 @@ public class PetrichorItem extends FishItem {
 
   @Override
   int getUnitPrice() {
-   return 400;
+   return 200;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }

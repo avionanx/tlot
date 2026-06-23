@@ -4,9 +4,12 @@ import legend.core.gpu.Bpp;
 import legend.core.opengl.Obj;
 import legend.core.opengl.PolyBuilder;
 import legend.core.opengl.Texture;
+import org.joml.Vector4f;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
+import org.lwjgl.assimp.AIMaterial;
+import org.lwjgl.assimp.AIMaterialProperty;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AITexture;
@@ -18,6 +21,8 @@ import org.lwjgl.system.MemoryStack;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
@@ -33,7 +38,17 @@ public class GlbLoader {
     this.builder = new PolyBuilder(name, GL_TRIANGLES);
 
     final Path path = file.toAbsolutePath();
+
+    final ArrayList<Vector4f> materialColors = new ArrayList<>();
     try(final AIScene scene = Assimp.aiImportFile(path.toString(), 0)) {
+      if(scene.mNumMaterials() != 0) {
+        for(int materialIndex = 0; materialIndex < scene.mNumMaterials(); materialIndex++) {
+          final AIMaterial material = AIMaterial.create(scene.mMaterials().get(materialIndex));
+          AIColor4D color = AIColor4D.create();
+          Assimp.aiGetMaterialColor(material, Assimp.AI_MATKEY_BASE_COLOR, Assimp.aiTextureType_NONE, 0, color);
+          materialColors.add(new Vector4f(color.r(), color.g(), color.b(), color.a()));
+        }
+      }
       if(scene.mNumTextures() != 0) {
         final AITexture AItexture = AITexture.create(scene.mTextures().get());
         final ByteBuffer imageBuffer = AItexture.pcDataCompressed();
@@ -76,8 +91,14 @@ public class GlbLoader {
               this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
               this.builder.normal(normal.x(), normal.y(), normal.z());
               if(this.texture == null) {
-                final AIColor4D colour = colours.get(vertexIndex);
-                this.builder.rgb(colour.r() * 2.0f, colour.g() * 2.0f, colour.b() * 2.0f);
+                Vector4f colour;
+                if(colours != null) {
+                  AIColor4D color4D = colours.get(vertexIndex);
+                  colour = new Vector4f(color4D.r(), color4D.g(), color4D.b(), color4D.a());
+                } else {
+                  colour = materialColors.get(mesh.mMaterialIndex());
+                }
+                this.builder.rgb(colour.x * 2.0f, colour.y * 2.0f, colour.z * 2.0f);
               } else {
                 this.builder.rgb(2.0f, 2.0f, 2.0f);
                 this.builder.uv(uv.x(), 1.0f - uv.y());

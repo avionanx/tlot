@@ -56,6 +56,34 @@ thelegendoftides.items.rainbow_trout.name=Rainbow Trout
 thelegendoftides.items.rainbow_trout.description=Recovers 100 HP,\n35 SP, 20 MP to all
 thelegendoftides.items.rainbow_trout.battle_description=Recovers 100 HP, 35 SP, 20 MP to all
 
+thelegendoftides.items.fish_prime.name=Fish Prime
+thelegendoftides.items.fish_prime.description=Permamently increases a\nrandom stat
+thelegendoftides.items.fish_prime.use_0=SPD increased by 1
+thelegendoftides.items.fish_prime.use_1=AT increased by 1
+thelegendoftides.items.fish_prime.use_2=MAT increased by 1
+thelegendoftides.items.fish_prime.use_3=DEF increased by 1
+thelegendoftides.items.fish_prime.use_4=MDEF increased by 1
+
+thelegendoftides.items.dormin.name=Dormin
+thelegendoftides.items.dormin.description=Invokes random\nancient magic(repeat)
+thelegendoftides.items.dormin.battle_description=Random ancient magic(repeat)
+
+thelegendoftides.items.aurcis.name=Aurcis
+thelegendoftides.items.aurcis.description=Invokes ancient\nfire magic "Sunset"
+thelegendoftides.items.aurcis.battle_description=Ancient fire magic (A)
+
+thelegendoftides.items.ryujin.name=Ryujin
+thelegendoftides.items.ryujin.description=Invokes ancient\nthunder magic\n"Thunder Hammer"
+thelegendoftides.items.ryujin.battle_description=Ancient thunder magic (S)
+
+thelegendoftides.items.endiness_serpent.name=Endiness Serpent
+thelegendoftides.items.endiness_serpent.description=Invokes ancient\nice magic "Icehenge"
+thelegendoftides.items.endiness_serpent.battle_description=Ancient ice magic (A)
+
+thelegendoftides.items.abancex.name=Abancex
+thelegendoftides.items.abancex.description=Invokes ancient\nwind magic "Tornado"
+thelegendoftides.items.abancex.battle_description=Ancient wind magic (A)
+
 thelegendoftides.items.grand_rainbow_trout.name=Grand Rainbow Trout
 thelegendoftides.items.grand_rainbow_trout.description=Recovers 500 HP,\n75 SP, 40 MP to all
 thelegendoftides.items.grand_rainbow_trout.battle_description=Recovers 500 HP, 75 SP, 40 MP to all
@@ -178,6 +206,9 @@ thelegendoftides.equipment.kernviter.description=Grants demonic strength
 thelegendoftides.equipment.pufferfish_knuckles.name=Pufferfish
 thelegendoftides.equipment.pufferfish_knuckles.description=*blub blub to\nreceive your blub\nblub...*
 
+thelegendoftides.equipment.paws.name=Paws
+thelegendoftides.equipment.paws.description=I'm so gwad to weceive\nyouw fiwt, mastew...\noWo
+
 thelegendoftides.equipment.guitar.name=Guitar
 thelegendoftides.equipment.guitar.description=*through the fire\nand flames starts\nplaying*
 
@@ -193,6 +224,15 @@ thelegendoftides.equipment.old_boots.description=Unwieldy\nbut sturdy.
 thelegendoftides.equipment.the_one_ring.name=The One Ring
 thelegendoftides.equipment.the_one_ring.description=Cast it into\nthe fire!\nDestroy it!
 
+thelegendoftides.equipment.cheater_ring.name=Cheater
+thelegendoftides.equipment.cheater_ring.description=Let's carve a path.
+
+thelegendoftides.equipment.duality_ring.name=Duality Ring
+thelegendoftides.equipment.duality_ring.description=Doubles all item or\nequipment rewards from\n battle
+
+thelegendoftides.equipment.critical_ring.name=Critical Ring
+thelegendoftides.equipment.critical_ring.description=Grants unfathomable strength\nat the cost of HP.
+
 thelegendoftides.equipment.orthos_prime.name=Orthos Prime
 thelegendoftides.equipment.orthos_prime.description=Look at them, they come\nto this place when they\nknow they are not pure. Tenno\nuse the keys, but they are\nmere trespassers. Only I, Vor,\nknow the true power of\nthe Void.
 
@@ -204,6 +244,24 @@ thelegendoftides.equipment.giganto_skirt.description=Kongol Dating Sim when
 
 thelegendoftides.equipment.cat_ears.name=Cat Ears
 thelegendoftides.equipment.cat_ears.description=Rose literally wears\nthese. It is canon.
+
+thelegendoftides.equipment.blue_amulet.name=Blue Amulet
+thelegendoftides.equipment.blue_ring.description=Gives a carp\nat the end of\neach battle
+
+thelegendoftides.equipment.azure_amulet.name=Azure Amulet
+thelegendoftides.equipment.azure_ring.description=Gives a silver carp\nat the end of\neach battle
+
+thelegendoftides.equipment.berserk_plume.name=Berserk Plume
+thelegendoftides.equipment.berserk_plume.description=Gives tremendous physical\ndamage at the cost\nof losing control
+
+thelegendoftides.equipment.boundless_plate.name=Boundless Plate
+thelegendoftides.equipment.boundless_plate.description=Increases magical properties\nat the cost of MP\neach turn.
+
+thelegendoftides.equipment.assault_gear.name=Assault Gear
+thelegendoftides.equipment.assault_gear.description=
+
+thelegendoftides.equipment.stormcrown.name=Stormcrown
+thelegendoftides.equipment.stormcrown.description=Empowers character depending\non Max HP%%
 
 # Bait
 thelegendoftides.bait.regular.name=Regular
@@ -353,6 +411,10 @@ thelegendoftides.fishing_hole.moon_3.name=Moon 3
 thelegendoftides.fishing_hole.moon_4.name=Moon 4
 
 # Book
+thelegendoftides.book_title=Fishing Records
+thelegendoftides.total_fish_caught=Fish Caught:
+thelegendoftides.level=Level %s
+thelegendoftides.level_max=Level Maxed (%s)!
 thelegendoftides.book_title=Fishing Records
 thelegendoftides.locations=Location: %s
 thelegendoftides.baits=Special bait: %s

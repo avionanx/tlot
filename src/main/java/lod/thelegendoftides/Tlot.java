@@ -34,6 +34,7 @@ import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
+import legend.game.combat.ui.GatherBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.EquipmentTypes;
@@ -48,6 +49,7 @@ import legend.game.inventory.screens.ShopScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.modding.coremod.CoreMod;
 import legend.game.modding.events.RenderEvent;
+import legend.game.modding.events.battle.BattleEntityTurnEvent;
 import legend.game.modding.events.battle.BattleStartedEvent;
 import legend.game.modding.events.battle.CombatantModelLoadedEvent;
 import legend.game.modding.events.engine.EngineStateChangeEvent;
@@ -61,6 +63,7 @@ import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
 import legend.game.scripting.ScriptFile;
 import legend.game.scripting.ScriptState;
+import legend.game.scripting.ScriptTempParam;
 import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
@@ -132,9 +135,9 @@ import static legend.game.combat.SEffe.allocateEffectManager;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
+import static legend.game.combat.bent.BattleEntity27c.FLAG_TAKE_FORCED_TURN;
 import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.sound.Audio.playSound;
-import static legend.game.sound.Audio.unloadSoundFile;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
 
 @Mod(id = Tlot.MOD_ID, version = "^3.0.0")
@@ -175,7 +178,7 @@ public class Tlot {
 
   private static final FontOptions CENTERED = new FontOptions().set(SItem.UI_WHITE_CENTERED).shadowColour(TextColour.BLACK);
 
-  private final Random rand = new Random();
+  public static final Random TLOT_RAND = new Random();
 
   private List<FishingHole> currentCutFishingHoles = new ArrayList<>();
   private final List<FishingIndicator> fishingIndicators = new ArrayList<>();
@@ -232,6 +235,7 @@ public class Tlot {
   private boolean acquiredFishScreenCleared;
 
   private final Map<Integer, SpecialWeapon> specialWeaponList = new HashMap<>();
+  private boolean CHEATER_RING_TRIGGERED = false;
 
   private String errorText;
   private int errorTicks;
@@ -290,14 +294,19 @@ public class Tlot {
     event.add(TlotEquipments.KERNVITER.get(), EquipmentTypes.SHORTSWORD);
 
     event.add(TlotEquipments.PUFFERFISH_KNUCKLES.get(), EquipmentTypes.HAND);
+    event.add(TlotEquipments.PAWS.get(), EquipmentTypes.HAND);
 
     event.add(TlotEquipments.GUITAR.get(), EquipmentTypes.HAMMER);
 
     event.add(TlotEquipments.OVERSIZED_KEY.get(), EquipmentTypes.AXE);
+    event.add(TlotEquipments.HIS_HANDS.get(), EquipmentTypes.AXE);
 
     event.add(TlotEquipments.MAGIS_BOOTS.get(), EquipmentTypes.NEUTRAL);
     event.add(TlotEquipments.OLD_BOOTS.get(), EquipmentTypes.NEUTRAL);
     event.add(TlotEquipments.THE_ONE_RING.get(), EquipmentTypes.NEUTRAL);
+
+    event.add(TlotEquipments.BERSERK_PLUME.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.CHEATER_RING.get(), EquipmentTypes.NEUTRAL);
 
     event.add(TlotEquipments.GIGANTO_SKIRT.get(), EquipmentTypes.KONGOL);
     event.add(TlotEquipments.THIGH_HIGHS.get(), EquipmentTypes.DART);
@@ -361,8 +370,33 @@ public class Tlot {
   }
 
   @EventListener
+  public void battleEntityTurnHandler(final BattleEntityTurnEvent event) throws IOException {
+    if(event.bent instanceof final PlayerBattleEntity playerBent) {
+      if(playerBent.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.THE_ONE_RING.get()) {
+        final ScriptState<PlayerBattleEntity> state = playerBent.getState();
+        state.context.params_20[0] = new ScriptTempParam(state.index);
+        state.context.params_20[1] = new ScriptTempParam(10);
+        state.context.params_20[2] = new ScriptTempParam(2);
+
+        state.scriptForkAndReenter();
+      } if (playerBent.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.CHEATER_RING.get()) {
+        if(!this.CHEATER_RING_TRIGGERED) {
+          playerBent.getState().setFlag(FLAG_TAKE_FORCED_TURN);
+        }
+        this.CHEATER_RING_TRIGGERED = !this.CHEATER_RING_TRIGGERED;
+      } if(playerBent.character.getEquipment(EquipmentSlot.HELMET) == TlotEquipments.BERSERK_PLUME.get()) {
+        battleState_8006e398.statusConditions_00[playerBent.allBentSlot_274].menuBlockFlag_18 |= (0xff & ~0x21);
+        battleState_8006e398.globalMenuBlocks_510 &= ~0x21;
+      }
+    }
+  }
+
+  @EventListener
   public void disableBentScriptsOnBattleStart(final BattleStartedEvent event) {
+    this.CHEATER_RING_TRIGGERED = false;
+
     if(!isFishEncounter) {
+
       return;
     }
     isFishEncounter = false;
@@ -451,7 +485,7 @@ public class Tlot {
     final CharacterTemplate template = player.character.template;
 
     final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
-    final int modelPartIndex;
+    int modelPartIndex;
     int modelPartIndex2 = -1;
     final Vector3f dragoonRotation = new Vector3f();
     final long partFlags;
@@ -508,11 +542,11 @@ public class Tlot {
     } else if(template == LodCharacterTemplates.ROSE.get()) {
       specialWeapons = List.of(TlotEquipments.ENERGY_SWORD.get(), TlotEquipments.KERNVITER.get());
     } else if(template == LodCharacterTemplates.HASCHEL.get()) {
-      specialWeapons = List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get());
+      specialWeapons = List.of(TlotEquipments.PUFFERFISH_KNUCKLES.get(), TlotEquipments.PAWS.get());
     } else if(template == LodCharacterTemplates.MERU.get()) {
-      specialWeapons = List.of(TlotEquipments.GUITAR.get(), TlotEquipments.PRETTIEST_HAMMER.get());
+      specialWeapons = List.of(TlotEquipments.GUITAR.get());
     } else if(template == LodCharacterTemplates.KONGOL.get()) {
-      specialWeapons = List.of(TlotEquipments.OVERSIZED_KEY.get());
+      specialWeapons = List.of(TlotEquipments.OVERSIZED_KEY.get(), TlotEquipments.HIS_HANDS.get());
     } else {
       specialWeapons = null;
     }
@@ -522,6 +556,11 @@ public class Tlot {
 
     if(weapon.isPresent()) {
       final Equipment specialWeapon = weapon.get();
+
+      // Attach it to kongols back instead of hand
+      if(specialWeapon == TlotEquipments.HIS_HANDS.get()) {
+        modelPartIndex = 2;
+      }
 
       player.model_148.partInvisible_f4 |= partFlags;
       this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
@@ -656,7 +695,7 @@ public class Tlot {
           }
 
           if(this.nextBobInterval < time) {
-            this.nextBobInterval = time + (long)(BOB_INTERVAL * (0.8f + this.rand.nextFloat() * 0.4f));
+            this.nextBobInterval = time + (long)(BOB_INTERVAL * (0.8f + TLOT_RAND.nextFloat() * 0.4f));
             this.bobCount = 0;
           }
 
@@ -936,7 +975,7 @@ public class Tlot {
   private void loadRandomAdditionHit() {
     final CharacterData2c character = this.player.character;
     final List<RegistryId> charAdditions = new ArrayList<>(character.getAllAdditions());
-    final RegistryId randomAdditionId = charAdditions.get(this.rand.nextInt(charAdditions.size()));
+    final RegistryId randomAdditionId = charAdditions.get(TLOT_RAND.nextInt(charAdditions.size()));
     final Addition randomAddition = REGISTRIES.additions.getEntry(randomAdditionId).get();
     final CharacterAdditionInfo additionInfo = character.getAdditionInfo(randomAdditionId);
 
@@ -945,7 +984,7 @@ public class Tlot {
     loadAdditions();
     character.selectedAddition_19 = oldAddition;
 
-    final int hitIndex = this.rand.nextInt(randomAddition.getHitCount(character, additionInfo));
+    final int hitIndex = TLOT_RAND.nextInt(randomAddition.getHitCount(character, additionInfo));
     this.loadingAnimIndex = 16 + hitIndex;
 
     this.activeAdditionHit = randomAddition.getHit(character, additionInfo, hitIndex);

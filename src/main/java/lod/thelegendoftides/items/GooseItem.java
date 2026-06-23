@@ -14,7 +14,7 @@ public class GooseItem extends FishItem {
 
   @Override
   int getUnitPrice() {
-   return 800;
+    return 200;
   }
 
  @Override

@@ -66,9 +66,13 @@ public class TlotLevelHelpers {
     return (int)Arrays.stream(TLOT_XP_TO_LEVEL).filter(xp -> CONFIG.getConfig(TLOT_XP.get()) >= xp).count();
   }
 
+  public static int TLOT_GET_MAX_LEVEL() {
+    return TLOT_XP_TO_LEVEL.length;
+  }
+
   public static float TLOT_GET_LEVEL_PROGRESS() {
     final int level = TLOT_GET_LEVEL();
-    if(level == Arrays.stream(TLOT_XP_TO_LEVEL).count()) return 1.0f;
+    if(level == TLOT_GET_MAX_LEVEL()) return 1.0f;
 
     return (float)(CONFIG.getConfig(TLOT_XP.get()) - TLOT_XP_TO_LEVEL[level - 1]) / (TLOT_XP_TO_LEVEL[level] - TLOT_XP_TO_LEVEL[level - 1]);
   }

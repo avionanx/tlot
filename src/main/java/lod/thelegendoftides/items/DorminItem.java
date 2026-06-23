@@ -23,7 +23,7 @@ public class DorminItem extends FishItem {
 
   @Override
   int getUnitPrice() {
-   return 20;
+   return 200;
   }
 
   @Override
@@ -49,10 +49,10 @@ public class DorminItem extends FishItem {
   @Override
   public FlowControl useInBattle(final ItemStack stack, final ScriptState<BattleEntity27c> user, final int targetBentIndex) {
     final ItemStack[] stacks = {
-      new ItemStack(TlotItems.SUNSET.get()),
-      new ItemStack(TlotItems.THUNDER_HAMMER.get()),
-      new ItemStack(TlotItems.ICEHENGE.get()),
-      new ItemStack(TlotItems.TORNADO.get()),
+      new ItemStack(TlotItems.AURCIS.get()),
+      new ItemStack(TlotItems.RYUJIN.get()),
+      new ItemStack(TlotItems.ENDINESS_SERPENT.get()),
+      new ItemStack(TlotItems.ABANCEX.get()),
     };
     final ItemStack selected = stacks[seed_800fa754.nextInt(stacks.length)];
 

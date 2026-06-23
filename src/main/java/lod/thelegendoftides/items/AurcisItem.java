@@ -3,7 +3,6 @@ package lod.thelegendoftides.items;
 
 import legend.game.characters.Element;
 import legend.game.combat.bent.BattleEntity27c;
-import legend.game.inventory.Item;
 import legend.game.inventory.ItemIcon;
 import legend.game.inventory.ItemStack;
 import legend.game.scripting.ScriptState;
@@ -11,9 +10,14 @@ import legend.lodmod.LodMod;
 import legend.lodmod.items.BattleItem;
 import lod.thelegendoftides.TlotFish;
 
-public class SunsetItem extends BattleItem {
-  public SunsetItem() {
-    super(ItemIcon.MAGIC, 0);
+public class AurcisItem extends FishItem {
+  public AurcisItem() {
+    super(TlotFish.AURCIS);
+  }
+
+  @Override
+  int getUnitPrice() {
+    return 100;
   }
 
   @Override

@@ -12,19 +12,19 @@ public class LastKrakenJrItem extends FishItem {
     super(TlotFish.LAST_KRAKEN_JR);
   }
 
- @Override
- int getUnitPrice() {
-  return 800;
- }
+  @Override
+  int getUnitPrice() {
+    return 200;
+  }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.BATTLE;
   }
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ENEMIES;
+    return type == TargetType.ALLIES;
   }
 
   @Override
@@ -34,7 +34,7 @@ public class LastKrakenJrItem extends FishItem {
 
   @Override
   protected int getUseItemScriptEntrypoint() {
-    return 33;
+    return 34;
   }
 
   @Override

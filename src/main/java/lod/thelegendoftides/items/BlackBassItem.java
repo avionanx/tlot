@@ -19,7 +19,7 @@ public class BlackBassItem extends FishItem {
    return 30;
   }
 
- @Override
+  @Override
   public boolean canBeUsed(final ItemStack stack, final UsageLocation location) {
     return location == UsageLocation.MENU;
   }

@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public final class FishIconUiType {
   private FishIconUiType() { }
 
-  private static final float TEXTURE_WIDTH = 32.0f * 28;
+  private static final float TEXTURE_WIDTH = 32.0f * 50;
   private static final float ICON_WIDTH = 32.0f;
   private static final float WIDTH_DIVIDER = ICON_WIDTH / TEXTURE_WIDTH;
 
@@ -74,6 +74,12 @@ public final class FishIconUiType {
     new UiPart(new Metrics[] {addIcon(26)}, 1),
     // Empty
     new UiPart(new Metrics[] {addIcon(27)}, 1),
+    // Pool Noodle
+    new UiPart(new Metrics[] {addIcon(28)}, 1),
+    // Paws
+    new UiPart(new Metrics[] {addIcon(29)}, 1),
+    // Orthos Prime
+    new UiPart(new Metrics[] {addIcon(30)}, 1),
   });
 
   private static Texture TEXTURE;

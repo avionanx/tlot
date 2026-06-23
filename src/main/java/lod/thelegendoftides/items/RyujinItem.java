@@ -8,10 +8,16 @@ import legend.game.inventory.ItemStack;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import legend.lodmod.items.BattleItem;
+import lod.thelegendoftides.TlotFish;
 
-public class TornadoItem extends BattleItem {
-  public TornadoItem() {
-    super(ItemIcon.MAGIC, 0);
+public class RyujinItem extends FishItem {
+  public RyujinItem() {
+    super(TlotFish.RYUJIN);
+  }
+
+  @Override
+  int getUnitPrice() {
+    return 100;
   }
 
   @Override
@@ -21,12 +27,12 @@ public class TornadoItem extends BattleItem {
 
   @Override
   public boolean canTarget(final ItemStack stack, final TargetType type) {
-    return type == TargetType.ENEMIES || type == TargetType.ALL;
+    return type == TargetType.ENEMIES;
   }
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.WIND_ELEMENT.get();
+    return LodMod.THUNDER_ELEMENT.get();
   }
 
   @Override

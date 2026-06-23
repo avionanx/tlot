@@ -13,12 +13,14 @@ import legend.game.inventory.screens.HorizontalAlign;
 import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
+import legend.game.inventory.screens.controls.Button;
 import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
 import lod.thelegendoftides.FishBaitWeight;
 import lod.thelegendoftides.FishingHole;
 import lod.thelegendoftides.Tlot;
 import lod.thelegendoftides.TlotFishingHolePrerequisites;
+import lod.thelegendoftides.TlotLevelHelpers;
 import org.jetbrains.annotations.NotNull;
 import org.legendofdragoon.modloader.registries.RegistryId;
 
@@ -31,6 +33,7 @@ import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.DEFAULT_FONT;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
+import static legend.game.SItem.UI_WHITE_CENTERED;
 import static legend.game.SItem.renderMenuCentredText;
 import static legend.game.Text.renderText;
 import static legend.game.Text.textZ_800bdf00;
@@ -39,26 +42,34 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_LEFT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_RIGHT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
+import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.FISHING_HOLE_REGISTRY;
 import static lod.thelegendoftides.Tlot.FISH_BAIT_WEIGHT_REGISTRY;
 import static lod.thelegendoftides.Tlot.FISH_REGISTRY;
 import static lod.thelegendoftides.Tlot.MOD_ID;
+import static lod.thelegendoftides.Tlot.TLOT_NUM_FISH_CAUGHT;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
 
 public class FishBookScreen extends MenuScreen {
 
   private final FontOptions menuTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.WHITE).shadowColour(TextColour.BLACK);
+  private final FontOptions recordFontOptsLeft = new FontOptions().horizontalAlign(HorizontalAlign.LEFT).colour(TextColour.BLACK).size(0.75f);
+  private final FontOptions recordFontOptsRight = new FontOptions().horizontalAlign(HorizontalAlign.RIGHT).colour(TextColour.BLACK).size(0.75f);
   private final FontOptions fishTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.75f);
   private final FontOptions pageFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.5f);
   private final FontOptions pageFontOptsLeft = new FontOptions().horizontalAlign(HorizontalAlign.LEFT).colour(TextColour.BROWN).size(0.5f);
   private final Texture bookTexture;
-  private final MeshObj bookQuad;
   private final MV bookTransforms;
 
   private int currentPage; // zero indexed pages in my book?! well, and 1
   private final List<Fish> registryIds = new ArrayList<>();
   private final Set<RegistryId> seen;
+
+  private int extraWidth;
+  private final MeshObj bookQuad;
+  private boolean childScreenAllocated = false;
+  private final List<Button> menuButtons = new ArrayList<>();
 
   public FishBookScreen() {
     this.bookTexture = Texture.png(Path.of("mods", "tlot", "book.png"));
@@ -76,20 +87,35 @@ public class FishBookScreen extends MenuScreen {
 
     this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
 
-    for(final RegistryId id : FISH_REGISTRY) {
-      final Fish fish = FISH_REGISTRY.getEntry(id).get();
+    final Button fishRecordsButton = this.addButton("Fish", () -> {
+      this.childScreenAllocated = true;
+      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false));
+    });
+    fishRecordsButton.onGotFocus(() -> fishRecordsButton.setTextColour(TextColour.WHITE));
 
-      if(!fish.isHidden) {
-        this.registryIds.add(fish);
+    final Button treasureRecordsButton = this.addButton("Treasures", () -> {
+      this.childScreenAllocated = true;
+      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false));
+    });
+    treasureRecordsButton.onGotFocus(() -> treasureRecordsButton.setTextColour(TextColour.WHITE));
+
+    this.setFocus(this.menuButtons.getFirst());
+    /*
+      for(final RegistryId id : FISH_REGISTRY) {
+        final Fish fish = FISH_REGISTRY.getEntry(id).get();
+
+        if(!fish.isHidden) {
+          this.registryIds.add(fish);
+        }
       }
-    }
+     */
   }
 
   @Override
   protected InputPropagation inputActionPressed(@NotNull final InputAction action, final boolean repeat) {
     if(action == INPUT_ACTION_MENU_BACK.get() && !repeat) {
       this.deferAction(this::unload);
-    } else if(action == INPUT_ACTION_MENU_RIGHT.get()) {
+    }/* else if(action == INPUT_ACTION_MENU_RIGHT.get()) {
       this.currentPage = Math.clamp(this.currentPage + 2, 0, this.registryIds.size() - 1);
     } else if(action == INPUT_ACTION_MENU_LEFT.get()) {
       this.currentPage = Math.clamp(this.currentPage - 2, 0, this.registryIds.size() - 1);
@@ -97,29 +123,103 @@ public class FishBookScreen extends MenuScreen {
       this.currentPage = Math.clamp(this.currentPage + 6, 0, this.registryIds.size() - 1);
     } else if(action == INPUT_ACTION_MENU_DOWN.get()) {
       this.currentPage = Math.clamp(this.currentPage - 6, 0, this.registryIds.size() - 1);
-    }
-
-    return InputPropagation.HANDLED;
+    }*/
+    return InputPropagation.PROPAGATE;
   }
 
   public void unload() {
     this.getStack().popScreen();
-    this.bookTexture.delete();
     this.bookQuad.delete();
+    this.bookTexture.delete();
 
     SCRIPTS.resume();
   }
 
   @Override
   protected void render() {
+    final int oldZ = textZ_800bdf00;
+    textZ_800bdf00 = 2;
+    this.renderBackground();
     renderText(I18n.translate(getTranslationKey("book_title")), RENDERER.getNativeWidth() / 2.0f, 25, this.menuTitleFontOpts);
+    if(this.childScreenAllocated) return;
 
-    this.renderPage(this.currentPage, RENDERER.getNativeWidth() / 4.0f * RENDERER.getNativeAspectRatio() + 5);
+    renderText(I18n.translate(getTranslationKey("total_fish_caught")), RENDERER.getNativeWidth() / 2.0f - 100, 55, this.recordFontOptsLeft);
+    renderText(CONFIG.getConfig(TLOT_NUM_FISH_CAUGHT.get()).toString(), RENDERER.getNativeWidth() / 2.0f - 10, 55, this.recordFontOptsRight);
+    // this.renderPage(this.currentPage, RENDERER.getNativeWidth() / 4.0f * RENDERER.getNativeAspectRatio() + 5);
 
-    if(this.registryIds.size() - this.currentPage != 1) {
-      this.renderPage(this.currentPage + 1, RENDERER.getNativeWidth() / 2.0f * RENDERER.getNativeAspectRatio() - 3);
+    // if(this.registryIds.size() - this.currentPage != 1) {
+    //   this.renderPage(this.currentPage + 1, RENDERER.getNativeWidth() / 2.0f * RENDERER.getNativeAspectRatio() - 3);
+    // }
+    //XP and levels and stuff
+    final MV xpStuffMV = new MV();
+    xpStuffMV.scaling(90.0f, 4.0f, 1.0f);
+    xpStuffMV.transfer.set(RENDERER.getNativeWidth() / 2.0f - 100.0f, 180.0f, 11.0f);
+
+    // TODO render max level
+    RENDERER.queueOrthoModel(RENDERER.opaqueQuad, xpStuffMV, QueuedModelStandard.class).colour(0.0f, 0.0f, 0.0f);
+    xpStuffMV.scaling(88.0f * TlotLevelHelpers.TLOT_GET_LEVEL_PROGRESS(), 2.0f, 1.0f);
+    xpStuffMV.transfer.set(RENDERER.getNativeWidth() / 2.0f - 99.0f, 181.0f, 11.0f);
+    RENDERER.queueOrthoModel(RENDERER.opaqueQuad, xpStuffMV, QueuedModelStandard.class).colour(0.4f, 0.5f, 0.8f);
+
+    final int currentLevel = TlotLevelHelpers.TLOT_GET_LEVEL();
+    final int maxLevel = TlotLevelHelpers.TLOT_GET_MAX_LEVEL();
+
+    if(currentLevel == maxLevel) {
+      renderText(I18n.translate(getTranslationKey("level_max"), maxLevel), RENDERER.getNativeWidth() / 2.0f - 10, 170, this.recordFontOptsRight);
+    } else {
+      renderText(I18n.translate(getTranslationKey("level"), currentLevel), RENDERER.getNativeWidth() / 2.0f - 100, 170, this.recordFontOptsLeft);
     }
 
+    textZ_800bdf00 = oldZ;
+  }
+
+  private Button addButton(final String text, final Runnable onClick) {
+    final int index = this.menuButtons.size();
+    final Button button = this.addControl(new Button(text));
+
+    button.setPos(85 + index * 115 - this.extraWidth / 2, 205);
+    button.setZ(1);
+    button.setWidth(80);
+    button.onHoverIn(() -> {
+      playMenuSound(1);
+      this.setFocus(button);
+    });
+    button.setTextColour(TextColour.GREY);
+    button.onLostFocus(() -> button.setTextColour(TextColour.GREY));
+
+    button.onPressed(onClick::run);
+    this.menuButtons.add(button);
+    button.onInputActionPressed((action, repeat) -> {
+      if(action == INPUT_ACTION_MENU_RIGHT.get()) {
+        for(int i = 1; i < this.menuButtons.size(); i++) {
+          final Button otherButton = this.menuButtons.get(Math.floorMod(index + i, this.menuButtons.size()));
+
+          if(!otherButton.isDisabled() && otherButton.isVisible()) {
+            playMenuSound(1);
+            this.setFocus(otherButton);
+            break;
+          }
+        }
+        return InputPropagation.HANDLED;
+      } else if(action == INPUT_ACTION_MENU_LEFT.get()) {
+        for(int i = 1; i < this.menuButtons.size(); i++) {
+          final Button otherButton = this.menuButtons.get(Math.floorMod(index - i, this.menuButtons.size()));
+
+          if(!otherButton.isDisabled() && otherButton.isVisible()) {
+            playMenuSound(1);
+            this.setFocus(otherButton);
+            break;
+          }
+        }
+        return InputPropagation.HANDLED;
+      }
+      return InputPropagation.PROPAGATE;
+    });
+
+    return button;
+  }
+
+  private void renderBackground() {
     RENDERER.queueOrthoModel(this.bookQuad, this.bookTransforms, QueuedModelStandard.class)
       .texture(this.bookTexture)
       .useTextureAlpha();
@@ -212,5 +312,10 @@ public class FishBookScreen extends MenuScreen {
     }
 
     textZ_800bdf00 = oldZ;
+  }
+
+  @Override
+  protected boolean propagateRender() {
+    return true;
   }
 }

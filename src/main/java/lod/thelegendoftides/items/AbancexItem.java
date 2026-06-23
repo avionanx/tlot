@@ -8,10 +8,16 @@ import legend.game.inventory.ItemStack;
 import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import legend.lodmod.items.BattleItem;
+import lod.thelegendoftides.TlotFish;
 
-public class IcehengeItem extends BattleItem {
-  public IcehengeItem() {
-    super(ItemIcon.MAGIC, 0);
+public class AbancexItem extends FishItem {
+  public AbancexItem() {
+    super(TlotFish.ABANCEX);
+  }
+
+  @Override
+  int getUnitPrice() {
+    return 100;
   }
 
   @Override
@@ -26,7 +32,7 @@ public class IcehengeItem extends BattleItem {
 
   @Override
   public Element getAttackElement(final ItemStack stack) {
-    return LodMod.WATER_ELEMENT.get();
+    return LodMod.WIND_ELEMENT.get();
   }
 
   @Override
