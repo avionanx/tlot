@@ -104,7 +104,10 @@ public class FishRecordsScreen extends MenuScreen {
     }
     // this.renderFishInfo(fish, x);
 
-    renderText(String.valueOf(pageIndex + 1), x, 180, this.pageFontOpts);
+    // Do not render page number of blank page
+    if(this.registryIds.size() - pageIndex * 4 > 0) {
+      renderText(String.valueOf(pageIndex + 1), x, 180, this.pageFontOpts);
+    }
   }
 
   private void renderFishName(final Fish fish, final float x, final float y, final int registryIdIndex) {
