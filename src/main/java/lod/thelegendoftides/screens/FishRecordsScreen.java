@@ -268,10 +268,10 @@ public class FishRecordsScreen extends MenuScreen {
         this.deferAction(this::unload);
       } else if(action == INPUT_ACTION_MENU_RIGHT.get()) {
         playMenuSound(1);
-        this.currentPage = Math.clamp(this.currentPage + 1, 0, Math.ceilDiv(this.registryIds.size(), 8) & ~0x1);
+        this.currentPage = Math.clamp(this.currentPage + 1, 0, Math.floorDiv(this.registryIds.size() - 1, 8));
       } else if(action == INPUT_ACTION_MENU_LEFT.get()) {
         playMenuSound(1);
-        this.currentPage = Math.clamp(this.currentPage - 1, 0, Math.ceilDiv(this.registryIds.size(), 8) & ~0x1);
+        this.currentPage = Math.clamp(this.currentPage - 1, 0, Math.floorDiv(this.registryIds.size() - 1, 8));
       }
     }
 
