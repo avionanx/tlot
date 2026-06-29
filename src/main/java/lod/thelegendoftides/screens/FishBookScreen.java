@@ -33,20 +33,18 @@ import static legend.core.GameEngine.CONFIG;
 import static legend.core.GameEngine.DEFAULT_FONT;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
-import static legend.game.SItem.UI_WHITE_CENTERED;
 import static legend.game.SItem.renderMenuCentredText;
+import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Text.renderText;
 import static legend.game.Text.textZ_800bdf00;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
-import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_DOWN;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_LEFT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_RIGHT;
-import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_UP;
 import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.FISHING_HOLE_REGISTRY;
 import static lod.thelegendoftides.Tlot.FISH_BAIT_WEIGHT_REGISTRY;
-import static lod.thelegendoftides.Tlot.FISH_REGISTRY;
+
 import static lod.thelegendoftides.Tlot.MOD_ID;
 import static lod.thelegendoftides.Tlot.TLOT_NUM_FISH_CAUGHT;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
@@ -56,15 +54,11 @@ public class FishBookScreen extends MenuScreen {
   private final FontOptions menuTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.WHITE).shadowColour(TextColour.BLACK);
   private final FontOptions recordFontOptsLeft = new FontOptions().horizontalAlign(HorizontalAlign.LEFT).colour(TextColour.BLACK).size(0.75f);
   private final FontOptions recordFontOptsRight = new FontOptions().horizontalAlign(HorizontalAlign.RIGHT).colour(TextColour.BLACK).size(0.75f);
-  private final FontOptions fishTitleFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.75f);
-  private final FontOptions pageFontOpts = new FontOptions().horizontalAlign(HorizontalAlign.CENTRE).colour(TextColour.BROWN).size(0.5f);
-  private final FontOptions pageFontOptsLeft = new FontOptions().horizontalAlign(HorizontalAlign.LEFT).colour(TextColour.BROWN).size(0.5f);
   private final Texture bookTexture;
   private final MV bookTransforms;
 
-  private int currentPage; // zero indexed pages in my book?! well, and 1
   private final List<Fish> registryIds = new ArrayList<>();
-  private final Set<RegistryId> seen;
+
 
   private int extraWidth;
   private final MeshObj bookQuad;
@@ -85,19 +79,18 @@ public class FishBookScreen extends MenuScreen {
     this.bookTransforms.scaling(180.0f * 1.55f, 180.0f, 1.0f);
     this.bookTransforms.transfer.set(RENDERER.getNativeWidth() / 2.0f, RENDERER.getNativeHeight() / 2.0f, 11.0f);
 
-    this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
-
     final Button fishRecordsButton = this.addButton("Fish", () -> {
       this.childScreenAllocated = true;
-      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false));
+      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, true));
     });
     fishRecordsButton.onGotFocus(() -> fishRecordsButton.setTextColour(TextColour.WHITE));
 
     final Button treasureRecordsButton = this.addButton("Treasures", () -> {
       this.childScreenAllocated = true;
-      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false));
+      this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, false));
     });
     treasureRecordsButton.onGotFocus(() -> treasureRecordsButton.setTextColour(TextColour.WHITE));
+
 
     this.setFocus(this.menuButtons.getFirst());
     /*
@@ -124,14 +117,15 @@ public class FishBookScreen extends MenuScreen {
     } else if(action == INPUT_ACTION_MENU_DOWN.get()) {
       this.currentPage = Math.clamp(this.currentPage - 6, 0, this.registryIds.size() - 1);
     }*/
-    return InputPropagation.PROPAGATE;
+    return super.inputActionPressed(action, repeat);
   }
 
   public void unload() {
     this.getStack().popScreen();
     this.bookQuad.delete();
     this.bookTexture.delete();
-
+    playMenuSound(3);
+    gameState_800babc8.indicatorsDisabled_4e3 = false;
     SCRIPTS.resume();
   }
 
@@ -223,95 +217,6 @@ public class FishBookScreen extends MenuScreen {
     RENDERER.queueOrthoModel(this.bookQuad, this.bookTransforms, QueuedModelStandard.class)
       .texture(this.bookTexture)
       .useTextureAlpha();
-  }
-
-  private void renderPage(final int pageIndex, final float x) {
-    final Fish fish = this.registryIds.get(pageIndex);
-
-    this.renderFishName(fish, x);
-    this.renderFishIcon(fish, x);
-    this.renderFishInfo(fish, x);
-
-    final int oldZ = textZ_800bdf00;
-    textZ_800bdf00 = 2;
-    renderText(String.valueOf(pageIndex + 1), x, 180, this.pageFontOpts);
-    textZ_800bdf00 = oldZ;
-  }
-
-  private void renderFishName(final Fish fish, final float x) {
-    final String name = this.seen.contains(fish.getRegistryId()) ? I18n.translate(fish) : I18n.translate("thelegendoftides.fish_obfuscated");
-    final int oldZ = textZ_800bdf00;
-    textZ_800bdf00 = 2;
-    renderText(name, x, 56, this.fishTitleFontOpts);
-    textZ_800bdf00 = oldZ;
-  }
-
-  private void renderFishIcon(final Fish fish, final float x) {
-    final Renderable58 icon = fish.icon.render((int)x, 85, FLAG_DELETE_AFTER_RENDER);
-    icon.z_3c = 2.5f;
-    icon.widthScale = 3.5f;
-    icon.heightScale_38 = 3.5f;
-
-    if(!this.seen.contains(fish.getRegistryId())) {
-      icon.colour.zero();
-    }
-  }
-
-  private void renderFishInfo(final Fish fish, final float x) {
-    final boolean seen = this.seen.contains(fish.getRegistryId());
-
-    final String text;
-    if(seen) {
-      text = I18n.translate(fish.getTranslationKey("description"));
-    } else {
-      final String hint = I18n.translate(fish.getTranslationKey("hint"));
-
-      if(!hint.isBlank()) {
-        text = hint;
-      } else {
-        text = I18n.translate("thelegendoftides.fish_obfuscated");
-      }
-    }
-
-    final int oldZ = textZ_800bdf00;
-    textZ_800bdf00 = 2;
-
-    renderText(text, x, 124, this.pageFontOpts);
-
-    if(seen) {
-      final List<String> locations = new ArrayList<>();
-      for(final RegistryId holeId : FISHING_HOLE_REGISTRY) {
-        final FishingHole hole = FISHING_HOLE_REGISTRY.getEntry(holeId).get();
-
-        // Don't display azeel info
-        if(hole.prerequisities != TlotFishingHolePrerequisites.NONE) continue;
-
-        for(int fishIndex = 0; fishIndex < hole.fish.size(); fishIndex++) {
-          if(hole.fish.get(fishIndex).fish.get() == fish) {
-            locations.add(I18n.translate(hole));
-            break;
-          }
-        }
-      }
-
-      final List<String> baits = new ArrayList<>();
-      for(final RegistryId holeId : FISH_BAIT_WEIGHT_REGISTRY) {
-        final FishBaitWeight bait = FISH_BAIT_WEIGHT_REGISTRY.getEntry(holeId).get();
-
-        if(bait.fish.get() == fish) {
-          baits.add(I18n.translate(bait.bait.get()));
-          break;
-        }
-      }
-
-      final float locationHeight = renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.locations", String.join(", ", locations)), x, 133, 106, this.pageFontOptsLeft);
-
-      if(!baits.isEmpty()) {
-        renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.baits", String.join(", ", baits)), x, 136 + locationHeight, 106, this.pageFontOptsLeft);
-      }
-    }
-
-    textZ_800bdf00 = oldZ;
   }
 
   @Override

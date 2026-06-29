@@ -823,6 +823,8 @@ public class Tlot {
 
     if(event.action == TIDES_INPUT_FISH_MENU.get() && !SCRIPTS.isPaused()) {
       SCRIPTS.pause();
+      gameState_800babc8.indicatorsDisabled_4e3 = true;
+      playMenuSound(4);
       this.menuStack.pushScreen(new FishBookScreen());
     } else if(
       event.action == INPUT_ACTION_SMAP_INTERACT.get()

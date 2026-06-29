@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public final class FishIconUiType {
   private FishIconUiType() { }
 
-  private static final float TEXTURE_WIDTH = 32.0f * 50;
+  private static final float TEXTURE_WIDTH = 32.0f * 40;
   private static final float ICON_WIDTH = 32.0f;
   private static final float WIDTH_DIVIDER = ICON_WIDTH / TEXTURE_WIDTH;
 
