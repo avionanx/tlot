@@ -14,6 +14,9 @@ public final class TlotBait {
   public static final RegistryDelegate<Bait> MAGNETIC = REGISTRAR.register("magnetic", () -> new Bait(3));
 
   public static final RegistryDelegate<Bait> DRAGONIC = REGISTRAR.register("dragonic", () -> new Bait(4));
+  public static final RegistryDelegate<Bait> BIG_FISH = REGISTRAR.register("big", () -> new Bait(5));
+  public static final RegistryDelegate<Bait> BIGGER_FISH = REGISTRAR.register("bigger", () -> new Bait(5));
+  public static final RegistryDelegate<Bait> BIGGEREST_FISH = REGISTRAR.register("biggerest", () -> new Bait(5));
 
   static void register(final RegisterBaitEvent event) {
     REGISTRAR.registryEvent(event);

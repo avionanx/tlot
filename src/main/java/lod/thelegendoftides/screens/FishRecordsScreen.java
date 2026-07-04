@@ -111,7 +111,7 @@ public class FishRecordsScreen extends MenuScreen {
   }
 
   private void renderFishName(final Fish fish, final float x, final float y, final int registryIdIndex) {
-    final String name = I18n.translate(fish); // this.seen.contains(fish.getRegistryId()) ? I18n.translate(fish) : I18n.translate("thelegendoftides.fish_obfuscated");
+    final String name = this.seen.contains(fish.getRegistryId()) ? I18n.translate(fish) : I18n.translate("thelegendoftides.fish_obfuscated");
     if((this.isSelecting || this.areDetailsActive) && registryIdIndex == this.currentSelectionIndex + this.currentPage * 8) {
       renderText(name, x, y + 30.0f, this.fishTitleFontOptsCurrentSelection);
     } else {
@@ -126,7 +126,7 @@ public class FishRecordsScreen extends MenuScreen {
     icon.heightScale_38 = 2.5f;
 
     if(!this.seen.contains(fish.getRegistryId())) {
-      // icon.colour.zero();
+      icon.colour.zero();
     }
   }
 
@@ -160,58 +160,6 @@ public class FishRecordsScreen extends MenuScreen {
     }
   }
 
-  private void renderFishInfo(final Fish fish, final float x) {
-    final boolean seen = this.seen.contains(fish.getRegistryId());
-
-    final String text;
-    if(seen) {
-      text = I18n.translate(fish.getTranslationKey("description"));
-    } else {
-      final String hint = I18n.translate(fish.getTranslationKey("hint"));
-
-      if(!hint.isBlank()) {
-        text = hint;
-      } else {
-        text = I18n.translate("thelegendoftides.fish_obfuscated");
-      }
-    }
-
-    renderText(text, x, 124, this.pageFontOpts);
-
-    if(seen) {
-      final List<String> locations = new ArrayList<>();
-      for(final RegistryId holeId : FISHING_HOLE_REGISTRY) {
-        final FishingHole hole = FISHING_HOLE_REGISTRY.getEntry(holeId).get();
-
-        // Don't display azeel info
-        if(hole.prerequisities != TlotFishingHolePrerequisites.NONE) continue;
-
-        for(int fishIndex = 0; fishIndex < hole.fish.size(); fishIndex++) {
-          if(hole.fish.get(fishIndex).fish.get() == fish) {
-            locations.add(I18n.translate(hole));
-            break;
-          }
-        }
-      }
-
-      final List<String> baits = new ArrayList<>();
-      for(final RegistryId holeId : FISH_BAIT_WEIGHT_REGISTRY) {
-        final FishBaitWeight bait = FISH_BAIT_WEIGHT_REGISTRY.getEntry(holeId).get();
-
-        if(bait.fish.get() == fish) {
-          baits.add(I18n.translate(bait.bait.get()));
-          break;
-        }
-      }
-
-      final float locationHeight = renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.locations", String.join(", ", locations)), x, 133, 106, this.pageFontOptsLeft);
-
-      if(!baits.isEmpty()) {
-        renderMenuCentredText(DEFAULT_FONT, I18n.translate("thelegendoftides.baits", String.join(", ", baits)), x, 136 + locationHeight, 106, this.pageFontOptsLeft);
-      }
-    }
-  }
-
   @Override
   protected InputPropagation inputActionPressed(@NotNull final InputAction action, final boolean repeat) {
     if(this.areDetailsActive) {
@@ -221,7 +169,7 @@ public class FishRecordsScreen extends MenuScreen {
         this.isSelecting = true;
       }
     } else if(this.isSelecting) {
-      if(action == INPUT_ACTION_MENU_CONFIRM.get() && !repeat) {
+      if(action == INPUT_ACTION_MENU_CONFIRM.get() && !repeat && this.seen.contains(this.registryIds.get(this.currentSelectionIndex + this.currentPage * 8).getRegistryId())) {
         playMenuSound(2);
         this.areDetailsActive = true;
       } else if(action == INPUT_ACTION_MENU_BACK.get() && !repeat) {

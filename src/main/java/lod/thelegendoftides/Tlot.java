@@ -21,6 +21,10 @@ import legend.game.additions.AdditionSound;
 import legend.game.characters.CharacterAdditionInfo;
 import legend.game.characters.CharacterData2c;
 import legend.game.characters.CharacterTemplate;
+import legend.game.characters.StatModConfig;
+import legend.game.characters.StatModType;
+import legend.game.characters.UnaryStatModConfig;
+import legend.game.characters.UnaryStatModType;
 import legend.game.combat.Battle;
 import legend.game.combat.SBtld;
 import legend.game.combat.SEffe;
@@ -34,6 +38,7 @@ import legend.game.combat.effects.GenericAttachment1c;
 import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
+import legend.game.combat.types.EnemyDrop;
 import legend.game.combat.ui.GatherBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
@@ -65,6 +70,7 @@ import legend.game.scripting.ScriptFile;
 import legend.game.scripting.ScriptState;
 import legend.game.scripting.ScriptTempParam;
 import legend.game.scripting.ScriptedObject;
+import legend.game.sound.Audio;
 import legend.game.submap.SMap;
 import legend.game.submap.SubmapObject210;
 import legend.game.submap.SubmapState;
@@ -74,6 +80,7 @@ import legend.game.unpacker.FileData;
 import legend.game.unpacker.Loader;
 import legend.lodmod.LodCharacterTemplates;
 import legend.lodmod.LodEngineStateTypes;
+import legend.lodmod.LodMod;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
 import lod.thelegendoftides.configs.NumberCaughtConfig;
@@ -128,6 +135,7 @@ import static legend.game.Scus94491BpeSegment_8005.submapCut_80052c30;
 import static legend.game.Scus94491BpeSegment_8006.battleState_8006e398;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Scus94491BpeSegment_800b.itemOverflow;
+import static legend.game.Scus94491BpeSegment_800b.itemsDroppedByEnemies_800bc928;
 import static legend.game.Scus94491BpeSegment_800b.postBattleAction_800bc974;
 import static legend.game.Text.textZ_800bdf00;
 import static legend.game.combat.SBtld.loadAdditions;
@@ -136,6 +144,7 @@ import static legend.game.combat.bent.BattleEntity27c.FLAG_ANIMATE_ONCE;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_DRAGOON;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_HIDE;
 import static legend.game.combat.bent.BattleEntity27c.FLAG_TAKE_FORCED_TURN;
+import static legend.game.sound.Audio.getSoundFileFromIndex;
 import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.sound.Audio.playSound;
 import static legend.lodmod.LodMod.INPUT_ACTION_SMAP_INTERACT;
@@ -287,6 +296,7 @@ public class Tlot {
 
     event.add(TlotEquipments.NAMELESS_SPEAR.get(), EquipmentTypes.POLEARM);
     event.add(TlotEquipments.ORTHOS_PRIME.get(), EquipmentTypes.POLEARM);
+    event.add(TlotEquipments.POOL_NOODLE.get(), EquipmentTypes.POLEARM);
 
     event.add(TlotEquipments.BIANCA.get(), EquipmentTypes.BOW);
 
@@ -304,9 +314,15 @@ public class Tlot {
     event.add(TlotEquipments.MAGIS_BOOTS.get(), EquipmentTypes.NEUTRAL);
     event.add(TlotEquipments.OLD_BOOTS.get(), EquipmentTypes.NEUTRAL);
     event.add(TlotEquipments.THE_ONE_RING.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.CHEATER_RING.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.BLUE_AMULET.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.AZURE_AMULET.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.CRITICAL_RING.get(), EquipmentTypes.NEUTRAL);
 
     event.add(TlotEquipments.BERSERK_PLUME.get(), EquipmentTypes.NEUTRAL);
-    event.add(TlotEquipments.CHEATER_RING.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.STORMCROWN.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.BOUNDLESS_PLATE.get(), EquipmentTypes.NEUTRAL);
+    event.add(TlotEquipments.ASSAULT_GEAR.get(), EquipmentTypes.NEUTRAL);
 
     event.add(TlotEquipments.GIGANTO_SKIRT.get(), EquipmentTypes.KONGOL);
     event.add(TlotEquipments.THIGH_HIGHS.get(), EquipmentTypes.DART);
@@ -379,14 +395,30 @@ public class Tlot {
         state.context.params_20[2] = new ScriptTempParam(2);
 
         state.scriptForkAndReenter();
-      } if (playerBent.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.CHEATER_RING.get()) {
+      }
+      if (playerBent.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.CHEATER_RING.get()) {
         if(!this.CHEATER_RING_TRIGGERED) {
           playerBent.getState().setFlag(FLAG_TAKE_FORCED_TURN);
         }
         this.CHEATER_RING_TRIGGERED = !this.CHEATER_RING_TRIGGERED;
-      } if(playerBent.character.getEquipment(EquipmentSlot.HELMET) == TlotEquipments.BERSERK_PLUME.get()) {
+      }
+      if(playerBent.character.getEquipment(EquipmentSlot.HELMET) == TlotEquipments.BERSERK_PLUME.get()) {
         battleState_8006e398.statusConditions_00[playerBent.allBentSlot_274].menuBlockFlag_18 |= (0xff & ~0x21);
         battleState_8006e398.globalMenuBlocks_510 &= ~0x21;
+      }
+      if(playerBent.character.getEquipment(EquipmentSlot.ARMOUR) == TlotEquipments.BOUNDLESS_PLATE.get()) {
+        if(playerBent.stats.getStat(LodMod.MP_STAT.get()).getCurrent() >= 50) {
+          playerBent.stats.getStat(LodMod.MP_STAT.get()).restore(-50);
+
+          final UnaryStatModType statModType = (UnaryStatModType)LodMod.UNARY_STAT_MOD_TYPE.get();
+          final UnaryStatModConfig config = statModType.makeConfig()
+            .flat(30)
+            .turns(1);
+          playerBent.stats.getStat(LodMod.MAGIC_ATTACK_STAT.get()).addMod(TlotEquipments.STORMCROWN.getId(), statModType.make(config));
+          playerBent.stats.getStat(LodMod.MAGIC_DEFENSE_STAT.get()).addMod(TlotEquipments.STORMCROWN.getId(), statModType.make(config));
+          ((Battle)currentEngineState_8004dd04).hud.addFloatingNumberForBent(playerBent.getState().index, 30, 2);
+          Audio.playSound(getSoundFileFromIndex(0), 50, 0, 0);
+        }
       }
     }
   }
@@ -396,6 +428,26 @@ public class Tlot {
     this.CHEATER_RING_TRIGGERED = false;
 
     if(!isFishEncounter) {
+      for(final ScriptState<PlayerBattleEntity> playerBent : battleState_8006e398.playerBents_e40) {
+        if(playerBent.innerStruct_00.character.getEquipment(EquipmentSlot.HELMET) == TlotEquipments.STORMCROWN.get()) {
+          final int increment = playerBent.innerStruct_00.stats.getStat(LodMod.HP_STAT.get()).getMax() / 500;
+          final UnaryStatModType statModType = (UnaryStatModType)LodMod.UNARY_STAT_MOD_TYPE.get();
+          final UnaryStatModConfig config = statModType.makeConfig()
+            .flat(increment)
+            .permanent();
+          playerBent.innerStruct_00.stats.getStat(LodMod.DEFENSE_STAT.get()).addMod(TlotEquipments.STORMCROWN.getId(), statModType.make(config));
+          playerBent.innerStruct_00.stats.getStat(LodMod.MAGIC_DEFENSE_STAT.get()).addMod(TlotEquipments.STORMCROWN.getId(), statModType.make(config));
+          ((Battle)currentEngineState_8004dd04).hud.addFloatingNumberForBent(playerBent.index, increment, 2);
+        }
+        if(playerBent.innerStruct_00.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.BLUE_AMULET.get()) {
+          final ItemStack item = new ItemStack(TlotItems.CARP.get(), 1);
+          itemsDroppedByEnemies_800bc928.add(new EnemyDrop(item, () -> gameState_800babc8.items_2e9.give(item).isEmpty(), () -> itemOverflow.add(new ItemStack(item))));
+        }
+        if(playerBent.innerStruct_00.character.getEquipment(EquipmentSlot.ACCESSORY) == TlotEquipments.AZURE_AMULET.get()) {
+          final ItemStack item = new ItemStack(TlotItems.SILVER_CARP.get(), 1);
+          itemsDroppedByEnemies_800bc928.add(new EnemyDrop(item, () -> gameState_800babc8.items_2e9.give(item).isEmpty(), () -> itemOverflow.add(new ItemStack(item))));
+        }
+      }
 
       return;
     }
