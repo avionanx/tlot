@@ -25,6 +25,8 @@ import static legend.lodmod.LodMod.INPUT_ACTION_BTTL_ATTACK;
 
 public class AdditionOverlayScreen extends MenuScreen {
   private final ArrayList<HitStruct> actionList = new ArrayList<>();
+  private final ArrayList<HitStruct> lateInputs = new ArrayList<>();
+
   private boolean isAwaitingPress = false;
   private final MV transforms = new MV();
   public Obj reticleBorderShadow;
@@ -145,9 +147,11 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.lastHitStatus = AdditionLastHitSuccessStatus.LATE;
         this.numFramesToRenderInnerSquare = 2;
         this.isAwaitingPress = false;
+        this.lateInputs.add(hit);
         this.onAdditionFail.run();
         continue;
       } else if(hit.frameBeginTime() + this.FRAMES_UNTIL_SUCCESS + hit.numSuccessFrames() + 2 < this.FRAMES) {
+        this.lateInputs.clear();
         hitStructIterator.remove();
         continue;
       }
@@ -209,7 +213,7 @@ public class AdditionOverlayScreen extends MenuScreen {
         this.lastHitStatus = AdditionLastHitSuccessStatus.SUCCESS;
         this.numFramesToRenderInnerSquare = 2;
         this.onAdditionSuccess.run();
-      } else if(!this.actionList.isEmpty()) {
+      } else if(!this.actionList.isEmpty() && this.lateInputs.isEmpty()) {
         this.lastHitStatus = AdditionLastHitSuccessStatus.EARLY;
         this.numFramesToRenderInnerSquare = 2;
         this.actionList.removeFirst();

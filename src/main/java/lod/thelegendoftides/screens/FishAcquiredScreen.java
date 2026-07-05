@@ -117,8 +117,17 @@ public class FishAcquiredScreen extends MenuScreen {
     xpStuffMV.scaling(118.0f * TlotLevelHelpers.TLOT_GET_LEVEL_PROGRESS(), 2.0f, 1.0f);
     xpStuffMV.transfer.set(101.0f, 199.0f, 11.0f);
     RENDERER.queueOrthoModel(RENDERER.opaqueQuad, xpStuffMV, QueuedModelStandard.class).colour(0.4f, 0.5f, 0.8f);
-    renderText(Integer.toString(TlotLevelHelpers.TLOT_GET_LEVEL()), 88.0f, 194.0f, UI_WHITE_CENTERED);
-    renderText(Integer.toString(TlotLevelHelpers.TLOT_GET_LEVEL() + 1), 232.0f, 194.0f, UI_WHITE_CENTERED);
+    // renderText(Integer.toString(TlotLevelHelpers.TLOT_GET_LEVEL()), 88.0f, 194.0f, UI_WHITE_CENTERED);
+    // renderText(Integer.toString(TlotLevelHelpers.TLOT_GET_LEVEL() + 1), 232.0f, 194.0f, UI_WHITE_CENTERED);
+
+    final int currentLevel = TlotLevelHelpers.TLOT_GET_LEVEL();
+    final int maxLevel = TlotLevelHelpers.TLOT_GET_MAX_LEVEL();
+
+    if(currentLevel == maxLevel) {
+      renderText(I18n.translate(getTranslationKey("level_max"), maxLevel), RENDERER.getNativeWidth() / 2.0f, 185, UI_WHITE_CENTERED);
+    } else {
+      renderText(I18n.translate(getTranslationKey("level"), currentLevel), RENDERER.getNativeWidth() / 2.0f, 185, UI_WHITE_CENTERED);
+    }
   }
 
 
