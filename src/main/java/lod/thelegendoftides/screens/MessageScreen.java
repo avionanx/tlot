@@ -33,8 +33,6 @@ public class MessageScreen extends MenuScreen {
         this.extraWidth = (int)getExtraWidth();
         this.backgroundBox.setPos(8 - this.extraWidth / 2, 20);
         this.backgroundBox.setSize(304 + this.extraWidth, 10);
-
-        RENDERER.window().events().onResize(this::onResized);
     }
 
     private void unloadMessage() {
