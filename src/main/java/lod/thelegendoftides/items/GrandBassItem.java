@@ -39,7 +39,7 @@ public class GrandBassItem extends FishItem {
     character.xp_00 = xp;
 
     if(character.xp_00 >= character.getXpToNextLevel() && character.level_12 < 60) {
-      character.level_12++;
+      character.applyLevelUp(null);
     }
 
     response.success(I18n.translate(this.getTranslationKey("use")));

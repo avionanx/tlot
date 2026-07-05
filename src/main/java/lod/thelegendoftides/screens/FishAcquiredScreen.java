@@ -25,6 +25,7 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_CONFIRM;
 import static legend.game.sound.Audio.playMenuSound;
 import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
 import static lod.thelegendoftides.Tlot.CATCH_FLAGS_CONFIG;
+import static lod.thelegendoftides.Tlot.TLOT_FISH_PRIME_CHARGES;
 import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
 import static lod.thelegendoftides.Tlot.TLOT_NUM_FISH_CAUGHT;
 import static lod.thelegendoftides.Tlot.TLOT_XP;
@@ -49,6 +50,8 @@ public class FishAcquiredScreen extends MenuScreen {
 
     // Increment num caught by 1
     CONFIG.setConfig(TLOT_NUM_FISH_CAUGHT.get(), CONFIG.getConfig(TLOT_NUM_FISH_CAUGHT.get()) + 1);
+    // Cap and increase charges by 0.1
+    CONFIG.setConfig(TLOT_FISH_PRIME_CHARGES.get(),  Math.min(CONFIG.getConfig(TLOT_FISH_PRIME_CHARGES.get()) + 1, 50));
 
     // TODO render level up text
     final int oldLevel = TlotLevelHelpers.TLOT_GET_LEVEL();

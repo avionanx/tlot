@@ -1,0 +1,20 @@
+--- original
++++ modified
+@@ -14,6 +14,7 @@
+ entrypoint :ENTRYPOINT_13
+ entrypoint :ENTRYPOINT_14
+ entrypoint :ENTRYPOINT_15
++#include queen_fury.fate
+ LABEL_0:
+ call 192, stor[26]
+ jmp_cmp ==, 0xffffffff, stor[26], inl[:LABEL_3]
+@@ -894,7 +895,7 @@
+ gosub inl[:LABEL_8]
+ call 307, stor[0], 0x14, 0x28, 0x14
+ mov stor[0], stor[24]
+-gosub inl[:LABEL_61]
++push stor[stor[stor[0], 23], 31]
++gosub inl[:updateParty]
+ yield
+ gosub inl[:LABEL_84]
+ jmp inl[:LABEL_90]

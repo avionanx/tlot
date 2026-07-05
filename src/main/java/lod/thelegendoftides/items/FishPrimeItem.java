@@ -11,6 +11,7 @@ import legend.game.scripting.ScriptState;
 import legend.lodmod.LodMod;
 import lod.thelegendoftides.TlotFish;
 
+import static legend.core.GameEngine.CONFIG;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.lodmod.LodMod.ATTACK_STAT;
 import static legend.lodmod.LodMod.DEFENSE_STAT;
@@ -19,6 +20,7 @@ import static legend.lodmod.LodMod.MAGIC_ATTACK_STAT;
 import static legend.lodmod.LodMod.MAGIC_DEFENSE_STAT;
 import static legend.lodmod.LodMod.MP_STAT;
 import static legend.lodmod.LodMod.SPEED_STAT;
+import static lod.thelegendoftides.Tlot.TLOT_FISH_PRIME_CHARGES;
 import static lod.thelegendoftides.Tlot.TLOT_RAND;
 
 public class FishPrimeItem extends FishItem {
@@ -44,6 +46,12 @@ public class FishPrimeItem extends FishItem {
   @Override
   @Method(0x80022d88L)
   public void useInMenu(final ItemStack stack, final UseItemResponse response, final int charId) {
+    if(CONFIG.getConfig(TLOT_FISH_PRIME_CHARGES.get()) < 10) {
+      response.success(I18n.translate(this.getTranslationKey("use_fail")));
+      return;
+    }
+    CONFIG.setConfig(TLOT_FISH_PRIME_CHARGES.get(),  CONFIG.getConfig(TLOT_FISH_PRIME_CHARGES.get()) - 10);
+
     final CharacterData2c character = gameState_800babc8.charData_32c.get(charId);
     final int statIndex = TLOT_RAND.nextInt(5);
     switch(statIndex) {

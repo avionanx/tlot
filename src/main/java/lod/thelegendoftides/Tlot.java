@@ -184,6 +184,7 @@ public class Tlot {
   public static final RegistryDelegate<CatchFlagsConfig> TLOT_FLAGS_OTHER = TIDES_CONFIG_REGISTRAR.register("tlot_flags_other", CatchFlagsConfig::new);
   public static final RegistryDelegate<XPConfig> TLOT_XP = TIDES_CONFIG_REGISTRAR.register("tlot_xp", XPConfig::new);
   public static final RegistryDelegate<NumberCaughtConfig> TLOT_NUM_FISH_CAUGHT = TIDES_CONFIG_REGISTRAR.register("tlot_num_fish_caught", NumberCaughtConfig::new);
+  public static final RegistryDelegate<NumberCaughtConfig> TLOT_FISH_PRIME_CHARGES = TIDES_CONFIG_REGISTRAR.register("tlot_fish_prime_charges", NumberCaughtConfig::new);
 
   private static final FontOptions CENTERED = new FontOptions().set(SItem.UI_WHITE_CENTERED).shadowColour(TextColour.BLACK);
 

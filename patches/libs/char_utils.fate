@@ -1,0 +1,187 @@
+// ========================================================================================
+// If you make any changes to this file, it has to be manually recompiled to char_utils.txt
+// ========================================================================================
+
+// Checks if the charId is in the active party
+// @return Active character slot, or -1 if not in party
+def charIsInActiveParty(charIndex) {
+  var slot = 0;
+
+  while(var[17][slot] != -1) {
+    if(var[17][slot] == charIndex) {
+      return slot;
+    }
+
+    slot++;
+  }
+
+  return -1;
+}
+
+// Removes a character index from the active party
+def removeCharFromActiveParty(charIndex) {
+  // Repeat in case the character is in the active party multiple times
+  while(1) {
+    var charSlot = charIsInActiveParty(charIndex);
+
+    if(charSlot == -1) {
+      return;
+    }
+
+    // Char was found, remove them
+    var[17][charSlot] = -1;
+  }
+
+  return;
+}
+
+// Removes a character and adds the next available character to the party to replace them
+def removeCharFromActivePartyAndReplaceWithNext(charIndex) {
+  var charSlot = charIsInActiveParty(charIndex);
+
+  // Loop in case the char is in the party multiple times
+  while(charSlot != -1) {
+    // Char was found, remove them
+    var[17][charSlot] = -1;
+
+    // Find a char to replace them with
+    var backfillIndex = 0;
+
+    while(backfillIndex < var[62]) {
+      if(charIsInActiveParty(backfillIndex) != -1 || (var[115 + backfillIndex] & 0x3) != 0x3) {
+        backfillIndex++;
+      } else {
+        var tempSlot = charSlot;
+
+        while(var[17][tempSlot] != -1) {
+          tempSlot++;
+        }
+
+        var[17][tempSlot] = backfillIndex;
+        break;
+      }
+    }
+
+    charSlot = charIsInActiveParty(charIndex);
+  }
+
+  return;
+}
+
+def clearActivePartyBackup() {
+  while(var[63] != -1) {
+    // It's a queue so we only need to read until it's empty
+  }
+
+  return;
+}
+
+def backupActiveParty() {
+  clearActivePartyBackup();
+
+  var charSlot = 0;
+  while(var[17][charSlot] != -1) {
+    var[63] = var[17][charSlot];
+    charSlot++;
+  }
+
+  return;
+}
+
+def restoreActivePartyBackup() {
+  removeAllCharsFromActiveParty();
+
+  var charIndex = var[63];
+  var charSlot = 0;
+
+  while(charIndex != -1) {
+    var[17][charSlot] = charIndex;
+    charIndex = var[63];
+    charSlot++;
+  }
+
+  return;
+}
+
+// Removes every character from the active party. You should add your own characters after doing this.
+def removeAllCharsFromActiveParty() {
+  while(var[17][0] != -1) {
+    var[17][0] = -1;
+  }
+
+  return;
+}
+
+// Removes every character from the party. You should add your own characters after doing this.
+def removeAllCharsFromParty() {
+  removeAllCharsFromActiveParty();
+
+  var charIndex = 0;
+  while(charIndex < 9) {
+    var[115 + charIndex] &= ~0x23;
+    charIndex++;
+  }
+
+  return;
+}
+
+// Temporarily removes a character from the party. Will be given the temporarily removed flag so they can be restored later.
+def temporarilyRemoveCharFromParty(charIndex) {
+  // If the character isn't already in the party, we don't want to mark them as temporarily removed
+  if((var[115 + charIndex] & 0x3) != 0) {
+    // Shift flags into the upper bits to back them up
+    var[115 + charIndex] <<= 8;
+    // Add temporarily removed flag
+    var[115 + charIndex] |= 0x4;
+
+    removeCharFromActivePartyAndReplaceWithNext(charIndex);
+  }
+
+  return;
+}
+
+// Temporarily removes all characters except for the specified character. Characters can be restored after.
+// @param The char index to keep in the party
+def temporarilyRemoveAllCharsBut(charIndex) {
+  var index = 0;
+
+  while(index < 9) {
+    if(index != charIndex) {
+      temporarilyRemoveCharFromParty(index);
+    }
+
+    index++;
+  }
+
+  return;
+}
+
+// Temporarily removes all characters. Characters can be restored after.
+def temporarilyRemoveAllChars() {
+  temporarilyRemoveAllCharsBut(-1);
+  return;
+}
+
+// Adds the character back to the party if they were temporarily removed
+def restoreCharIfTemporarilyRemoved(charIndex) {
+  // If the character marked as temporarily removed, we don't want to add them
+  if((var[115 + charIndex] & 0x4) != 0) {
+    // Restore backup from upper bits
+    var[115 + charIndex] >>= 8;
+    // Clear temporarily removed flag
+    var[115 + charIndex] &= ~0x4;
+  }
+
+  return;
+}
+
+def restoreAllTemporarilyRemovedChars() {
+  var charIndex = 0;
+
+  while(charIndex < 9) {
+    restoreCharIfTemporarilyRemoved(charIndex);
+    charIndex++;
+  }
+
+  return;
+}

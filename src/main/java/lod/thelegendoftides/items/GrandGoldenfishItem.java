@@ -10,7 +10,7 @@ public class GrandGoldenfishItem extends FishItem {
 
   @Override
   int getUnitPrice() {
-   return 600;
+   return 500;
   }
 
  @Override

@@ -1,0 +1,21 @@
+--- original
++++ modified
+@@ -14,6 +14,7 @@
+ entrypoint :ENTRYPOINT_13
+ entrypoint :ENTRYPOINT_14
+ entrypoint :ENTRYPOINT_15
++#include char_utils.fate
+ data 0x30341
+ data 0x1000000
+ data 0xffffffff
+@@ -1073,6 +1074,10 @@
+ gosub inl[:LABEL_42]
+ jmp inl[:LABEL_43]
+ LABEL_42:
++gosub inl[:removeAllCharsFromParty]
++gosub inl[:restoreAllTemporarilyRemovedChars]
++gosub inl[:restoreActivePartyBackup]
++return
+ mov 0x0, var[17][0]
+ mov 0x6, var[17][1]
+ mov 0x3, var[17][2]

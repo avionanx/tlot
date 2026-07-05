@@ -58,6 +58,7 @@ thelegendoftides.items.rainbow_trout.battle_description=Recovers 100 HP, 35 SP, 
 
 thelegendoftides.items.fish_prime.name=Fish Prime
 thelegendoftides.items.fish_prime.description=Permamently increases a\nrandom stat
+thelegendoftides.items.fish_prime.use_fail=Not enough charges.
 thelegendoftides.items.fish_prime.use_0=SPD increased by 1
 thelegendoftides.items.fish_prime.use_1=AT increased by 1
 thelegendoftides.items.fish_prime.use_2=MAT increased by 1
@@ -456,3 +457,9 @@ thelegendoftides.baits=Special bait: %s
 
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
+
+# Goods
+thelegendoftides.goods.treasure_gooner_3000.name=Treasure Gooner 3000
+thelegendoftides.goods.treasure_gooner_3000.description=Finds hidden treasures\nat fishing spots.\nNeat!
+thelegendoftides.goods.dragoni.name=Dragoni Plant
+thelegendoftides.goods.dragoni.description=

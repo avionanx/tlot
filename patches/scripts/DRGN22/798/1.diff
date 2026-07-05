@@ -4,7 +4,7 @@
  data 0xfa
  data 0xffffff9c
  data 0xfffffce0
-+#include char_utils.txt
++#include char_utils.fate
  LABEL_289:
 -mov var[17][1], stor[24]
 -mov var[17][2], stor[25]
@@ -31,8 +31,8 @@
 -andor 0x40, 0x0, var[115 + 7]
 -andor 0x40, 0x0, var[115 + 8]
 +and 0x40, var[115 + 4]
-+mov 4, stor[34]
-+gosub inl[:REMOVE_CHAR_FROM_ACTIVE_PARTY_AND_REPLACE_WITH_NEXT]
++push 4
++gosub inl[:removeCharFromActivePartyAndReplaceWithNext]
  return
  LABEL_294:
  gosub inl[:LABEL_56]
