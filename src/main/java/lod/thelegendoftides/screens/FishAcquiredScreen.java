@@ -55,7 +55,11 @@ public class FishAcquiredScreen extends MenuScreen {
 
     // TODO render level up text
     final int oldLevel = TlotLevelHelpers.TLOT_GET_LEVEL();
-    CONFIG.setConfig(TLOT_XP.get(), CONFIG.getConfig(TLOT_XP.get()) + fish.legendaryFlag == -1 ? fish.xp * gameState_800babc8.chapterIndex_98 : fish.xp);
+    CONFIG.setConfig(TLOT_XP.get(), CONFIG.getConfig(TLOT_XP.get()) +
+      (
+        fish.legendaryFlag == -1 ?
+        fish.xp * (gameState_800babc8.chapterIndex_98 + 1) : fish.xp
+      ));
     final int newLevel = TlotLevelHelpers.TLOT_GET_LEVEL();
     if(oldLevel != newLevel) {
       playMenuSound(9);

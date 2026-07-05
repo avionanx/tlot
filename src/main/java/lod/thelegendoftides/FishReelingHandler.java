@@ -21,7 +21,7 @@ public class FishReelingHandler {
   }
 
   public void tick() {
-    this.stamina = Math.min(this.fish.stamina, this.stamina + this.fish.strength / 10.0f) * TlotLevelHelpers.TLOT_GET_FADE();
+    this.stamina = Math.min(this.fish.stamina, this.stamina + this.fish.strength / 10.0f * TlotLevelHelpers.TLOT_GET_FADE());
   }
 
   public void additionSuccessHandler() {
