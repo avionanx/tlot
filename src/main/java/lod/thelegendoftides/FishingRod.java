@@ -123,7 +123,10 @@ public class FishingRod {
   }
 
   public void processString(final int iterations) {
-    final Vector3f rodWorldPos = new Vector3f(1050.0f, 0.0f, 0.0f);
+    final Vector3f rodWorldPos = new Vector3f(0.0f, 0.0f, -1050.0f)
+      .rotateX(this.rotation.x)
+      .rotateY(this.rotation.y)
+      .rotateZ(this.rotation.z);
     final Vector2f rodViewPos = new Vector2f();
     Transformations.toScreenspace(rodWorldPos, this.parent, rodViewPos);
 

@@ -889,7 +889,7 @@ public class Tlot {
         isFishEncounter = true;
         this.fishListScreen.isFishListScreenDisabled = true;
 
-        SBtld.startEncounter(new FishEncounter(01, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(1, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+        SBtld.startEncounter(new FishEncounter(01, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(143, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
         ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
       } else {
         playMenuSound(40);
