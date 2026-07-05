@@ -6,6 +6,7 @@ import org.legendofdragoon.modloader.registries.RegistryDelegate;
 import java.util.function.Supplier;
 
 import static legend.core.GameEngine.CONFIG;
+import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static lod.thelegendoftides.Tlot.TLOT_FLAGS_OTHER;
 
 public class TlotFishingHolePrerequisites {
@@ -14,6 +15,13 @@ public class TlotFishingHolePrerequisites {
   public static final Registrar<FishingHolePrerequisites, RegisterFishingHolePrerequisitiesEvent> REGISTRAR = new Registrar<>(Tlot.FISHING_HOLE_PREREQUISITES_REGISTRY, Tlot.MOD_ID);
 
   public static final RegistryDelegate<FishingHolePrerequisites> NONE = REGISTRAR.register("none", () -> new FishingHolePrerequisites(new Supplier[]{}));
+
+  public static final RegistryDelegate<FishingHolePrerequisites> HELLENA_1 = REGISTRAR.register("hellena_1", () -> new FishingHolePrerequisites(new Supplier[]{
+    TlotFishingHolePrerequisites::HellenaFirstVisit
+  }));
+  public static final RegistryDelegate<FishingHolePrerequisites> HELLENA_2 = REGISTRAR.register("hellena_2", () -> new FishingHolePrerequisites(new Supplier[]{
+    TlotFishingHolePrerequisites::HellenaSecondVisit
+  }));
   // Azeel Gladiator
   public static final RegistryDelegate<FishingHolePrerequisites> UNDERSEA_CAVERN = REGISTRAR.register("undersea_cavern", () -> new FishingHolePrerequisites(new Supplier[]{
     TlotFishingHolePrerequisites::isAtUnderseaCavern
@@ -32,6 +40,12 @@ public class TlotFishingHolePrerequisites {
   }));
 
   // Utility methods
+  private static Boolean HellenaFirstVisit() {
+    return !gameState_800babc8.scriptFlags2_bc.get(0x39c);
+  }
+  private static Boolean HellenaSecondVisit() {
+    return gameState_800babc8.scriptFlags2_bc.get(0x39c);
+  }
   private static Boolean isAtUnderseaCavern() {
     return (0x1 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x1;
   }

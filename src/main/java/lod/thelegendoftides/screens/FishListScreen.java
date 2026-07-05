@@ -57,7 +57,7 @@ public class FishListScreen extends MenuScreen {
     this.fishingHole = fishingHole;
 
     this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
-    this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter(weight -> weight.fish.get().canBeCaught() && weight.fish.get() != TlotFish.COMMON_TRASH.get() && (!weight.fish.get().isHidden || gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))).count());
+    this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter( weight -> weight.fish.get().canBeCaught() && weight.fish.get() != TlotFish.COMMON_TRASH.get() && (weight.fish.get().isHidden || gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))).count());
     this.headerBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
     this.contentBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
 
@@ -83,7 +83,7 @@ public class FishListScreen extends MenuScreen {
 
       final Fish fish = fishWeight.fish.get();
 
-      if(!fish.canBeCaught() && fish != TlotFish.COMMON_TRASH.get() && (!fish.isHidden || gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))) {
+      if(!fish.canBeCaught() || fish == TlotFish.COMMON_TRASH.get() || (fish.isHidden && !gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))) {
         continue;
       }
 
