@@ -54,6 +54,8 @@ public final class TlotItems {
   public static final RegistryDelegate<BaitBoxItem> INFUSED_BAIT_BOX = ITEM_REGISTRAR.register("infused_bait_box", () -> new BaitBoxItem(TlotBait.INFUSED, 10, 10));
   public static final RegistryDelegate<BaitBoxItem> MAGNETIC_BAIT_BOX = ITEM_REGISTRAR.register("magnetic_bait_box", () -> new BaitBoxItem(TlotBait.MAGNETIC, 5, 40));
   public static final RegistryDelegate<BaitBoxItem> DRAGONIC_BAIT_BOX = ITEM_REGISTRAR.register("dragonic_bait_box", () -> new BaitBoxItem(TlotBait.DRAGONIC, 1, 50));
+  public static final RegistryDelegate<BaitBoxItem> ANCIENT_BAIT_BOX = ITEM_REGISTRAR.register("ancient_bait_box", () -> new BaitBoxItem(TlotBait.ANCIENT, 5, 200));
+  public static final RegistryDelegate<BaitBoxItem> PARAMETER_BAIT_BOX = ITEM_REGISTRAR.register("parameter_bait_box", () -> new BaitBoxItem(TlotBait.PARAMETER, 10, 10));
 
   // Fish
   public static final RegistryDelegate<CarpItem> CARP = ITEM_REGISTRAR.register("carp", CarpItem::new);

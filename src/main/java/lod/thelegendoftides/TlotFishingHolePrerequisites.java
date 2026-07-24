@@ -41,10 +41,10 @@ public class TlotFishingHolePrerequisites {
 
   // Utility methods
   private static Boolean HellenaFirstVisit() {
-    return !gameState_800babc8.scriptFlags2_bc.get(0x39c);
+    return !gameState_800babc8.scriptFlags2_bc.get(0x5);
   }
   private static Boolean HellenaSecondVisit() {
-    return gameState_800babc8.scriptFlags2_bc.get(0x39c);
+    return gameState_800babc8.scriptFlags2_bc.get(0x5);
   }
   private static Boolean isAtUnderseaCavern() {
     return (0x1 & CONFIG.getConfig(TLOT_FLAGS_OTHER.get())) == 0x1;

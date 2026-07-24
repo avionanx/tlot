@@ -40,6 +40,51 @@ uniform bool clip_warp = false;
 
 uniform float vignette_intensity = 0.4; // Size of the vignette, how far towards the middle it should go.
 uniform float vignette_opacity = 0.5;
+uniform float bloom_intensity = 0.0;
+uniform float bloom_threshold = 0.3;
+uniform float bloom_radius = 1.5;
+uniform vec4 turn_order_bounds = vec4(0.0);
+
+// Performs bilinear filtering manually on a texture
+vec4 textureBilinear(sampler2D tex, vec2 uv) {
+  vec2 size = vec2(textureSize(tex, 0));
+  vec2 texel = uv * size - 0.5;
+  vec2 f = fract(texel);
+  vec2 ip = (floor(texel) + 0.5) / size;
+  vec2 one = 1.0 / size;
+
+  vec4 t00 = texture(tex, ip);
+  vec4 t10 = texture(tex, ip + vec2(one.x, 0.0));
+  vec4 t01 = texture(tex, ip + vec2(0.0, one.y));
+  vec4 t11 = texture(tex, ip + one);
+
+  return mix(mix(t00, t10, f.x), mix(t01, t11, f.x), f.y);
+}
+
+// The Turn Order UI is too small to be legible below 480P,
+// so cheat the pixelation for that section of the screen
+vec2 getActiveResolution(vec2 uv) {
+  vec2 res = resolution;
+  if(pixelate && res.y <= 480.0) {
+    if(uv.x >= turn_order_bounds.x && uv.x <= turn_order_bounds.z &&
+       uv.y >= turn_order_bounds.y && uv.y <= turn_order_bounds.w) {
+      float aspect = res.x / res.y;
+      res = vec2(480.0 * aspect * 1.5, 480.0);
+    }
+  }
+  return res;
+}
+
+// High-pass filter used to select bright pixels for Bloom effect
+vec3 sampleHighPass(sampler2D tex, vec2 uv, vec2 offset, float threshold) {
+  vec2 sample_uv = uv + offset;
+  if(pixelate) {
+    vec2 res = getActiveResolution(sample_uv);
+    sample_uv = (floor(sample_uv * res) + 0.5) / res;
+  }
+  vec3 color = textureBilinear(tex, sample_uv).rgb;
+  return max(color - vec3(threshold), vec3(0.0));
+}
 
 // Used by the noise function to generate a pseudo random value between 0.0 and 1.0
 vec2 random(vec2 uv) {
@@ -101,9 +146,11 @@ void main() {
   vec2 roll_uv = vec2(0.0);
   float rollTime = roll ? time : 0.0;
 
+  vec2 active_res = getActiveResolution(uv);
+
   // Pixelate the texture based on the given resolution.
   if(pixelate) {
-    text_uv = ceil(uv * resolution) / resolution;
+    text_uv = (floor(uv * active_res) + 0.5) / active_res;
   }
 
   // Create the rolling effect. We need roll_line a bit later to make the noise effect.
@@ -123,15 +170,15 @@ void main() {
     // If roll is true distort the texture with roll_uv. The texture is split up into RGB to
     // make some chromatic aberration. We apply the aberration to the red and green channels accorging to the aberration parameter
     // and intensify it a bit in the roll distortion.
-    text.r = texture(screen, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
-    text.g = texture(screen, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
+    text.r = textureBilinear(screen, text_uv + roll_uv * 0.8 + vec2(aberration, 0.0) * .1).r;
+    text.g = textureBilinear(screen, text_uv + roll_uv * 1.2 - vec2(aberration, 0.0) * .1 ).g;
     text.b = texture(screen, text_uv + roll_uv).b;
     text.a = 1.0;
   } else {
     // If roll is false only apply the aberration without any distorion. The aberration values are very small so the .1 is only
     // to make the slider in the Inspector less sensitive.
-    text.r = texture(screen, text_uv + vec2(aberration, 0.0) * .1).r;
-    text.g = texture(screen, text_uv - vec2(aberration, 0.0) * .1).g;
+    text.r = textureBilinear(screen, text_uv + vec2(aberration, 0.0) * .1).r;
+    text.g = textureBilinear(screen, text_uv - vec2(aberration, 0.0) * .1).g;
     text.b = texture(screen, text_uv).b;
     text.a = 1.0;
   }
@@ -146,13 +193,21 @@ void main() {
   // and divide it up in 3 offsetted lines to show the red, green and blue colors next to each other, with a small black gap between.
   if(grille_opacity > 0.0) {
     float g_r = smoothstep(0.85, 0.95, abs(sin(uv.x * (resolution.x * 3.14159265))));
-    r = mix(r, r * g_r, grille_opacity);
-
     float g_g = smoothstep(0.85, 0.95, abs(sin(1.05 + uv.x * (resolution.x * 3.14159265))));
-    g = mix(g, g * g_g, grille_opacity);
+    float g_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
 
-    float b_b = smoothstep(0.85, 0.95, abs(sin(2.1 + uv.x * (resolution.x * 3.14159265))));
-    b = mix(b, b * b_b, grille_opacity);
+    // Apply the grille in linear color space (gamma-correct) to prevent perceptual brightness shifts
+    float r_linear = pow(r, 2.2);
+    float g_linear = pow(g, 2.2);
+    float b_linear = pow(b, 2.2);
+
+    float r_masked = mix(r_linear, r_linear * g_r, grille_opacity);
+    float g_masked = mix(g_linear, g_linear * g_g, grille_opacity);
+    float b_masked = mix(b_linear, b_linear * g_b, grille_opacity);
+
+    r = pow(clamp(r_masked, 0.0, 1.0), 1.0 / 2.2);
+    g = pow(clamp(g_masked, 0.0, 1.0), 1.0 / 2.2);
+    b = pow(clamp(b_masked, 0.0, 1.0), 1.0 / 2.2);
   }
 
   // Apply the grille to the texture's color channels and apply Brightness. Since the grille and the scanlines (below) make the image very dark you
@@ -168,6 +223,26 @@ void main() {
     // Same technique as above, create lines with sine and applying it to the texture. Smoothstep to allow setting the line size.
     scanlines = smoothstep(scanlines_width, scanlines_width + 0.5, abs(sin(uv.y * (resolution.y * 3.14159265))));
     text.rgb = mix(text.rgb, text.rgb * vec3(scanlines), scanlines_opacity);
+  }
+
+  // Apply Bloom (glow bleeds through scanlines)
+  if(bloom_intensity > 0.0) {
+    vec2 native_res = vec2(textureSize(screen, 0));
+    vec2 step = bloom_radius / native_res;
+    vec3 blurred = vec3(0.0);
+    blurred += sampleHighPass(screen, uv, vec2(-step.x, -step.y), bloom_threshold) * 1.0;
+    blurred += sampleHighPass(screen, uv, vec2( 0.0,    -step.y), bloom_threshold) * 2.0;
+    blurred += sampleHighPass(screen, uv, vec2( step.x,  -step.y), bloom_threshold) * 1.0;
+    blurred += sampleHighPass(screen, uv, vec2(-step.x,  0.0),      bloom_threshold) * 2.0;
+    blurred += sampleHighPass(screen, uv, vec2( 0.0,     0.0),      bloom_threshold) * 4.0;
+    blurred += sampleHighPass(screen, uv, vec2( step.x,  0.0),      bloom_threshold) * 2.0;
+    blurred += sampleHighPass(screen, uv, vec2(-step.x,  step.y), bloom_threshold) * 1.0;
+    blurred += sampleHighPass(screen, uv, vec2( 0.0,     step.y), bloom_threshold) * 2.0;
+    blurred += sampleHighPass(screen, uv, vec2( step.x,  step.y), bloom_threshold) * 1.0;
+    blurred /= 16.0;
+
+    vec3 bloom_color = blurred * 2.0 * bloom_intensity;
+    text.rgb = text.rgb + bloom_color - text.rgb * bloom_color;
   }
 
   // Apply the banded noise.

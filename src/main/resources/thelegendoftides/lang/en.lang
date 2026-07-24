@@ -23,6 +23,10 @@ thelegendoftides.items.magnetic_bait_box.name=Magnetic Bait Box
 thelegendoftides.items.magnetic_bait_box.description=Holds 5. Efficient\nfor catching\nodd objects
 thelegendoftides.items.dragonic_bait_box.name=Funky Bait Box
 thelegendoftides.items.dragonic_bait_box.description=Holds 1. Dabas found\nthese on his\mining adventures.
+thelegendoftides.items.ancient_bait_box.name=Ancient Bait Box
+thelegendoftides.items.ancient_bait_box.description=Holds 3. Efficient\nfor catching\nold & powerful fish
+thelegendoftides.items.parameter_bait_box.name=Parameter Bait Box
+thelegendoftides.items.parameter_bait_box.description=Holds 10. Efficient\nfor catching\nstat boosting fish
 
 thelegendoftides.items.carp.name=Carp
 thelegendoftides.items.carp.description=Recovers 100 HP\nto everyone
@@ -164,8 +168,8 @@ thelegendoftides.items.thunder_jelly.description=Thunder magic\ndamage and reduc
 thelegendoftides.items.thunder_jelly.battle_description=Thunder MAG & Reduces DEF
 
 thelegendoftides.items.murkray.name=Murkray
-thelegendoftides.items.murkray.description=Earth magic\ndamage and reduces\nenemy HIT
-thelegendoftides.items.murkray.battle_description=Earth MAG & Reduces HIT
+thelegendoftides.items.murkray.description=Earth magic\ndamage and reduces\nenemy SPEED
+thelegendoftides.items.murkray.battle_description=Earth MAG & Reduces SPEED
 
 thelegendoftides.items.argentfin.name=Argentfin
 thelegendoftides.items.argentfin.description=Light magic\ndamage and may\nconfuse target
@@ -228,9 +232,6 @@ thelegendoftides.equipment.the_one_ring.description=Cast it into\nthe fire!\nDes
 thelegendoftides.equipment.cheater_ring.name=Cheater
 thelegendoftides.equipment.cheater_ring.description=Let's carve a path.
 
-thelegendoftides.equipment.duality_ring.name=Duality Ring
-thelegendoftides.equipment.duality_ring.description=Doubles all item or\nequipment rewards from\n battle
-
 thelegendoftides.equipment.critical_ring.name=Critical Ring
 thelegendoftides.equipment.critical_ring.description=Grants unfathomable strength\nat the cost of HP.
 
@@ -247,10 +248,10 @@ thelegendoftides.equipment.cat_ears.name=Cat Ears
 thelegendoftides.equipment.cat_ears.description=Rose literally wears\nthese. It is canon.
 
 thelegendoftides.equipment.blue_amulet.name=Blue Amulet
-thelegendoftides.equipment.blue_ring.description=Gives a carp\nat the end of\neach battle
+thelegendoftides.equipment.blue_amulet.description=Gives a carp\nat the end of\neach battle
 
 thelegendoftides.equipment.azure_amulet.name=Azure Amulet
-thelegendoftides.equipment.azure_ring.description=Gives a silver carp\nat the end of\neach battle
+thelegendoftides.equipment.azure_amulet.description=Gives a silver carp\nat the end of\neach battle
 
 thelegendoftides.equipment.berserk_plume.name=Berserk Plume
 thelegendoftides.equipment.berserk_plume.description=Gives tremendous physical\ndamage at the cost\nof losing control
@@ -270,6 +271,8 @@ thelegendoftides.bait.sparkling.name=Sparkling
 thelegendoftides.bait.infused.name=Infused
 thelegendoftides.bait.magnetic.name=Magnetic
 thelegendoftides.bait.dragonic.name=Funky
+thelegendoftides.bait.ancient.name=Ancient
+thelegendoftides.bait.parameter.name=Parameter
 
 # Fish
 thelegendoftides.fish.common_trash.name=Trash
@@ -306,7 +309,7 @@ thelegendoftides.fish.petrichor.description=Not exactly a fish,\nmore of a spiri
 thelegendoftides.fish.prickleback.name=Prickleback
 thelegendoftides.fish.prickleback.description=Prickleback enchances user's\ndefense powers when consumed.\n\nRaises DEF/MDEF stats\nby 30%% for 5 turns.
 thelegendoftides.fish.murkray.name=Murkray
-thelegendoftides.fish.murkray.description=Murks the enemy,\ndealing earth magic damage\n\nReduces enemy HIT by\n25%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 10%%.
+thelegendoftides.fish.murkray.description=Splooshes the enemy,\ndealing earth magic damage\n\nReduces enemy speed by\n30%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 25%%.\n\nPrefers Infused Baits.
 thelegendoftides.fish.shadeseeker.name=Shadeseeker
 thelegendoftides.fish.shadeseeker.description=Instantly grants turn when used.\nThat's cheating.\nMaybe.
 thelegendoftides.fish.swordfish.name=Swordfish
@@ -342,9 +345,9 @@ thelegendoftides.fish.goose.description=The only being which\nGod of Destruction
 thelegendoftides.fish.fish_prime.name=Fish Prime
 thelegendoftides.fish.fish_prime.description=Prime's one's random stat\nwhen used. Gains a charge\nper 10 fish caught.\n\nHolds 5 charges at max.
 thelegendoftides.fish.thunder_jelly.name=Thunder Jelly
-thelegendoftides.fish.thunder_jelly.description=Zaps the enemy, dealing\nthunder magic damage.\n\nReduces enemy DEF by\n25%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 8%%.\n\nPrefers Infused Baits.
+thelegendoftides.fish.thunder_jelly.description=Zaps the enemy, dealing\nthunder magic damage.\n\nReduces enemy DEF/MDEF by\n30%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 10%%.\n\nPrefers Infused Baits.
 thelegendoftides.fish.magma_eater.name=Magma Eater
-thelegendoftides.fish.magma_eater.description=Burns the enemy, dealing\nfire magic damage.\n\nReduces enemy AT by\n25%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 10%%.\n\nPrefers Infused Baits.
+thelegendoftides.fish.magma_eater.description=Burns the enemy, dealing\nfire magic damage.\n\nReduces enemy AT/MAT by\n30%% for 5 turns.\nHas reduced potency against\nbosses, reducing only by 10%%.\n\nPrefers Infused Baits.
 thelegendoftides.fish.bottle_o_love.name=Bottle O'\nLove
 thelegendoftides.fish.bottle_o_love.description=Increases Max HP until end\nof battle, alongside, uh..\ndoing something else.
 thelegendoftides.fish.bottle_o_horrors.name=Bottle O'\nHorrors

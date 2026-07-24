@@ -57,7 +57,7 @@ public class FishListScreen extends MenuScreen {
     this.fishingHole = fishingHole;
 
     this.seen = CONFIG.getConfig(Tlot.SEEN_FISH_CONFIG.get());
-    this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter( weight -> weight.fish.get().canBeCaught() && weight.fish.get() != TlotFish.COMMON_TRASH.get() && (weight.fish.get().isHidden || gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))).count());
+    this.visibleFishCount = Math.toIntExact(this.fishingHole.fish.stream().filter( weight -> weight.fish.get().canBeCaught() && weight.fish.get() != TlotFish.COMMON_TRASH.get() && (weight.fish.get().isHidden ^ !gameState_800babc8.goods_19c.has(TlotGoods.TREASURE_GOONER_3000.get()))).count());
     this.headerBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 18, 120, 14);
     this.contentBox = new UiBox((int)(this.fullWidth - 110 * this.ratio), 40, 120, this.visibleFishCount * 16);
 
@@ -73,7 +73,7 @@ public class FishListScreen extends MenuScreen {
     if(this.isFishListScreenDisabled) {
       return;
     }
-
+    int renderableIndex = 0;
     for(int i = 0; i < this.fishingHole.fish.size(); i++) {
       final FishingHole.FishWeight fishWeight = this.fishingHole.fish.get(i);
 
@@ -88,7 +88,7 @@ public class FishListScreen extends MenuScreen {
       }
 
       final int x = (int)(this.fullWidth - 101 * this.ratio);
-      final int y = i * 16 + 40;
+      final int y = renderableIndex * 16 + 40;
 
       final Renderable58 icon = fish.icon.render(x, y, FLAG_DELETE_AFTER_RENDER);
       icon.z_3c = 10.0f;
@@ -108,6 +108,8 @@ public class FishListScreen extends MenuScreen {
       } else {
         renderText(name, x + 9.0f, y + 1.5f, UI_WHITE);
       }
+
+      renderableIndex++;
     }
 
     this.headerBox.render();

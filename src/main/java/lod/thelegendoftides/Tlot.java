@@ -874,7 +874,7 @@ public class Tlot {
   public void inputReleased(final InputReleasedEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
-    if(event.action == TIDES_INPUT_FISH_MENU.get() && !SCRIPTS.isPaused()) {
+    if(event.action == TIDES_INPUT_FISH_MENU.get() && !SCRIPTS.isPaused() && !gameState_800babc8.indicatorsDisabled_4e3) {
       SCRIPTS.pause();
       gameState_800babc8.indicatorsDisabled_4e3 = true;
       playMenuSound(4);
@@ -1143,15 +1143,23 @@ public class Tlot {
       case "forest_item_shop", "hellena_01_item_shop", "volcano_item_shop" -> {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1, TlotItems.REGULAR_BAIT_BOX.get().getMaxDurability(null) / 4))));
       }
-      case "serdio_item_shop", "lohan_item_shop", "fletz_item_shop",
-           "donau_item_shop", "queen_fury_item_shop", "wingly_forest_item_shop",
-           "hellena_02_item_shop", "moon_item_shop",
-           "fueno_item_shop", "furni_item_shop", "deningrad_item_shop",
-           "kazas_item_shop", "ulara_item_shop", "rouge_item_shop" -> {
+      case "moon_item_shop" -> {
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1))));
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1), TlotItems.INFUSED_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1))));
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1), TlotItems.SPARKLING_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1))));
         event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1), TlotItems.MAGNETIC_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.PARAMETER_BAIT_BOX.get(), 1), TlotItems.PARAMETER_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.PARAMETER_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.ANCIENT_BAIT_BOX.get(), 1), TlotItems.ANCIENT_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.ANCIENT_BAIT_BOX.get(), 1))));
+      }
+      case "serdio_item_shop", "lohan_item_shop", "fletz_item_shop",
+           "donau_item_shop", "queen_fury_item_shop", "wingly_forest_item_shop",
+           "hellena_02_item_shop", "fueno_item_shop", "furni_item_shop",
+           "deningrad_item_shop", "kazas_item_shop", "ulara_item_shop", "rouge_item_shop" -> {
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1), TlotItems.REGULAR_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.REGULAR_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1), TlotItems.INFUSED_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.INFUSED_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1), TlotItems.SPARKLING_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.SPARKLING_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1), TlotItems.MAGNETIC_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.MAGNETIC_BAIT_BOX.get(), 1))));
+        event.contents.add(new ShopScreen.ShopEntry<>(new ItemStack(TlotItems.PARAMETER_BAIT_BOX.get(), 1), TlotItems.PARAMETER_BAIT_BOX.get().getBuyPrice(new ItemStack(TlotItems.PARAMETER_BAIT_BOX.get(), 1))));
       }
     }
   }
