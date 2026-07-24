@@ -83,6 +83,7 @@ import legend.lodmod.LodEngineStateTypes;
 import legend.lodmod.LodMod;
 import legend.lodmod.LodPostBattleActions;
 import lod.thelegendoftides.configs.CatchFlagsConfig;
+import lod.thelegendoftides.configs.ChillModeConfigEntry;
 import lod.thelegendoftides.configs.NumberCaughtConfig;
 import lod.thelegendoftides.configs.SeenFishConfig;
 import lod.thelegendoftides.configs.XPConfig;
@@ -155,6 +156,8 @@ public class Tlot {
 
   public static final Registrar<InputAction, InputActionRegistryEvent> TIDES_INPUT_REGISTRAR = new Registrar<>(REGISTRIES.inputActions, MOD_ID);
   public static final Registrar<ConfigEntry<?>, ConfigRegistryEvent> TIDES_CONFIG_REGISTRAR = new Registrar<>(REGISTRIES.config, MOD_ID);
+  public static final RegistryDelegate<ChillModeConfigEntry> CHILL_MODE = TIDES_CONFIG_REGISTRAR.register("chill_mode", ChillModeConfigEntry::new);
+
   public static final RegistryDelegate<CatchFlagsConfig> CATCH_FLAGS_CONFIG = TIDES_CONFIG_REGISTRAR.register("catch_flags", CatchFlagsConfig::new);
   public static final RegistryDelegate<SeenFishConfig> SEEN_FISH_CONFIG = TIDES_CONFIG_REGISTRAR.register("seen_fish", SeenFishConfig::new);
   public static final RegistryDelegate<InputAction> TIDES_INPUT_FISH_MENU = TIDES_INPUT_REGISTRAR.register("tides_fish_menu", InputAction::editable);

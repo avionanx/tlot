@@ -1,5 +1,9 @@
 package lod.thelegendoftides;
 
+import legend.game.modding.coremod.CoreMod;
+
+import static legend.core.GameEngine.CONFIG;
+
 public class FishReelingHandler {
   private float stamina;
   private int chains;
@@ -21,6 +25,10 @@ public class FishReelingHandler {
   }
 
   public void tick() {
+    if(!CONFIG.getConfig(CoreMod.CREATE_CRASH_SAVE_CONFIG.get())) {
+      return;
+    }
+
     this.stamina = Math.min(this.fish.stamina, this.stamina + this.fish.strength / 10.0f * TlotLevelHelpers.TLOT_GET_FADE());
   }
 
@@ -35,6 +43,10 @@ public class FishReelingHandler {
 
   public void additionFailCallback() {
     this.chains = 0;
+    if(!CONFIG.getConfig(CoreMod.CREATE_CRASH_SAVE_CONFIG.get())) {
+      return;
+    }
+
     this.stamina = Math.min(this.stamina + this.fish.stamina * this.ADDITION_FAIL_STAMINA, this.fish.stamina);
 
     if(this.stamina >= this.fish.stamina) {

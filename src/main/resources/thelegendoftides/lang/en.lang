@@ -461,6 +461,10 @@ thelegendoftides.baits=Special bait: %s
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book
 
+# Configs
+thelegendoftides.config.chill_mode.label=[Tides] Chill Mode
+thelegendoftides.config.chill_mode.help=While fishing, fishing progress will not be reduced
+
 # Goods
 thelegendoftides.goods.treasure_gooner_3000.name=Treasure Gooner 3000
 thelegendoftides.goods.treasure_gooner_3000.description=Finds hidden treasures\nat fishing spots.\nNeat!
