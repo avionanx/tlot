@@ -10,7 +10,10 @@ thelegendoftides.azeel_escaped=Fish Escaped!
 thelegendoftides.azeel_acquired=Fish Finally Caught!
 thelegendoftides.bait_list=Bait List
 thelegendoftides.fish_list=Fish List
+thelegendoftides.fish=Fish
+thelegendoftides.treasures=Treasures
 thelegendoftides.fish_obfuscated=???
+thelegendoftides.bait_count=%s x%d
 
 # Items
 thelegendoftides.items.regular_bait_box.name=Regular Bait Box

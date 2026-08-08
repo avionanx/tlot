@@ -3,6 +3,8 @@ package lod.thelegendoftides.screens;
 import legend.core.QueuedModelStandard;
 import legend.core.gpu.Bpp;
 import legend.core.gte.MV;
+import legend.core.lang.I18nText;
+import legend.core.lang.TextComponent;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
@@ -14,26 +16,17 @@ import legend.game.inventory.screens.InputPropagation;
 import legend.game.inventory.screens.MenuScreen;
 import legend.game.inventory.screens.TextColour;
 import legend.game.inventory.screens.controls.Button;
-import legend.game.types.Renderable58;
 import lod.thelegendoftides.Fish;
-import lod.thelegendoftides.FishBaitWeight;
-import lod.thelegendoftides.FishingHole;
-import lod.thelegendoftides.Tlot;
-import lod.thelegendoftides.TlotFishingHolePrerequisites;
 import lod.thelegendoftides.TlotLevelHelpers;
 import org.jetbrains.annotations.NotNull;
-import org.legendofdragoon.modloader.registries.RegistryId;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static legend.core.GameEngine.CONFIG;
-import static legend.core.GameEngine.DEFAULT_FONT;
 import static legend.core.GameEngine.RENDERER;
 import static legend.core.GameEngine.SCRIPTS;
-import static legend.game.SItem.renderMenuCentredText;
 import static legend.game.Scus94491BpeSegment_800b.gameState_800babc8;
 import static legend.game.Text.renderText;
 import static legend.game.Text.textZ_800bdf00;
@@ -41,10 +34,6 @@ import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_BACK;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_LEFT;
 import static legend.game.modding.coremod.CoreMod.INPUT_ACTION_MENU_RIGHT;
 import static legend.game.sound.Audio.playMenuSound;
-import static legend.game.types.Renderable58.FLAG_DELETE_AFTER_RENDER;
-import static lod.thelegendoftides.Tlot.FISHING_HOLE_REGISTRY;
-import static lod.thelegendoftides.Tlot.FISH_BAIT_WEIGHT_REGISTRY;
-
 import static lod.thelegendoftides.Tlot.MOD_ID;
 import static lod.thelegendoftides.Tlot.TLOT_NUM_FISH_CAUGHT;
 import static lod.thelegendoftides.Tlot.getTranslationKey;
@@ -79,13 +68,13 @@ public class FishBookScreen extends MenuScreen {
     this.bookTransforms.scaling(180.0f * 1.55f, 180.0f, 1.0f);
     this.bookTransforms.transfer.set(RENDERER.getNativeWidth() / 2.0f, RENDERER.getNativeHeight() / 2.0f, 11.0f);
 
-    final Button fishRecordsButton = this.addButton("Fish", () -> {
+    final Button fishRecordsButton = this.addButton(new I18nText("thelegendoftides.fish"), () -> {
       this.childScreenAllocated = true;
       this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, true));
     });
     fishRecordsButton.onGotFocus(() -> fishRecordsButton.setTextColour(TextColour.WHITE));
 
-    final Button treasureRecordsButton = this.addButton("Treasures", () -> {
+    final Button treasureRecordsButton = this.addButton(new I18nText("thelegendoftides.treasures"), () -> {
       this.childScreenAllocated = true;
       this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, false));
     });
@@ -167,7 +156,7 @@ public class FishBookScreen extends MenuScreen {
     textZ_800bdf00 = oldZ;
   }
 
-  private Button addButton(final String text, final Runnable onClick) {
+  private Button addButton(final TextComponent text, final Runnable onClick) {
     final int index = this.menuButtons.size();
     final Button button = this.addControl(new Button(text));
 
