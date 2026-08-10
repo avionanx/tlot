@@ -51,6 +51,12 @@ public class AdditionOverlayScreen extends MenuScreen {
   }
 
   @Override
+  protected void delete() {
+    super.delete();
+    this.reticleBorderShadow.delete();
+  }
+
+  @Override
   protected void render() {
     this.tick();
     this.renderAdditionBorders();

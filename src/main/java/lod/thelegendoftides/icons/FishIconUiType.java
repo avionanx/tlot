@@ -73,7 +73,8 @@ public final class FishIconUiType {
     @Override
     public void useTexture(@NotNull final QueuedModelStandard model) {
       if(TEXTURE == null) {
-        TEXTURE = Texture.png(Path.of("mods", "tlot", "fish.png"));
+        TEXTURE = Texture.png("Fish", Path.of("mods", "tlot", "fish.png"));
+        TEXTURE.persistent = true;
       }
 
       model.texture(TEXTURE);

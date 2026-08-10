@@ -4,7 +4,6 @@ import legend.core.gpu.Bpp;
 import legend.core.opengl.Obj;
 import legend.core.opengl.PolyBuilder;
 import legend.core.opengl.Texture;
-import org.lwjgl.PointerBuffer;
 import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
 import org.lwjgl.assimp.AIMesh;
@@ -12,7 +11,6 @@ import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AITexture;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
-import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
@@ -28,7 +26,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 public class GlbLoader {
   private final PolyBuilder builder;
   public Texture texture;
-  
+
   public GlbLoader(final String name, final Path file) {
     this.builder = new PolyBuilder(name, GL_TRIANGLES);
 
@@ -46,16 +44,14 @@ public class GlbLoader {
           if(data == null) {
             throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
           }
-          
-          this.texture = Texture.create(textureBuilder -> {
-            textureBuilder.data(data, w.get(0), h.get(0));
-          });
-          
+
+          this.texture = Texture.create(name, textureBuilder -> textureBuilder.data(data, w.get(0), h.get(0)));
+
           stbi_image_free(data);
           this.builder.bpp(Bpp.BITS_24);
         }
       }
-      
+
       for(int meshIndex = 0; meshIndex < scene.mNumMeshes(); meshIndex++) {
         try(final AIMesh mesh = AIMesh.create(scene.mMeshes().get(meshIndex))) {
           final AIFace.Buffer faces = mesh.mFaces();
@@ -63,7 +59,7 @@ public class GlbLoader {
           final AIVector3D.Buffer normals = mesh.mNormals();
           final AIColor4D.Buffer colours = mesh.mColors(0);
           final AIVector3D.Buffer uvs = mesh.mTextureCoords(0);
-          
+
           while(faces.hasRemaining()) {
             final AIFace face = faces.get();
 
@@ -72,7 +68,7 @@ public class GlbLoader {
               final AIVector3D vertex = vertices.get(vertexIndex);
               final AIVector3D normal = normals.get(vertexIndex);
               final AIVector3D uv = uvs.get(vertexIndex);
-              
+
               this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
               this.builder.normal(normal.x(), normal.y(), normal.z());
               if(this.texture == null) {

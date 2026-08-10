@@ -58,6 +58,7 @@ import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
+import legend.game.scripting.ScriptLifecycleEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.scripting.ScriptedObject;
 import legend.game.submap.SMap;
@@ -249,13 +250,17 @@ public class Tlot {
 
   @EventListener
   public void handleGameLoaded(final GameLoadedEvent event) throws IOException {
-    this.fishingIndicatorTexture = Texture.png(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/sparkle.png"));
+    this.fishingIndicatorTexture = Texture.png("Fishing sparkle", Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/sparkle.png"));
+    this.fishingIndicatorTexture.persistent = true;
+
     this.texturedQuad = new QuadBuilder("Textured Quad")
       .bpp(Bpp.BITS_24)
       .pos(-0.5f, -0.5f, 0.0f)
       .size(1.0f, 1.0f)
       .uv(1.0f, 1.0f)
       .build();
+
+    this.texturedQuad.persistent = true;
   }
 
   @EventListener
@@ -508,13 +513,27 @@ public class Tlot {
   }
 
   @EventListener
+  public void onScriptLifecycle(final ScriptLifecycleEvent event) {
+    for(int i = 0; i < this.specialWeaponList.size(); i++) {
+      final SpecialWeapon specialWeapon = this.specialWeaponList.get(i);
+
+      if(specialWeapon.getScriptStateIndex() == event.scriptIndex) {
+        if(event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.POST_RENDER_CALLBACK) {
+          specialWeapon.render();
+        } else if(event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.PRE_DEALLOCATE) {
+          specialWeapon.unload();
+        }
+      }
+    }
+  }
+
+  @EventListener
   public void renderLoop(final RenderEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
-    this.specialWeaponList.values().forEach(SpecialWeapon::render);
-
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
+      FishIconUiType.FISH_ICONS.obj.persistent = true;
     }
 
     if(currentEngineState_8004dd04 instanceof SMap) {
@@ -787,7 +806,6 @@ public class Tlot {
   @EventListener
   public void engineStateChangedHandler(final EngineStateChangeEvent event) {
     if(event.oldEngineState == LodEngineStateTypes.BATTLE.get()) {
-      this.specialWeaponList.values().forEach(SpecialWeapon::unload);
       this.specialWeaponList.clear();
     }
   }

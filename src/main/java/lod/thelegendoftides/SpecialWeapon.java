@@ -48,6 +48,10 @@ public class SpecialWeapon {
     }
   }
 
+  public int getScriptStateIndex() {
+    return this.scriptStateIndex;
+  }
+
   public void setParent(final GsCOORDINATE2 parent, final Model124 bentModel) {
     this.parent = parent;
     this.bentModel = bentModel;
@@ -58,7 +62,7 @@ public class SpecialWeapon {
   }
 
   public void render() {
-    if(!this.canRender || (SCRIPTS.getState(this.scriptStateIndex).hasAnyFlag(FLAG_MONSTER_SUB_PART | FLAG_HIDE | FLAG_1))) {
+    if(!this.canRender || SCRIPTS.getState(this.scriptStateIndex) == null || SCRIPTS.getState(this.scriptStateIndex).hasAnyFlag(FLAG_MONSTER_SUB_PART | FLAG_HIDE | FLAG_1)) {
       return;
     }
 

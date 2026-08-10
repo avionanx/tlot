@@ -61,7 +61,7 @@ public class FishBookScreen extends MenuScreen {
   private final Set<RegistryId> seen;
 
   public FishBookScreen() {
-    this.bookTexture = Texture.png(Path.of("mods", "tlot", "book.png"));
+    this.bookTexture = Texture.png("Book", Path.of("mods", "tlot", "book.png"));
     this.bookQuad = new QuadBuilder(MOD_ID)
       .uvSize(1.0f,1.0f)
       .bpp(Bpp.BITS_24)
