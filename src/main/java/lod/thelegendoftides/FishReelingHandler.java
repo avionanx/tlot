@@ -1,7 +1,5 @@
 package lod.thelegendoftides;
 
-import legend.game.modding.coremod.CoreMod;
-
 import static legend.core.GameEngine.CONFIG;
 
 public class FishReelingHandler {
@@ -25,7 +23,7 @@ public class FishReelingHandler {
   }
 
   public void tick() {
-    if(!CONFIG.getConfig(CoreMod.CREATE_CRASH_SAVE_CONFIG.get())) {
+    if(CONFIG.getConfig(Tlot.CHILL_MODE.get())) {
       return;
     }
 
@@ -43,7 +41,7 @@ public class FishReelingHandler {
 
   public void additionFailCallback() {
     this.chains = 0;
-    if(!CONFIG.getConfig(CoreMod.CREATE_CRASH_SAVE_CONFIG.get())) {
+    if(CONFIG.getConfig(Tlot.CHILL_MODE.get())) {
       return;
     }
 

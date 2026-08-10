@@ -1,0 +1,12 @@
+Dart overlooking Seles - no need to overwrite party, remove call
+--- original
++++ modified
+@@ -1574,8 +1574,6 @@
+ ENTRYPOINT_13:
+ ENTRYPOINT_14:
+ ENTRYPOINT_15:
+-mov 0x0, stor[24]
+-gosub inl[:LABEL_134]
+ call 240
+ call 97, 0x0
+ call 311, stor[0]

@@ -60,6 +60,7 @@ import legend.game.modding.events.battle.CombatantModelLoadedEvent;
 import legend.game.modding.events.engine.EngineStateChangeEvent;
 import legend.game.modding.events.gamestate.GameLoadedEvent;
 import legend.game.modding.events.input.InputReleasedEvent;
+import legend.game.scripting.ScriptLifecycleEvent;
 import legend.game.modding.events.input.RegisterDefaultInputBindingsEvent;
 import legend.game.modding.events.inventory.ShopContentsEvent;
 import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
@@ -99,6 +100,7 @@ import lod.thelegendoftides.screens.WaitingBiteScreen;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.Mod;
 import org.legendofdragoon.modloader.events.EventListener;
+import org.legendofdragoon.modloader.events.Priority;
 import org.legendofdragoon.modloader.registries.Registrar;
 import org.legendofdragoon.modloader.registries.Registry;
 import org.legendofdragoon.modloader.registries.RegistryDelegate;
@@ -538,6 +540,7 @@ public class Tlot {
 
     final PlayerBattleEntity player = SCRIPTS.getObject(6 + event.combatant.charSlot_19c, PlayerBattleEntity.class);
     final ScriptState state = SCRIPTS.getState(6 + event.combatant.charSlot_19c);
+    final int stateIndex = 6 + event.combatant.charSlot_19c;
     final CharacterTemplate template = player.character.template;
 
     final boolean isDragoon = (state.getStor(0x7) & FLAG_DRAGOON) != 0;
@@ -548,12 +551,12 @@ public class Tlot {
 
     //TODO nuke this and canRender
     if(isDragoon) {
-      if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
-        this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = false;
+      if(this.specialWeaponList.containsKey(stateIndex))
+        this.specialWeaponList.get(stateIndex).canRender = false;
       return;
     } else {
-      if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c))
-        this.specialWeaponList.get(event.combatant.charSlot_19c).canRender = true;
+      if(this.specialWeaponList.containsKey(stateIndex))
+        this.specialWeaponList.get(stateIndex).canRender = true;
     }
 
     switch(player.charId_272) {
@@ -577,12 +580,12 @@ public class Tlot {
     }
 
     // If weapon already exists (dragoons), reparent models to new bent models instead of loading another one
-    if(this.specialWeaponList.containsKey(event.combatant.charSlot_19c)) {
-      this.specialWeaponList.get(event.combatant.charSlot_19c).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
-      this.specialWeaponList.get(event.combatant.charSlot_19c).withDragoonRotation(dragoonRotation);
+    if(this.specialWeaponList.containsKey(stateIndex)) {
+      this.specialWeaponList.get(stateIndex).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
+      this.specialWeaponList.get(stateIndex).withDragoonRotation(dragoonRotation);
       if(template == LodCharacterTemplates.HASCHEL.get()) {
-        this.specialWeaponList.get(event.combatant.charSlot_19c + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
-        this.specialWeaponList.get(event.combatant.charSlot_19c + 10).withDragoonRotation(dragoonRotation);
+        this.specialWeaponList.get(stateIndex + 10).setParent(event.model.modelParts_00[modelPartIndex].coord2_04, event.model);
+        this.specialWeaponList.get(stateIndex + 10).withDragoonRotation(dragoonRotation);
       }
       player.model_148.partInvisible_f4 |= partFlags;
       return;
@@ -619,9 +622,9 @@ public class Tlot {
       }
 
       player.model_148.partInvisible_f4 |= partFlags;
-      this.specialWeaponList.put(event.combatant.charSlot_19c, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
+      this.specialWeaponList.put(stateIndex, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex].coord2_04, player.model_148, event.combatant.charSlot_19c));
       if(template == LodCharacterTemplates.HASCHEL.get()) {
-        this.specialWeaponList.put(event.combatant.charSlot_19c + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
+        this.specialWeaponList.put(stateIndex + 10, new SpecialWeapon(specialWeapon.getRegistryId(), player.model_148.modelParts_00[modelPartIndex2].coord2_04, player.model_148, event.combatant.charSlot_19c));
       }
     }
   }
@@ -630,7 +633,7 @@ public class Tlot {
   public void renderLoop(final RenderEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
-    this.specialWeaponList.values().forEach(SpecialWeapon::render);
+    // this.specialWeaponList.values().forEach(SpecialWeapon::render);
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
@@ -1122,6 +1125,13 @@ public class Tlot {
     event.add(TIDES_INPUT_FISH_MENU.get(), new ScancodeInputActivation(InputKey.Z));
   }
 
+  @EventListener
+  public void scriptLifecycleHandler(final ScriptLifecycleEvent event) {
+    if(this.specialWeaponList.containsKey(event.scriptIndex) && event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.POST_RENDER_CALLBACK) {
+      this.specialWeaponList.get(event.scriptIndex).render();
+    }
+  }
+
   public static float getExtraWidth() {
     final boolean widescreen = RENDERER.getRenderMode() == EngineState.RenderMode.PERSPECTIVE && CONFIG.getConfig(CoreMod.ALLOW_WIDESCREEN_CONFIG.get());
     final float fullWidth;
@@ -1138,7 +1148,7 @@ public class Tlot {
     return MOD_ID + '.' + String.join(".", args);
   }
 
-  @EventListener
+  @EventListener(priority = Priority.LOWEST)
   public void shopBaitsEvent(final ShopContentsEvent event) {
     if(event.shop.shopType_00 == 0) return;
 
