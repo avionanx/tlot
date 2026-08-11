@@ -1,5 +1,7 @@
 package lod.thelegendoftides.screens;
 
+import legend.core.lang.I18nText;
+import legend.core.lang.TextComponent;
 import legend.core.memory.types.TriConsumer;
 import legend.core.platform.Window;
 import legend.game.i18n.I18n;
@@ -61,7 +63,7 @@ public class BaitSelectionScreen extends MenuScreen {
       final BaitItem baitItem = (BaitItem)baitStack.getItem();
       final Bait bait = baitItem.getBait(baitStack);
 
-      final Button button = this.addButton(I18n.translate(bait) + " x%d".formatted(count), () -> {
+      final Button button = this.addButton(new I18nText("thelegendoftides.bait_count", new I18nText(bait), count), () -> {
         playMenuSound(2);
         this.deferAction(() -> {
           onBaitSelected.accept(bait, this::unload, () -> {
@@ -83,12 +85,12 @@ public class BaitSelectionScreen extends MenuScreen {
     this.hotkeyBox.setZ(140);
 
     if(baits.isEmpty()) {
-      this.addButton(I18n.translate(getTranslationKey("message_no_bait")), () -> {});
+      this.addButton(new I18nText(getTranslationKey("message_no_bait")), () -> {});
     }
 
     this.setFocus(this.menuButtons.getFirst());
 
-    this.addHotkey(I18n.translate(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
+    this.addHotkey(new I18nText(getTranslationKey("hotkey_bait_cancel")), INPUT_ACTION_MENU_BACK, () -> {
       playMenuSound(3);
       this.deferAction(() -> onBaitSelected.accept(null, this::unload, null));
     });
@@ -123,7 +125,7 @@ public class BaitSelectionScreen extends MenuScreen {
     RENDERER.events().removeOnResize(this::onResized);
   }
 
-  private Button addButton(final String text, final Runnable onClick) {
+  private Button addButton(final TextComponent text, final Runnable onClick) {
     final int index = this.menuButtons.size();
     final Button button = this.addControl(new Button(text));
 

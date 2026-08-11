@@ -21,8 +21,6 @@ import legend.game.additions.AdditionSound;
 import legend.game.characters.CharacterAdditionInfo;
 import legend.game.characters.CharacterData2c;
 import legend.game.characters.CharacterTemplate;
-import legend.game.characters.StatModConfig;
-import legend.game.characters.StatModType;
 import legend.game.characters.UnaryStatModConfig;
 import legend.game.characters.UnaryStatModType;
 import legend.game.combat.Battle;
@@ -39,7 +37,6 @@ import legend.game.combat.encounters.Encounter;
 import legend.game.combat.environment.BattleCamera;
 import legend.game.combat.postbattleactions.RegisterPostBattleActionsEvent;
 import legend.game.combat.types.EnemyDrop;
-import legend.game.combat.ui.GatherBattleActionsEvent;
 import legend.game.inventory.Equipment;
 import legend.game.inventory.EquipmentRegistryEvent;
 import legend.game.inventory.EquipmentTypes;
@@ -67,7 +64,7 @@ import legend.game.modding.events.submap.SubmapEnvironmentTextureEvent;
 import legend.game.modding.events.submap.SubmapLoadEvent;
 import legend.game.saves.ConfigEntry;
 import legend.game.saves.ConfigRegistryEvent;
-import legend.game.scripting.ScriptFile;
+import legend.game.scripting.ScriptLifecycleEvent;
 import legend.game.scripting.ScriptState;
 import legend.game.scripting.ScriptTempParam;
 import legend.game.scripting.ScriptedObject;
@@ -277,13 +274,17 @@ public class Tlot {
 
   @EventListener
   public void handleGameLoaded(final GameLoadedEvent event) throws IOException {
-    this.fishingIndicatorTexture = Texture.png(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/sparkle.png"));
+    this.fishingIndicatorTexture = Texture.png("Fishing sparkle", Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/sparkle.png"));
+    this.fishingIndicatorTexture.persistent = true;
+
     this.texturedQuad = new QuadBuilder("Textured Quad")
       .bpp(Bpp.BITS_24)
       .pos(-0.5f, -0.5f, 0.0f)
       .size(1.0f, 1.0f)
       .uv(1.0f, 1.0f)
       .build();
+
+    this.texturedQuad.persistent = true;
   }
 
   @EventListener
@@ -380,14 +381,6 @@ public class Tlot {
     this.currentCutFishingHoles = TlotFishingHoles.getFishingHolesForCut(event.submapCut).stream().filter(FishingHole::canFish).toList();
     for(final FishingHole hole : this.currentCutFishingHoles) {
       this.fishingIndicators.add(new FishingIndicator(hole.indicatorPosition));
-    }
-  }
-
-  @EventListener
-  public void submapLoadHandler(final SubmapLoadEvent event) throws IOException {
-    if(submapCut_80052c30 == 141) {
-        final FileData replacement = Loader.loadFileSync(Loader.resolve("..").normalize().toRealPath(LinkOption.NOFOLLOW_LINKS).resolve("mods/tlot/smap/%s/%s".formatted(submapCut_80052c30, 1)));
-        event.submapObjects.getFirst().script = new ScriptFile("SOBJ0 Replacement", replacement.getBytes());
     }
   }
 
@@ -630,6 +623,21 @@ public class Tlot {
   }
 
   @EventListener
+  public void onScriptLifecycle(final ScriptLifecycleEvent event) {
+    for(int i = 0; i < this.specialWeaponList.size(); i++) {
+      final SpecialWeapon specialWeapon = this.specialWeaponList.get(i);
+
+      if(specialWeapon.getScriptStateIndex() == event.scriptIndex) {
+        if(event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.POST_RENDER_CALLBACK) {
+          specialWeapon.render();
+        } else if(event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.PRE_DEALLOCATE) {
+          specialWeapon.unload();
+        }
+      }
+    }
+  }
+
+  @EventListener
   public void renderLoop(final RenderEvent event) {
     if(whichMenu_800bdc38 != WhichMenu.NONE_0) return;
 
@@ -637,6 +645,7 @@ public class Tlot {
 
     if(FishIconUiType.FISH_ICONS.obj == null) {
       FishIconUiType.FISH_ICONS.obj = buildUiRenderable(FishIconUiType.FISH_ICONS, "Fish icons");
+      FishIconUiType.FISH_ICONS.obj.persistent = true;
     }
 
     if(currentEngineState_8004dd04 instanceof SMap) {
@@ -895,7 +904,7 @@ public class Tlot {
         isFishEncounter = true;
         this.fishListScreen.isFishListScreenDisabled = true;
 
-        SBtld.startEncounter(new FishEncounter(01, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(143, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
+        SBtld.startEncounter(new FishEncounter(0xff, submapCut_80052c30, collidedPrimitiveIndex_80052c38, new Encounter.Monster(143, new Vector3f())), this.currentFishingHole.fishingStage.get().stageId);
         ((SMap)currentEngineState_8004dd04).smapLoadingStage_800cb430 = SubmapState.TRANSITION_TO_COMBAT_19;
       } else {
         playMenuSound(40);
@@ -911,7 +920,6 @@ public class Tlot {
   @EventListener
   public void engineStateChangedHandler(final EngineStateChangeEvent event) {
     if(event.oldEngineState == LodEngineStateTypes.BATTLE.get()) {
-      this.specialWeaponList.values().forEach(SpecialWeapon::unload);
       this.specialWeaponList.clear();
     }
   }

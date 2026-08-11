@@ -11,6 +11,7 @@ thelegendoftides.azeel_acquired=Fish Finally Caught!
 thelegendoftides.bait_list=Bait List
 thelegendoftides.fish_list=Fish List
 thelegendoftides.fish_obfuscated=???
+thelegendoftides.bait_count=%s x%d
 
 # Items
 thelegendoftides.items.regular_bait_box.name=Regular Bait Box
@@ -457,6 +458,8 @@ thelegendoftides.level_max=Level Maxed (%s)!
 thelegendoftides.book_title=Fishing Records
 thelegendoftides.locations=Location: %s
 thelegendoftides.baits=Special bait: %s
+thelegendoftides.book_fish_button=Fish
+thelegendoftides.book_treasure_button=Treasures
 
 # Input
 thelegendoftides.input_actions.tides_fish_menu.name=Tides: Open Fishing Book

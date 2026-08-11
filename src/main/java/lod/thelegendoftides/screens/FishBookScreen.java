@@ -3,6 +3,8 @@ package lod.thelegendoftides.screens;
 import legend.core.QueuedModelStandard;
 import legend.core.gpu.Bpp;
 import legend.core.gte.MV;
+import legend.core.lang.I18nText;
+import legend.core.lang.TextComponent;
 import legend.core.opengl.MeshObj;
 import legend.core.opengl.QuadBuilder;
 import legend.core.opengl.Texture;
@@ -66,7 +68,7 @@ public class FishBookScreen extends MenuScreen {
   private final List<Button> menuButtons = new ArrayList<>();
 
   public FishBookScreen() {
-    this.bookTexture = Texture.png(Path.of("mods", "tlot", "book.png"));
+    this.bookTexture = Texture.png("Book", Path.of("mods", "tlot", "book.png"));
     this.bookQuad = new QuadBuilder(MOD_ID)
       .uvSize(1.0f,1.0f)
       .bpp(Bpp.BITS_24)
@@ -79,13 +81,13 @@ public class FishBookScreen extends MenuScreen {
     this.bookTransforms.scaling(180.0f * 1.55f, 180.0f, 1.0f);
     this.bookTransforms.transfer.set(RENDERER.getNativeWidth() / 2.0f, RENDERER.getNativeHeight() / 2.0f, 11.0f);
 
-    final Button fishRecordsButton = this.addButton("Fish", () -> {
+    final Button fishRecordsButton = this.addButton(new I18nText(getTranslationKey("book_fish_button")), () -> {
       this.childScreenAllocated = true;
       this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, true));
     });
     fishRecordsButton.onGotFocus(() -> fishRecordsButton.setTextColour(TextColour.WHITE));
 
-    final Button treasureRecordsButton = this.addButton("Treasures", () -> {
+    final Button treasureRecordsButton = this.addButton(new I18nText(getTranslationKey("book_treasure_button")), () -> {
       this.childScreenAllocated = true;
       this.getStack().pushScreen(new FishRecordsScreen(() -> this.childScreenAllocated = false, false));
     });
@@ -167,7 +169,7 @@ public class FishBookScreen extends MenuScreen {
     textZ_800bdf00 = oldZ;
   }
 
-  private Button addButton(final String text, final Runnable onClick) {
+  private Button addButton(final TextComponent text, final Runnable onClick) {
     final int index = this.menuButtons.size();
     final Button button = this.addControl(new Button(text));
 
