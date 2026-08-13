@@ -514,9 +514,7 @@ public class Tlot {
 
   @EventListener
   public void onScriptLifecycle(final ScriptLifecycleEvent event) {
-    for(int i = 0; i < this.specialWeaponList.size(); i++) {
-      final SpecialWeapon specialWeapon = this.specialWeaponList.get(i);
-
+    for(final SpecialWeapon specialWeapon : this.specialWeaponList.values()) {
       if(specialWeapon.getScriptStateIndex() == event.scriptIndex) {
         if(event.getLifecycle() == ScriptLifecycleEvent.Lifecycle.POST_RENDER_CALLBACK) {
           specialWeapon.render();
