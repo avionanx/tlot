@@ -1,12 +1,11 @@
 package lod.thelegendoftides;
 
-import legend.core.MathHelper;
-import legend.core.QueuedModelStandard;
 import legend.core.Transformations;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
-import legend.core.opengl.Obj;
-import legend.game.types.Translucency;
+import legend.core.renderer.Obj;
+import legend.core.renderer.QueuedModelStandard;
+import legend.core.renderer.Translucency;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

@@ -1,8 +1,8 @@
 package lod.thelegendoftides.icons;
 
-import legend.core.QueuedModelStandard;
 import legend.core.gpu.Bpp;
-import legend.core.opengl.Texture;
+import legend.core.renderer.QueuedModelStandard;
+import legend.core.renderer.Texture;
 import legend.game.types.RenderableMetrics14;
 import legend.game.types.UiPart;
 import legend.game.types.UiType;

@@ -1,10 +1,10 @@
 package lod.thelegendoftides;
 
-import legend.core.QueuedModelStandard;
 import legend.core.gte.MV;
-import legend.core.opengl.MeshObj;
-import legend.core.opengl.Texture;
-import legend.game.types.Translucency;
+import legend.core.renderer.MeshObj;
+import legend.core.renderer.QueuedModelStandard;
+import legend.core.renderer.Texture;
+import legend.core.renderer.Translucency;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

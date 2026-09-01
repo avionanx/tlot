@@ -1,9 +1,10 @@
 package lod.thelegendoftides;
 
 import legend.core.gpu.Bpp;
-import legend.core.opengl.Obj;
-import legend.core.opengl.PolyBuilder;
-import legend.core.opengl.Texture;
+import legend.core.renderer.Obj;
+import legend.core.renderer.PolyBuilder;
+import legend.core.renderer.Texture;
+import legend.core.renderer.VertexOrder;
 import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
 import org.lwjgl.assimp.AIMesh;
@@ -17,7 +18,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Path;
 
-import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
 import static org.lwjgl.stb.STBImage.stbi_image_free;
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
@@ -28,7 +28,7 @@ public class GlbLoader {
   public Texture texture;
 
   public GlbLoader(final String name, final Path file) {
-    this.builder = new PolyBuilder(name, GL_TRIANGLES);
+    this.builder = new PolyBuilder(name, VertexOrder.TRIANGLES);
 
     final Path path = file.toAbsolutePath();
     try(final AIScene scene = Assimp.aiImportFile(path.toString(), 0)) {

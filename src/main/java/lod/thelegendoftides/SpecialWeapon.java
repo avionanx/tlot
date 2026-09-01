@@ -1,10 +1,10 @@
 package lod.thelegendoftides;
 
-import legend.core.QueuedModelStandard;
 import legend.core.gte.GsCOORDINATE2;
 import legend.core.gte.MV;
-import legend.core.opengl.Obj;
-import legend.core.opengl.Texture;
+import legend.core.renderer.Obj;
+import legend.core.renderer.QueuedModelStandard;
+import legend.core.renderer.Texture;
 import legend.game.types.Model124;
 import org.joml.Vector3f;
 import org.legendofdragoon.modloader.registries.RegistryId;
