@@ -4,6 +4,7 @@ import legend.core.gpu.Bpp;
 import legend.core.renderer.Obj;
 import legend.core.renderer.PolyBuilder;
 import legend.core.renderer.Texture;
+import legend.core.renderer.TextureDataFormat;
 import legend.core.renderer.VertexOrder;
 import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
@@ -45,7 +46,11 @@ public class GlbLoader {
             throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
           }
 
-          this.texture = Texture.create(name, textureBuilder -> textureBuilder.data(data, w.get(0), h.get(0)));
+          this.texture = Texture
+            .create(name, textureBuilder -> {
+              textureBuilder.data(data, w.get(0), h.get(0));
+              textureBuilder.dataFormat(TextureDataFormat.RGB);
+            });
 
           stbi_image_free(data);
           this.builder.bpp(Bpp.BITS_24);
