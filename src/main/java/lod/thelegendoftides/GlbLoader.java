@@ -32,65 +32,62 @@ public class GlbLoader {
     this.builder = new PolyBuilder(name, VertexOrder.TRIANGLES);
 
     final Path path = file.toAbsolutePath();
-    try(final AIScene scene = Assimp.aiImportFile(path.toString(), 0)) {
-      if(scene.mNumTextures() != 0) {
-        final AITexture AItexture = AITexture.create(scene.mTextures().get());
-        final ByteBuffer imageBuffer = AItexture.pcDataCompressed();
-        try(final MemoryStack stack = stackPush()) {
-          final IntBuffer w = stack.mallocInt(1);
-          final IntBuffer h = stack.mallocInt(1);
-          final IntBuffer comp = stack.mallocInt(1);
+    final AIScene scene = Assimp.aiImportFile(path.toString(), 0);
+    if(scene.mNumTextures() != 0) {
+      final AITexture AItexture = AITexture.create(scene.mTextures().get());
+      final ByteBuffer imageBuffer = AItexture.pcDataCompressed();
+      try(final MemoryStack stack = stackPush()) {
+        final IntBuffer w = stack.mallocInt(1);
+        final IntBuffer h = stack.mallocInt(1);
+        final IntBuffer comp = stack.mallocInt(1);
 
-          final ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, comp, 3);
-          if(data == null) {
-            throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
-          }
-
-          this.texture = Texture
-            .create(name, textureBuilder -> {
-              textureBuilder.data(data, w.get(0), h.get(0));
-              textureBuilder.dataFormat(TextureDataFormat.RGB);
-            });
-
-          stbi_image_free(data);
-          this.builder.bpp(Bpp.BITS_24);
+        final ByteBuffer data = stbi_load_from_memory(imageBuffer, w, h, comp, 3);
+        if(data == null) {
+          throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
         }
+
+        this.texture = Texture
+          .create(name, textureBuilder -> {
+            textureBuilder.data(data, w.get(0), h.get(0));
+            textureBuilder.dataFormat(TextureDataFormat.RGB);
+          });
+
+        stbi_image_free(data);
+        this.builder.bpp(Bpp.BITS_24);
       }
-
-      for(int meshIndex = 0; meshIndex < scene.mNumMeshes(); meshIndex++) {
-        try(final AIMesh mesh = AIMesh.create(scene.mMeshes().get(meshIndex))) {
-          final AIFace.Buffer faces = mesh.mFaces();
-          final AIVector3D.Buffer vertices = mesh.mVertices();
-          final AIVector3D.Buffer normals = mesh.mNormals();
-          final AIColor4D.Buffer colours = mesh.mColors(0);
-          final AIVector3D.Buffer uvs = mesh.mTextureCoords(0);
-
-          while(faces.hasRemaining()) {
-            final AIFace face = faces.get();
-
-            for(int i = 0; i < face.mNumIndices(); i++) {
-              final int vertexIndex = face.mIndices().get(i);
-              final AIVector3D vertex = vertices.get(vertexIndex);
-              final AIVector3D normal = normals.get(vertexIndex);
-              final AIVector3D uv = uvs.get(vertexIndex);
-
-              this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
-              this.builder.normal(normal.x(), normal.y(), normal.z());
-              if(this.texture == null) {
-                final AIColor4D colour = colours.get(vertexIndex);
-                this.builder.rgb(colour.r() * 2.0f, colour.g() * 2.0f, colour.b() * 2.0f);
-              } else {
-                this.builder.rgb(2.0f, 2.0f, 2.0f);
-                this.builder.uv(uv.x(), 1.0f - uv.y());
-              }
-            }
-          }
-        }
-      }
-    } catch(final Throwable t) {
-      System.err.println("Failed to load " + file);
-      t.printStackTrace(System.err);
     }
+
+    for(int meshIndex = 0; meshIndex < scene.mNumMeshes(); meshIndex++) {
+      final AIMesh mesh = AIMesh.create(scene.mMeshes().get(meshIndex));
+      final AIFace.Buffer faces = mesh.mFaces();
+      final AIVector3D.Buffer vertices = mesh.mVertices();
+      final AIVector3D.Buffer normals = mesh.mNormals();
+      final AIColor4D.Buffer colours = mesh.mColors(0);
+      final AIVector3D.Buffer uvs = mesh.mTextureCoords(0);
+
+      while(faces.hasRemaining()) {
+        final AIFace face = faces.get();
+
+        for(int i = 0; i < face.mNumIndices(); i++) {
+          final int vertexIndex = face.mIndices().get(i);
+          final AIVector3D vertex = vertices.get(vertexIndex);
+          final AIVector3D normal = normals.get(vertexIndex);
+          final AIVector3D uv = uvs.get(vertexIndex);
+
+          this.builder.addVertex(vertex.x(), vertex.y(), vertex.z());
+          this.builder.normal(normal.x(), normal.y(), normal.z());
+          if(this.texture == null) {
+            final AIColor4D colour = colours.get(vertexIndex);
+            this.builder.rgb(colour.r() * 2.0f, colour.g() * 2.0f, colour.b() * 2.0f);
+          } else {
+            this.builder.rgb(2.0f, 2.0f, 2.0f);
+            this.builder.uv(uv.x(), 1.0f - uv.y());
+          }
+        }
+      }
+    }
+
+    Assimp.aiReleaseImport(scene);
   }
 
   public Obj build() {
